@@ -1,0 +1,269 @@
+:root {
+  --clr_white: #FFFFFF;
+  --clr_pearl: #E9E5D9;
+  --clr_lightgray: #D0CFD5;
+  --clr_porcelain: #bfbfbf;
+  --clr_gray: #949597;
+  --clr_darkgray: #707483;
+  --clr_charcoal: #404040;
+  --clr_black: #313131;
+  --clr_void: #1a1a1a;
+  
+  --clr_lightnavy: #4B5264;
+  --clr_navy: #3F4555;
+  --clr_darknavy: #303A4A;
+  --clr_darkblue: #0A153A;
+  --clr_gold: #CFBD93;
+  --clr_yellow: #EEC853;
+
+  --anemo: #75C3A9;
+  --geo: #FAB72E;
+  --electro: #B18FC2;
+  --dendro: #A6C938;
+  --hydro: #4BC3F1;
+  --pyro: #EF7A35;
+  --cryo: #A0D7E4;
+  --none: #DCDCDC;
+
+  --rank1: #a4a4a4;
+  --rank2: #5D8C81;
+  --rank3: #6FAACA;
+  --rank4: #917AB1;
+  --rank5: #9A6D43;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+	border: 0;
+	font-size: 1rem;
+  box-sizing: border-box;
+	font: inherit;
+	vertical-align: baseline;
+  -webkit-appearance: none;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-text-size-adjust: none;
+}
+
+html {
+  font-size: 62.5%;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: var(--clr_black);
+}
+
+body {
+  display: grid;
+  grid-template-rows: 1fr max-content;
+}
+
+input::-ms-reveal, input::-ms-clear {
+  display: none;
+}
+
+.hide {
+  display: none !important;
+  visibility: hidden !important;
+}
+
+/*NAVBAR*/
+nav {
+  --nav_bg: var(--clr_lightnavy);
+  --nav_tx: var(--clr_gold);
+  --nav_close_bg: var(--clr_pearl);
+  --nav_close_tx: var(--clr_navy);
+  --nav_close_border: var(--clr_gray);
+  --nav_border: var(--clr_gold);
+
+  --nav_hover_bg: var(--clr_navy);
+  --nav_hover_tx: var(--clr_pearl);
+  --nav_hover_close_bg: var(--clr_gold);
+  --nav_hover_close_tx: var(--clr_pearl);
+  --nav_active_bg: var(--clr_pearl);
+  --nav_active_tx: var(--clr_navy);
+
+  width: 0;
+  height: inherit;
+  padding-top: 10rem;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: -1rem;
+  overflow-x: hidden;
+  transition: 0.5s;
+  border: solid var(--nav_border);
+  border-width: 0 0.5rem;
+  background-color: var(--nav_bg);
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+nav a {
+  display: block;
+  border-radius: 10rem;
+  margin: 0 1rem;
+  padding: 2rem 3.5rem;
+  font-size: 3rem;
+  color: var(--nav_tx);
+  text-decoration: none;
+  font-weight: bold;
+}
+
+nav .closebtn {
+  --size: 8rem;
+  --border: 1rem;
+
+  position: absolute;
+  font-size: 4rem;
+  top: 1rem;
+  right: 1rem;
+  padding: 0;
+  margin: 0;
+  line-height: calc(var(--size) - 2*var(--border));
+  height: var(--size);
+  width: var(--size);
+  border-radius: 50%;
+  border: 1rem solid var(--nav_close_border);
+  background-color: var(--nav_close_bg);
+  color: var(--nav_close_tx);
+  text-align: center;
+}
+
+nav a:hover:not(.closebtn, .active){
+  background-color: var(--nav_hover_bg);
+  color: var(--nav_hover_tx);
+}
+
+nav a:active, nav .active{
+  background-color: var(--nav_active_bg) !important;
+  color: var(--nav_active_tx) !important;
+}
+
+nav .closebtn:hover{
+  background-color: var(--nav_hover_close_bg);
+  color: var(--nav_hover_close_tx);
+  line-height: var(--size);
+  border: none;
+  box-shadow: 0 0 1.5rem var(--nav_hover_close_tx);
+}
+
+/*HEADER*/
+header {
+  --head_bg: var(--clr_darknavy);
+  --head_menu_bg: var(--clr_white);
+  --head_menu_tx: var(--clr_navy);
+  --head_menu_border: var(--clr_pearl);
+
+  --head_menu_hover_bg: var(--clr_lightnavy);
+  --head_menu_hover_tx: var(--clr_pearl);
+  --head_menu_hover_border: var(--clr_navy);
+
+  --head_input_bg: var(--clr_pearl);
+  --head_input_tx: var(--clr_navy);
+  --head_logo_bg: var(--clr_black);
+  --head_logo_tx: var(--clr_yellow);
+
+  grid-row: -1;
+  display: grid;
+  gap: 1rem;
+  padding: 0 0.8rem;
+  grid-template-columns: min-content auto;
+  grid-auto-flow: dense;
+  background-color: var(--head_bg);
+  place-items: center;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.h-menu {
+  --size: 4rem;
+  --border: 0.2rem;
+
+  height: var(--size);
+  aspect-ratio: 1;
+  margin: var(--border);
+  line-height: calc(var(--size) - 4*var(--border));
+  font-size: 2rem;
+  border: none;
+  background-color: var(--head_menu_bg);
+  border: var(--border) solid var(--clr_pearl);
+  outline: var(--border) solid var(--head_menu_bg);
+  color: var(--head_menu_tx);
+  font-weight: bold;
+}
+
+.h-menu:hover {
+  color: var(--head_menu_hover_tx);
+  background-color: var(--head_menu_hover_bg);
+  border-color: var(--head_menu_hover_border);
+  outline-color: var(--head_menu_hover_bg);
+}
+
+.h-button {
+  --size: 3.5rem;
+  --border: 0.2rem;
+
+  display: flex;
+  position: relative;
+  height: var(--size);
+  width: 15rem;
+  border-radius: var(--size);
+  background-color: var(--head_input_bg);
+}
+
+.h-icon{
+  box-sizing: content-box;
+  height: calc(1/5*var(--size));
+  width: calc(1/5*var(--size));
+  margin: calc(2/5*var(--size) - var(--border));
+  border: var(--border) solid var(--head_logo_tx);
+  box-shadow: 0 0 0 calc(1/5*var(--size) - var(--border)) var(--head_logo_bg);
+  border-radius: 100%;
+  position: absolute;
+  align-self: center;
+  background-color: var(--head_logo_bg);
+}
+
+.h-input {
+  font-size: 1.6rem;
+  padding-left: calc(4/5*var(--size));
+  height: 100%;
+  width: 100%;
+  border-radius: inherit;
+  outline: none;
+  background-color: inherit;
+  color: var(--head_input_tx);
+  font-weight: bold;
+  text-align: center;
+}
+
+/*BACKGROUNDS*/
+.r_1{
+  background: url('https://static.wikia.nocookie.net/gensin-impact/images/6/69/Rarity_1_background.png') top left no-repeat;
+  background-size: contain;
+}
+
+.r_2{
+  background: url('https://static.wikia.nocookie.net/gensin-impact/images/d/d4/Rarity_2_background.png') top left no-repeat;
+  background-size: contain;
+}
+
+.r_3{
+  background: url('https://static.wikia.nocookie.net/gensin-impact/images/5/57/Rarity_3_background.png') top left no-repeat;
+  background-size: contain;
+}
+
+.r_4{
+  background: url('https://static.wikia.nocookie.net/gensin-impact/images/c/c9/Rarity_4_background.png') top left no-repeat;
+  background-size: contain;
+}
+
+.r_5{
+  background: url('https://static.wikia.nocookie.net/gensin-impact/images/e/ea/Rarity_5_background.png') top left no-repeat;
+  background-size: contain;
+}

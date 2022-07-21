@@ -1,0 +1,142 @@
+.farm {
+  --farm_tx: var(--clr_black);
+  --shade: rgba(26,26,26,0.75);
+  --input: rgba(26,26,26,0.3);
+  --input_tx: var(--clr_pearl);
+  --farm_border: var(--clr_lightnavy);
+  --farm_card_bg: var(--clr_pearl);
+  --farm_card_tx: var(--clr_darkgray);
+
+  --w: calc(100vw/8);
+  --h: calc(1.2*var(--w));
+
+  display: grid;
+  gap: 0.5rem;
+  overflow-x: hidden;
+  overflow-y: auto;
+  grid-template-columns: 1fr;
+  grid-auto-rows: max-content;
+}
+
+[data-color] { --color: var(--none); }
+[data-color=Anemo] { --color: var(--anemo); }
+[data-color=Geo] { --color: var(--geo); }
+[data-color=Electro] { --color: var(--electro); }
+[data-color=Dendro] { --color: var(--dendro); }
+[data-color=Hydro] { --color: var(--hydro); }
+[data-color=Pyro] { --color: var(--pyro); }
+[data-color=Cryo] { --color: var(--cryo); }
+
+.farm-row {
+  display: grid;
+  width: 100%;
+  margin-bottom: 0.4rem;
+  grid-template-columns: max-content 1fr;
+  grid-template-rows: max-content max-content;
+  background-color: var(--color);
+  color: var(--farm_tx);
+}
+
+.farm-char{
+  grid-row: span 2;
+  display: grid;
+  font-weight: bolder;
+  place-content: center;
+  place-items: center;
+}
+
+.farm-char .image{
+  max-width: var(--w);
+  max-height: var(--h);
+}
+
+.farm-asc, .farm-tln{
+  display: grid;
+  grid-auto-flow: column;
+  place-content: center start;
+}
+
+.farm-asc{
+  border-bottom: 0.2rem solid var(--farm_border);
+}
+
+.farm-inp {
+  display: flex;
+  width: var(--w);
+  flex-direction: row;
+  flex-wrap: wrap;
+  place-items: center;
+}
+
+.farm-inp input[type=text]{
+  grid-row: 2;
+  width: calc(var(--w)/2);
+  border-radius: 3rem;
+  font-size: 1.2rem;
+  text-align: center;
+  background-color: var(--shade);
+  color: var(--input_tx);
+}
+
+.farm-inp input:nth-of-type(2n){
+  background-color: var(--input);
+}
+
+.container{
+  position: relative;
+  width: var(--w);
+  height: var(--h);
+  display: grid;
+  grid-template-columns: min-content min-content;
+  grid-template-rows: min-content min-content;
+  place-content: center stretch;
+}
+
+.item:only-child{
+  --cw: var(--w);
+  --ch: var(--h);
+  font-size: 1rem;
+}
+
+.item:not(:only-child){
+  --cw: calc(var(--w)/2);
+  --ch: calc(var(--h)/2);
+  font-size: 0.75rem;
+}
+
+.item{
+  display: grid;
+  width: var(--cw);
+  height: var(--ch);
+  grid-template-rows: calc(100%*5/6) calc(100%/6);
+  place-items: center;
+}
+
+.image{
+  max-width: 100%;
+  max-height: calc(100%*5/6);
+}
+
+.total{
+  grid-column: 1;
+  grid-row: 1;
+  display: grid;
+  border-radius: 0.4rem;
+  width: calc(var(--w)/2);
+  height: calc(var(--h)/2);
+  border: 0.1rem solid var(--farm_card_tx);
+  place-items: center;
+  background-color: var(--farm_card_bg);
+}
+
+.total:nth-child(3){
+  grid-column: span 2;
+}
+
+.total:nth-child(5){
+  position: absolute;
+  /*right: 0;*/
+  place-self: start center;
+  height: 25%;
+  opacity: 0.75;
+}

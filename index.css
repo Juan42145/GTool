@@ -1,0 +1,27 @@
+/*FORM*/
+form {
+  --form_bg: var(--clr_navy);
+  --form_tx: var(--clr_black);
+  --form_input: var(--clr_white);
+  --form_border: var(--clr_lightgray);
+  --form_outline: var(--clr_darkgray);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--form_bg);
+}
+
+form input {
+  width: 80vw;
+  line-height: 20vw;
+  font-size: 15vw;
+  -webkit-border-radius: 30vw;
+  border-radius: 100vw;
+  outline: none;
+  border: 0.5rem solid var(--form_border);
+  box-shadow: 0 0 0 1rem var(--form_bg), 0 0 0 1.4rem var(--form_outline) ;
+  background-color: var(--form_input);
+  color: var(--form_tx);
+  text-align: center;
+}
