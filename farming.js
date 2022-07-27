@@ -87,7 +87,7 @@ function makeChar(){
     else name = c[1][name];
     const DIV = document.createElement('div');
     DIV.classList = 'container';
-    if(!c[1][cat]) return DIV;
+    if(!c[1][cat] || Object.keys(c[1][cat]).length == 0) return DIV;
     let counter = total = 0;
     Object.entries(c[1][cat]).reverse().forEach(item => {
       if(addTotal){
@@ -230,7 +230,7 @@ function updateC(char, attr, value){
   userChar[char][attr] = value;
   
   sessionStorage.set('calc', true);
-  caching,('cacheC', userChar[char]['ROW'], userChar[char]);
+  caching('cacheC', userChar[char]['ROW'], userChar[char]);
   
   let user = sessionStorage.get('user');
   user.Characters = userChar;

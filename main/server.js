@@ -65,16 +65,25 @@ function handleAuth(isCorrect){
 }
 
 function handleInv(){
-  alert('Saved Inventory');
+  toast('Saved Inventory');
   sessionStorage.set('cacheI',{});
 }
  
 function handleChar(){
-  alert('Saved Characters');
-  sessionStorage.set('cacheC',{});
+  toast('Saved Characters');
+  sessionStorage.set('cacheI',{});
 }
 
 function handleWpn(){
-  alert('Saved Weapons');
+  toast('Saved Weapons');
   sessionStorage.set('cacheW',{});
+}
+
+/*ALERT*/
+function toast(message){
+  const TOAST = document.createElement('div');
+  TOAST.classList = 'alert';
+  TOAST.textContent = message;
+  document.body.append(TOAST);
+  setTimeout(()=>TOAST.remove(),1500)
 }
