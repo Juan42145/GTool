@@ -6,27 +6,33 @@ Storage.prototype.get = function(key){
   return JSON.parse(this.getItem(key));
 }
 
+function caching(id, key, value){
+  let cache = sessionStorage.get(id);
+  if(!cache) cache = {};
+  cache[key] = value;
+  sessionStorage.set(id, cache);
+}
+
 /*NAVBAR*/
 function openNav(){
-  let nav = document.getElementById("nav");
-  nav.style.width = "100%";
-  nav.style.left = "0";
+  const NAV = document.getElementById("nav");
+  NAV.style.width = "100%";
+  NAV.style.left = "0";
 }
 
 function closeNav(){
-  let nav = document.getElementById("nav");
-  nav.style.width = "0";
-  nav.style.left = "-1rem";
+  const NAV = document.getElementById("nav");
+  NAV.style.width = "0";
+  NAV.style.left = "-1rem";
 }
 
 /*IMAGES*/
 function getImage(section, item, rank){
   if(item === '') return 'https://paimon.moe/images/paimon_faq.png';
 
-  let lookitem = item;
-  if(item === "AMORA" || item === "TMORA") lookitem = "Mora";
+  if(item === "AMORA" || item === "TMORA") item = "Mora";
 
-  let link = sessionStorage.get('DB').DB_Master[section][lookitem][rank];
+  let link = sessionStorage.get('DB').DB_Master[section][item][rank];
   if(link.includes('*')) link = 'paimon.moe/images/paimon_faq.png'
   
   return "https://" + link;
@@ -34,7 +40,6 @@ function getImage(section, item, rank){
 
 /*CALC DATA*/
 function calculate(){
-  console.log('CALCULATING')
   let pivot = {
     'BOOK':{},
     'WEAPON':{},
@@ -94,6 +99,7 @@ function calculate(){
     const info = DB.DB_Weapons[w];
     const phase = [+state.PHASE, +state.TARGET];
     calculator.WEAPONS[w] = {
+      RARITY: info.RARITY,
       PHASE: phase,
       ASCENSION: info.ASCENSION,
       $ASCENSION: calcW('ASCENSION', phase, info.ASCENSION, info.RARITY),
@@ -149,27 +155,42 @@ function calculate(){
     }
   }
 
-  function vadd(...objs){
-    return objs.reduce((a,b) => {
-      for (let k in b) {
-        if (b.hasOwnProperty(k))
-          a[k] = (a[k] || 0) + b[k];
-      }
-      return a;
-    }, {});
-  }
-
-  function vsub(a,b){
-    return Object.keys(a).reduce((r,i) => {
-      r[i] = a[i] - (b[i] || 0);
-      return r;
-    }, {});
-  }
-
   function rollup(attribute, name, value){
     let flag = Object.values(value).some(v => {
       return v !== 0;
     });
     if(flag) pivot[attribute][name] = name in pivot[attribute]? vadd(pivot[attribute][name], value): value;
+  }
+}
+
+function vadd(...objs){
+  return objs.reduce((a,b) => {
+    for (let k in b) {
+      if (b.hasOwnProperty(k))
+        a[k] = (a[k] || 0) + b[k];
+    }
+    return a;
+  }, {});
+}
+
+function vsub(a,b){
+  return Object.keys(a).reduce((r,i) => {
+    r[i] = a[i] - (b[i] || 0);
+    return r;
+  }, {});
+}
+
+/*INVENTORY*/
+function recalculate(section, row){
+  let counter = total = 0;
+  Object.entries(userInv[section][row]).reverse().forEach(item => {
+    if(item[1] !== '' && item[0] !== 'ROW' && item[0] !== '0'){
+      total += item[1]/(3**counter);
+      counter++;
+    }
+  });
+  if(counter > 1){
+    document.getElementById(row).textContent = Math.floor(total).toLocaleString('en-us')
+    userInv[section][row][0] = total;
   }
 }

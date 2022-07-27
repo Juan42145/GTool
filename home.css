@@ -1,4 +1,4 @@
-.home {
+body{
   --home_bg: var(--clr_lightnavy);
   --home_tx: var(--clr_lightnavy);
   --home_title_bg: var(--clr_darkblue);
@@ -7,20 +7,21 @@
   --home_border: var(--clr_white);
   --home_card_bg: var(--clr_pearl);
   --home_card_tx: var(--clr_darkgray);
-
-  display: grid;
-  gap: 0.5rem;
-  overflow-x: hidden;
-  overflow-y: auto;
-  grid-template-columns: 2fr 1fr;
-  place-items: end stretch;
+  --home_color_tx: var(--clr_pearl);
 }
 
-#h-lt, #h-rt{
+.home {
+  display: grid;
+  grid-gap: 0.5rem;
+  overflow-x: hidden;
+  overflow-y: auto;
+  grid-template-columns: minmax(min-content, 1fr) minmax(0, max-content);
+  place-items: start stretch;
+}
+
+.side{
   display: grid;
   gap: 0.5rem;
-  grid-template-columns: 1fr;
-  grid-auto-rows: auto;
 }
 
 .home-sec {
@@ -52,7 +53,6 @@
 
 .home-row {
   display: contents;
-  
 }
 
 .home-row > * {
@@ -88,14 +88,14 @@
 .home-item {
   width: 5rem;
   grid-template-columns: auto auto;
-  grid-template-rows: 5rem 1fr;
+  grid-template-rows: 5rem 1rem;
   background-color: transparent;
   place-items: center;
   color: var(--home_card_tx);
 }
 
 .completed{
-  opacity: 0.2;
+  opacity: 0.4;
 }
 
 .home-total p{
@@ -132,10 +132,109 @@
 }
 
 #MORA .home-total{
+  grid-column: 1;
   grid-template-rows: min-content min-content;
   place-content: center;
 }
 
-#MORA .home-total p{
+.mora.home-total p{
   justify-self: end !important;
+}
+
+.home-color:not(.completed){
+  background-color: var(--color);
+  color: var(--home_color_tx);
+  text-shadow: 0 0 0.7rem var(--home_grid);
+}
+
+.page {
+  --page_bg: var(--clr_black);
+  --btn_bg: rgba(26,26,26,0.75);
+  --btn_tx: var(--clr_white);
+  --total_tx: var(--clr_void);
+  --total_bg: var(--clr_lightgray);
+  --input_tx: var(--clr_void);
+  --input_bg: var(--clr_white);
+  --inp_focus_bg: var(--clr_void);
+  --inp_focus_tx: var(--clr_white);  
+
+  padding: 3rem;
+  padding-top: 6rem;
+  padding-left: 0;
+  display: grid;
+  grid-gap: 0.5rem;
+  overflow-x: hidden;
+  overflow-y: auto;
+  place-items: start stretch;
+  place-content: start stretch;
+  background-color: var(--page_bg);
+}
+
+.close{
+  --size: 4rem;
+
+  position: absolute;
+  font-size: 3rem;
+  top: 1rem;
+  right: 1rem;
+  padding: 0;
+  margin: 0;
+  line-height: var(--size);
+  height: var(--size);
+  width: var(--size);
+  border-radius: 50%;
+  background-color: var(--btn_bg);
+  color: var(--btn_tx);
+  text-decoration: none;
+  text-align: center;
+}
+
+.home-tbl.tbl-inv{
+  background-color: var(--page_bg);
+  margin-bottom: 2rem;
+}
+
+.page .home-inv{
+  grid-template-rows: auto;
+  background-color: var(--total_bg);
+  color: var(--total_tx);
+}
+
+.page input {
+  height: 1rem;
+  font-size: 0.8rem;
+  min-width: 5rem;
+  max-width: 5rem;
+  border-radius: 0;
+  outline: none;
+  background-color: var(--input_bg);
+  color: var(--input_tx);
+  text-align: center;
+}
+
+.page input:focus{
+  color: var(--inp_focus_tx);
+  background-color: var(--inp_focus_bg);
+}
+
+.dets .home-total{
+  grid-template-rows: min-content;
+  padding: 0 2rem;
+  place-content: center;
+}
+
+.dets .home-item{
+  grid-template-columns: 1fr;
+}
+
+.morad.home-tbl{
+  grid-auto-rows: 5rem;
+}
+
+.morad .home-item{
+  background-size: cover;
+}
+
+.morad .home-total{
+  place-content: center end;
 }

@@ -1,7 +1,6 @@
 const DB = sessionStorage.get('DB').DB_Characters;
 let userChar = sessionStorage.get('user').Characters;
 let owned = flip = false;
-let cache = {};
 let sorting = function(){};
 
 /*CHARACTERS*/
@@ -101,7 +100,7 @@ function showInfo(c){
   document.getElementById('char').dataset.color = info.ELEMENT;
   
   document.getElementById('NAME').textContent = c[0];
-  document.getElementById('RARITY').textContent = info.RARITY //ADD STARS
+  document.getElementById('RARITY').classList = 's'+info.RARITY
   document.getElementById('WEAPON').textContent = info.WEAPON
   document.getElementById('ELEMENT').src = getImage('ELEMENT', info.ELEMENT, 0)
   
@@ -177,7 +176,8 @@ function plus(){
   document.getElementById('CONSTELLATION').textContent = 'C' + value;
   userChar[name]['CONSTELLATION'] = value;
 
-  cache[userChar[name]['ROW']] = userChar[name];
+  caching('cacheC', userChar[name]['ROW'], userChar[name])
+
 }
 
 function minus(){
@@ -198,7 +198,7 @@ function minus(){
   document.getElementById('CONSTELLATION').textContent = string;
   userChar[name]['CONSTELLATION'] = value;
 
-  cache[userChar[name]['ROW']] = userChar[name];
+  caching('cacheC', userChar[name]['ROW'], userChar[name]);
 }
 
 function closeChar(){
@@ -214,7 +214,7 @@ function update(e){
   else userChar[name][e.id] = e.value;
   
   sessionStorage.set('calc', true);
-  cache[userChar[name]['ROW']] = userChar[name];
+  caching('cacheC', userChar[name]['ROW'], userChar[name]);
 
   let user = sessionStorage.get('user');
   user.Characters = userChar;
@@ -225,5 +225,5 @@ function saveCharacters(){
   let user = sessionStorage.get('user');
   user.Characters = userChar;
   sessionStorage.set('user', user);
-  setChar(cache);
+  setChar();
 }

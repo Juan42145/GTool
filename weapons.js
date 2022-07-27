@@ -1,6 +1,5 @@
 const DB = sessionStorage.get('DB').DB_Weapons;
 let userWpn = sessionStorage.get('user').Weapons;
-let cache = {};
 let filters = ['Sword','Claymore','Bow','Polearm','Catalyst'];
 let filter = second = count = 0;
 let owned = flip = false;
@@ -114,11 +113,15 @@ function makeRow(w){
   const ROW = document.createElement('tr');
   ROW.classList.add('w_'+info.RARITY);
   document.getElementById('weapons').append(ROW);
-  ROW.addEventListener('click', function(){showInfo(w)}, false);
+  ROW.addEventListener('click', (e)=>{
+    if(e.target.classList == 'farm') return
+    showInfo(w)
+  }, false);
 
   let CELL;
 
   CELL = document.createElement('td');
+  CELL.classList = 'farm';
   const FARM = Object.assign(document.createElement("input"),{
     type: "checkbox", classList: "farm", checked: w[1].FARM
   });
@@ -127,13 +130,14 @@ function makeRow(w){
     userWpn[w[0]].FARM = FARM.checked;
 
     sessionStorage.set('calc', true);
-    cache[userWpn[w[0]].ROW] = userWpn[w[0]];
+    caching('cacheW', userWpn[w[0]].ROW, userWpn[w[0]]);
     
     let user = sessionStorage.get('user');
     user.Weapons = userWpn;
     sessionStorage.set('user', user);
 
   }, false);
+  FARM.removeEventListener('click',()=>showInfo(w), false)
 
   CELL.append(FARM)
   ROW.append(CELL);
@@ -223,7 +227,7 @@ function showInfo(w){
   document.getElementById('wpn').dataset.color = info.RARITY;
   
   document.getElementById('NAME').textContent = w[0];
-  document.getElementById('RARITY').textContent = info.RARITY //ADD STARS
+  document.getElementById('RARITY').classList = 's'+info.RARITY
   document.getElementById('WEAPON').textContent = info.TYPE
   
   if(w[1].OWNED){
@@ -287,7 +291,7 @@ function plus(){
   document.getElementById('REFINEMENT').textContent = 'R' + value;
   userWpn[name]['REFINEMENT'] = value;
 
-  cache[userWpn[name]['ROW']] = userWpn[name];
+  caching('cacheW', userWpn[name]['ROW'], userWpn[name]);
 }
 
 function minus(){
@@ -308,7 +312,7 @@ function minus(){
   document.getElementById('REFINEMENT').textContent = string;
   userWpn[name]['REFINEMENT'] = value;
 
-  cache[userWpn[name]['ROW']] = userWpn[name];
+  caching('cacheW', userWpn[name]['ROW'],userWpn[name]);
 }
 
 function closeChar(){
@@ -324,7 +328,7 @@ function update(e){
   else userWpn[name][e.id] = e.value;
   
   sessionStorage.set('calc', true);
-  cache[userWpn[name]['ROW']] = userWpn[name];
+  caching('cacheW', userWpn[name]['ROW'],userWpn[name]);
 
   let user = sessionStorage.get('user');
   user.Weapons = userWpn;
@@ -335,5 +339,5 @@ function saveWeapons(){
   let user = sessionStorage.get('user');
   user.Weapons = userWpn;
   sessionStorage.set('user', user);
-  setWpn(cache);
+  setWpn();
 }

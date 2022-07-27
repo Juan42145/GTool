@@ -166,15 +166,6 @@ select{
 
 /*FORM*/
 
-[data-color] { --color: var(--none); }
-[data-color=Anemo] { --color: var(--anemo); }
-[data-color=Geo] { --color: var(--geo); }
-[data-color=Electro] { --color: var(--electro); }
-[data-color=Dendro] { --color: var(--dendro); }
-[data-color=Hydro] { --color: var(--hydro); }
-[data-color=Pyro] { --color: var(--pyro); }
-[data-color=Cryo] { --color: var(--cryo); }
-
 #char {
   --char_btn_bg: rgba(26,26,26,0.75);
   --char_btn_tx: var(--clr_white);
@@ -215,6 +206,7 @@ select{
 .data{
   --data_bg: var(--color);
   --data_tx: var(--clr_white);
+  --shadow: var(--clr_void);
   --shade: rgba(26,26,26,0.75);
   --input: rgba(26,26,26,0.2);
   --edit_tx: var(--clr_black);
@@ -241,6 +233,7 @@ select{
   align-items: center;
   gap: 1rem;
   font-weight: bold;
+  text-shadow: 0 0 0.7rem var(--shadow);
 }
 
 #NAME{
@@ -251,6 +244,7 @@ select{
 #ELEMENT{
   width: 4rem;
   height: 4rem;
+  background: radial-gradient(closest-side, var(--shadow), transparent);
 }
 
 #CONSTELLATION{

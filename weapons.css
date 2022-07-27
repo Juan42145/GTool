@@ -94,6 +94,7 @@ td{
   position: relative;
   padding: 0.5rem;
   border-top: 0.1rem solid var(--table_border);
+  
   color: var(--table_tx);
   vertical-align: middle;
 }
@@ -119,9 +120,6 @@ table img{
 }
 
 /*FORM*/
-[data-color='5'] { --color: var(--rank5); }
-[data-color='4'] { --color: var(--rank4); }
-[data-color='3'] { --color: var(--rank3); }
 
 #wpn {
   --char_btn_bg: rgba(26,26,26,0.75);
@@ -163,6 +161,7 @@ table img{
 .data{
   --data_bg: var(--color);
   --data_tx: var(--clr_white);
+  --shadow: var(--clr_void);
   --shade: rgba(26,26,26,0.75);
   --input: rgba(26,26,26,0.2);
   --edit_tx: var(--clr_black);
@@ -182,6 +181,7 @@ table img{
   display: grid;
   margin: 1rem;
   gap: 1rem;
+  text-shadow: 0 0 0.7rem var(--shadow);
 }
 
 .contact > div{

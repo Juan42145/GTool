@@ -86,7 +86,7 @@ function receiveUser(user){
 /*FORM*/
 function login(){
   const P = document.getElementById("password");
-  auth(P.value);
+  getAuth(P.value);
 }
 
 function receiveAuth(isCorrect){
@@ -106,7 +106,7 @@ function preloadImages(){
   Object.entries(sessionStorage.get('DB').DB_Master).forEach(section => {
     Object.entries(section[1]).forEach(item => {
       Object.entries(item[1]).forEach(rank => {        
-        if(!rank[1].includes('*')){
+        if(rank[1].includes('/') && !rank[1].includes('*')){
           (new Image()).src = "https://" + rank[1];
         }
       })

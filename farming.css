@@ -1,14 +1,18 @@
 .farm {
-  --farm_tx: var(--clr_black);
+  --farm_tx: var(--clr_white);
+  --shadow: var(--clr_void);
   --shade: rgba(26,26,26,0.75);
   --input: rgba(26,26,26,0.3);
   --input_tx: var(--clr_pearl);
   --farm_border: var(--clr_lightnavy);
+  --farm_card_tx: var(--clr_black);
   --farm_card_bg: var(--clr_pearl);
-  --farm_card_tx: var(--clr_darkgray);
+  --farm_card_border: var(--clr_darkgray);
+
 
   --w: calc(100vw/8);
   --h: calc(1.2*var(--w));
+  --i: 2rem;
 
   display: grid;
   gap: 0.5rem;
@@ -18,20 +22,15 @@
   grid-auto-rows: max-content;
 }
 
-[data-color] { --color: var(--none); }
-[data-color=Anemo] { --color: var(--anemo); }
-[data-color=Geo] { --color: var(--geo); }
-[data-color=Electro] { --color: var(--electro); }
-[data-color=Dendro] { --color: var(--dendro); }
-[data-color=Hydro] { --color: var(--hydro); }
-[data-color=Pyro] { --color: var(--pyro); }
-[data-color=Cryo] { --color: var(--cryo); }
+#Characters, #Weapons{
+  width: 100vw;
+}
 
 .farm-row {
   display: grid;
   width: 100%;
   margin-bottom: 0.4rem;
-  grid-template-columns: max-content 1fr;
+  grid-template-columns: 1fr max-content;
   grid-template-rows: max-content max-content;
   background-color: var(--color);
   color: var(--farm_tx);
@@ -43,6 +42,11 @@
   font-weight: bolder;
   place-content: center;
   place-items: center;
+}
+
+.farm-name{
+  text-align: center;
+  text-shadow: 0 0 0.7rem var(--shadow);
 }
 
 .farm-char .image{
@@ -62,7 +66,7 @@
 
 .farm-inp {
   display: flex;
-  width: var(--w);
+  width: calc(2*var(--i));
   flex-direction: row;
   flex-wrap: wrap;
   place-items: center;
@@ -70,7 +74,7 @@
 
 .farm-inp input[type=text]{
   grid-row: 2;
-  width: calc(var(--w)/2);
+  width: var(--i);
   border-radius: 3rem;
   font-size: 1.2rem;
   text-align: center;
@@ -90,6 +94,7 @@
   grid-template-columns: min-content min-content;
   grid-template-rows: min-content min-content;
   place-content: center stretch;
+  color: var(--farm_card_tx);
 }
 
 .item:only-child{
@@ -124,7 +129,7 @@
   border-radius: 0.4rem;
   width: calc(var(--w)/2);
   height: calc(var(--h)/2);
-  border: 0.1rem solid var(--farm_card_tx);
+  border: 0.1rem solid var(--farm_card_border);
   place-items: center;
   background-color: var(--farm_card_bg);
 }
@@ -139,4 +144,23 @@
   place-self: start center;
   height: 25%;
   opacity: 0.75;
+}
+
+.farm-wpn{
+  display: grid;
+  
+  font-weight: bolder;
+  place-content: center;
+  place-items: center;
+}
+
+.farm-wpn .image{
+  max-width: calc(0.6*var(--w));
+  max-height: calc(0.6*var(--h));
+}
+
+.farm-wpndata{
+  display: grid;
+  grid-auto-flow: column;
+  place-content: center start;
 }

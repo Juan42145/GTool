@@ -1,5 +1,4 @@
 let userInv = sessionStorage.get('user').Inventory;
-let cache = {};
 
 /*INVENTORY*/
 function inventory(){
@@ -46,7 +45,7 @@ function inventory(){
             
             userInv[section[0]][row[0]][item[0]] = INP.value;
             recalculate(section[0], row[0]);
-            cache[section[0] + '_' + item[0] + '_' + row[1]['ROW']] = INP.value;
+            caching('cacheI', section[0] + '_' + item[0] + '_' + row[1]['ROW'], INP.value);
           }, false);
           ITEM.append(INP);
         }
@@ -55,23 +54,9 @@ function inventory(){
   });
 }
 
-function recalculate(section, row){
-  let counter = total = 0;
-  Object.entries(userInv[section][row]).reverse().forEach(item => {
-    if(item[1] !== '' && item[0] !== 'ROW' && item[0] !== '0'){
-      total += item[1]/(3**counter);
-      counter++;
-    }
-  });
-  if(counter > 1){
-    document.getElementById(row).textContent = Math.floor(total).toLocaleString('en-us')
-    userInv[section][row][0] = total;
-  }
-}
-
 function saveInventory(){
   let user = sessionStorage.get('user');
   user.Inventory = userInv;
   sessionStorage.set('user', user);
-  setInv(cache);
+  setInv();
 }

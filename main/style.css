@@ -16,14 +16,16 @@
   --clr_gold: #CFBD93;
   --clr_yellow: #EEC853;
 
-  --anemo: #75C3A9;
-  --geo: #FAB72E;
-  --electro: #B18FC2;
+  --anemo: #4a7e7f;
+  --geo: #BA8B4D;
+  --electro: #6559A4;
   --dendro: #A6C938;
-  --hydro: #4BC3F1;
-  --pyro: #EF7A35;
-  --cryo: #A0D7E4;
-  --none: #DCDCDC;
+  --hydro: #5A80AA;
+  --pyro: #B65745;
+  --cryo: #78ADBE;
+  --none: #b4b4b4;
+
+  --star: #F6CD55;
 
   --rank1: #a4a4a4;
   --rank2: #5D8C81;
@@ -91,7 +93,7 @@ nav {
   height: inherit;
   padding-top: 10rem;
   position: fixed;
-  z-index: 1;
+  z-index: 10;
   top: 0;
   left: -1rem;
   overflow-x: hidden;
@@ -267,3 +269,42 @@ header {
   background: url('https://static.wikia.nocookie.net/gensin-impact/images/e/ea/Rarity_5_background.png') top left no-repeat;
   background-size: contain;
 }
+
+.s1:after{
+  color: var(--star);
+  content: '★';
+}
+
+.s2:after{
+  color: var(--star);
+  content: '★★';
+}
+
+.s3:after{
+  color: var(--star);
+  content: '★★★';
+}
+
+.s4:after{
+  color: var(--star);
+  content: '★★★★';
+}
+
+.s5:after{
+  color: var(--star);
+  content: '★★★★★';
+}
+
+[data-color] { --color: var(--none); }
+
+[data-color=Anemo] { --color: var(--anemo); }
+[data-color=Geo] { --color: var(--geo); }
+[data-color=Electro] { --color: var(--electro); }
+[data-color=Dendro] { --color: var(--dendro); }
+[data-color=Hydro] { --color: var(--hydro); }
+[data-color=Pyro] { --color: var(--pyro); }
+[data-color=Cryo] { --color: var(--cryo); }
+
+[data-color='3'] { --color: var(--rank3); }
+[data-color='4'] { --color: var(--rank4); }
+[data-color='5'] { --color: var(--rank5); }

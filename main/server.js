@@ -14,15 +14,15 @@ function getUser(){
   document.body.append(script);
 }
 
-function auth(p){
+function getAuth(p){
   const script = document.createElement('script');
   script.setAttribute('src', url + `?a=handleAuth&p=${p}`);
   document.body.append(script);
 }
 
 /*SETTERS*/
-function setInv(cache){
-  let store = JSON.stringify(cache);
+function setInv(){
+  let store = JSON.stringify(sessionStorage.get('cacheI'));
   console.log(store)
 
   const script = document.createElement('script');
@@ -30,8 +30,8 @@ function setInv(cache){
   document.body.append(script);
 }
 
-function setChar(cache){
-  let store = JSON.stringify(cache);
+function setChar(){
+  let store = JSON.stringify(sessionStorage.get('cacheC'));
   console.log(store)
   
   const script = document.createElement('script');
@@ -39,8 +39,8 @@ function setChar(cache){
   document.body.append(script);
 }
 
-function setWpn(cache){
-  let store = JSON.stringify(cache);
+function setWpn(){
+  let store = JSON.stringify(sessionStorage.get('cacheW'));
   console.log(store)
   
   const script = document.createElement('script');
@@ -66,15 +66,15 @@ function handleAuth(isCorrect){
 
 function handleInv(){
   alert('Saved Inventory');
-  cache = {}
+  sessionStorage.set('cacheI',{});
 }
  
 function handleChar(){
   alert('Saved Characters');
-  cache = {}
+  sessionStorage.set('cacheC',{});
 }
 
 function handleWpn(){
   alert('Saved Weapons');
-  cache = {}
+  sessionStorage.set('cacheW',{});
 }

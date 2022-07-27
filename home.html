@@ -19,31 +19,35 @@
     <a href="characters.html">CHARACTERS</a>
     <a href="weapons.html">WEAPONS</a>
     <a href="">DOMAINS</a>
-    <a href="">COMPARE</a>
+    <a href="compare.html">COMPARE</a>
     <a href="">DATA</a>
   </nav>
 
   <header>
     <button class="h-menu" onclick="openNav()">&equiv;</button>
+    <div class="h-button">
+      <div class="h-icon"></div>
+      <input class="h-input" type="button" value="Save" onclick="save()">
+    </div>
   </header>
 
-  <div class="home">
-    <div id="h-lt">
-      <div id="BOOK" class="home-sec hide"><div class="sec-title">Book <button>+</button></div>
+  <div id='home' class="home">
+    <div id="h-lt" class="side">
+      <div id="BOOK" class="home-sec hide"><div class="sec-title">Book</div>
       </div>
-      <div id="WEAPON" class="home-sec hide"><div class="sec-title">Weapon <button>+</button></div>
+      <div id="WEAPON" class="home-sec hide"><div class="sec-title">Weapon</div>
       </div>
       <div id="GEM" class="home-sec hide"><div class="sec-title">Gem</div>
       </div>
       <div id="ELITE" class="home-sec hide"><div class="sec-title">Elite</div>
       </div>
-      <div id="COMMON" class="home-sec hide"><div class="sec-title">Common <button>+</button></div>
+      <div id="COMMON" class="home-sec hide"><div class="sec-title">Common</div>
       </div>
     </div>
-    <div id="h-rt">
+    <div id="h-rt" class="side">
       <div id="EXP" class="home-sec hide"><div class="sec-title">Exp</div>
       </div>
-      <div id="MORA" class="home-sec hide"><div class="sec-title">Mora <button>+</button></div>
+      <div id="MORA" class="home-sec hide"><div class="sec-title">Mora</div>
       </div>
       <div id="WEEKLY" class="home-sec hide"><div class="sec-title">Weekly</div>
       </div>
@@ -53,8 +57,14 @@
       </div>
     </div>
   </div>
+
+  <div id="page" class="page hide">
+    <a href="javascript:void(0)" class="close" onclick="closePage()">&times;</a>
+
+  </div>
   
 </body>
+<script src="main/server.js"></script>
 <script src="main/main.js"></script>
 <script src="home.js"></script>
 </html>
