@@ -178,6 +178,9 @@ function plus(){
 
   caching('cacheC', userChar[name]['ROW'], userChar[name])
 
+  let user = sessionStorage.get('user');
+  user.Characters = userChar;
+  sessionStorage.set('user', user);
 }
 
 function minus(){
@@ -199,6 +202,10 @@ function minus(){
   userChar[name]['CONSTELLATION'] = value;
 
   caching('cacheC', userChar[name]['ROW'], userChar[name]);
+
+  let user = sessionStorage.get('user');
+  user.Characters = userChar;
+  sessionStorage.set('user', user);
 }
 
 function closeChar(){

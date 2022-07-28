@@ -46,7 +46,7 @@ body{
   row-gap: 0.2rem;
   grid-template-columns: 1fr max-content;
   grid-auto-columns: 5rem;
-  grid-auto-rows: 6rem;
+  grid-auto-rows: max-content;
   place-items: stretch;
   background-color: var(--home_grid);
 }

@@ -292,6 +292,10 @@ function plus(){
   userWpn[name]['REFINEMENT'] = value;
 
   caching('cacheW', userWpn[name]['ROW'], userWpn[name]);
+
+  let user = sessionStorage.get('user');
+  user.Weapons = userWpn;
+  sessionStorage.set('user', user);
 }
 
 function minus(){
@@ -313,6 +317,10 @@ function minus(){
   userWpn[name]['REFINEMENT'] = value;
 
   caching('cacheW', userWpn[name]['ROW'],userWpn[name]);
+
+  let user = sessionStorage.get('user');
+  user.Weapons = userWpn;
+  sessionStorage.set('user', user);
 }
 
 function closeChar(){

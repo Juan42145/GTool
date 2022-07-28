@@ -24,6 +24,10 @@ function getAuth(p){
 function setInv(){
   let store = JSON.stringify(sessionStorage.get('cacheI'));
   console.log(store)
+  if(store == 'null'){
+    console.log('I empty')
+    return;
+  }
 
   const script = document.createElement('script');
   script.setAttribute('src', url + `?setInv=handleInv&cord=${store}`);
@@ -32,6 +36,10 @@ function setInv(){
 
 function setChar(){
   let store = JSON.stringify(sessionStorage.get('cacheC'));
+  if(store == 'null'){
+    console.log('C empty')
+    return;
+  }
   console.log(store)
   
   const script = document.createElement('script');
@@ -41,6 +49,10 @@ function setChar(){
 
 function setWpn(){
   let store = JSON.stringify(sessionStorage.get('cacheW'));
+  if(store == 'null'){
+    console.log('W empty')
+    return;
+  }
   console.log(store)
   
   const script = document.createElement('script');

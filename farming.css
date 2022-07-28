@@ -9,9 +9,8 @@
   --farm_card_bg: var(--clr_pearl);
   --farm_card_border: var(--clr_darkgray);
 
-
-  --w: calc(100vw/8);
-  --h: calc(1.2*var(--w));
+  --w: 5rem;/*calc(100vw/8);*/
+  --h: 6rem;/*calc(1.2*var(--w));*/
   --i: 2rem;
 
   display: grid;
@@ -30,7 +29,7 @@
   display: grid;
   width: 100%;
   margin-bottom: 0.4rem;
-  grid-template-columns: 1fr max-content;
+  grid-template-columns: minmax(7rem, 1fr) max-content;
   grid-template-rows: max-content max-content;
   background-color: var(--color);
   color: var(--farm_tx);
@@ -54,8 +53,9 @@
   max-height: var(--h);
 }
 
-.farm-asc, .farm-tln{
+.farm-asc, .farm-tln, .farm-wpndata{
   display: grid;
+  gap: 0.07rem;
   grid-auto-flow: column;
   place-content: center start;
 }
@@ -65,15 +65,15 @@
 }
 
 .farm-inp {
-  display: flex;
-  width: calc(2*var(--i));
-  flex-direction: row;
-  flex-wrap: wrap;
-  place-items: center;
+  display: grid;
+  grid-template-columns: repeat(2, min-content);
+  grid-template-rows: repeat(auto-fit, min-content);
+  width: 4rem;
+  padding: 0.2rem 0;
+  place-content: space-around space-between;
 }
 
 .farm-inp input[type=text]{
-  grid-row: 2;
   width: var(--i);
   border-radius: 3rem;
   font-size: 1.2rem;
@@ -106,20 +106,32 @@
 .item:not(:only-child){
   --cw: calc(var(--w)/2);
   --ch: calc(var(--h)/2);
-  font-size: 0.75rem;
+  font-size: 0.9rem;
 }
 
 .item{
   display: grid;
   width: var(--cw);
   height: var(--ch);
+  border-radius: .2rem;
   grid-template-rows: calc(100%*5/6) calc(100%/6);
   place-items: center;
+  overflow: hidden;
+  background-size: cover;
 }
 
 .image{
   max-width: 100%;
   max-height: calc(100%*5/6);
+}
+
+.item:not(:only-child) .need{
+  width: 100%;
+  line-height: 0.9rem;
+  place-self: end start;
+  align-items: center;
+  text-align: center;
+  background-color: var(--farm_card_bg);
 }
 
 .total{
@@ -140,7 +152,6 @@
 
 .total:nth-child(5){
   position: absolute;
-  /*right: 0;*/
   place-self: start center;
   height: 25%;
   opacity: 0.75;
@@ -148,7 +159,6 @@
 
 .farm-wpn{
   display: grid;
-  
   font-weight: bolder;
   place-content: center;
   place-items: center;
@@ -163,4 +173,88 @@
   display: grid;
   grid-auto-flow: column;
   place-content: center start;
+}
+
+@media screen and (min-width: 700px) {
+  .farm-row{
+    grid-template-columns: 7rem repeat(2, max-content);
+    grid-template-rows: 1fr 0;
+    place-content: space-around;
+  }
+
+  .weapons{
+    grid-template-columns: repeat(2, max-content);
+    grid-template-rows: max-content;
+    place-content: start;
+    gap: 4rem;
+    padding-left: 2rem;
+  }
+
+  .farm-asc, .farm-tln, .farm-wpndata{
+    gap: 0.4rem;
+  }
+
+  .farm-asc{
+    border: none;
+  }
+
+  .farm-inp {
+    width: 4.4rem;
+    margin-right: 0.5rem;
+  }
+
+  .farm-wpn{
+    display: flex;
+  }
+
+  .farm-wpn .image{
+    max-width: var(--w);
+    max-height: var(--h);
+  }
+}
+
+@media screen and (min-width: 840px) {
+  .ct{
+    width: calc(1.6*var(--w));
+    grid-template-columns: repeat(3, min-content);
+  }
+
+  .total{
+    width: calc(var(--w)*3/5);
+    position: relative !important;
+    grid-row: 1/3;
+    grid-column: 1 !important;
+    place-self: center !important;
+    height: 100% !important;
+    opacity: 1 !important;
+  }
+}
+
+@media screen and (min-width: 1280px) {
+  .ct{
+    width: calc(3.6*var(--w));
+    grid-template-columns: repeat(5, min-content);
+  }
+
+  .farm-asc .ct:nth-child(2),
+  .farm-wpndata .ct:nth-child(2){
+    width: calc(4.6*var(--w));
+  }
+
+  .item{
+    width: var(--w);
+    height: var(--h);
+  }
+}
+
+@media screen and (min-width: 1400px) {
+  html{
+    font-size: 68.2%;
+  }
+}
+
+@media screen and (min-width: 1500px) {
+  html{
+    font-size: 74%;
+  }
 }

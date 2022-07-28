@@ -67,11 +67,11 @@ function processInventory(user){
 function init(){
   getDB();
   sessionStorage.set('calc', true);
-  preloadImages();
 }
 
 function receiveDB(DB){
   sessionStorage.set('DB', process(DB, false));
+  preloadImages();
 }
 
 function userData(){

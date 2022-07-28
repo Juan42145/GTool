@@ -119,7 +119,8 @@ function calculate(){
   sessionStorage.set('calc', false);
 
   function calcA(attribute, ascension, name){
-    if(ascension[1] > ascension[0]){
+    let error = ascension.some(i => {return i < 0 || i > 7});
+    if(ascension[1] > ascension[0] && !error){
       let p = ascension[0]? DB.DB_Calculate.ASCENSION[attribute][ascension[0]]: 0;
       let t = DB.DB_Calculate.ASCENSION[attribute][ascension[1]];
       const value = vsub(t, p);
@@ -129,12 +130,14 @@ function calculate(){
   }
 
   function calcT(attribute, talent, name){
-    if(talent[0][1] || talent[1][1] || talent[2][1]){
+    let error = talent.some(t => {return t.some(i => {return i < 0 || i > 10;})});
+    if((talent[0][1] || talent[1][1] || talent[2][1]) && !error){
       let v = [0,0,0];
       for(let i = 0; i < 3; i++){
         if(talent[i][1] > talent[i][0]){
+          console.log(talent[i][1], talent[i][0])
           let c = talent[i][0] > 1? DB.DB_Calculate.TALENT[attribute][talent[i][0]]: 0;
-          let t = DB.DB_Calculate.TALENT[attribute][talent[i][1]];
+          let t = talent[i][1] > 1? DB.DB_Calculate.TALENT[attribute][talent[i][1]]: 0;
           v[i] = vsub(t, c);
         }  
       }

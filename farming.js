@@ -52,7 +52,7 @@ function makeChar(){
     TINP.classList = 'farm-inp';
     TLN.append(TINP);
 
-    TINP.append(makeInput(c[0], c[1].TALENT[0][0], 'NORAL'));
+    TINP.append(makeInput(c[0], c[1].TALENT[0][0], 'NORMAL'));
     TINP.append(makeInput(c[0], c[1].TALENT[0][1], 'TNORMAL'));
     TINP.append(makeInput(c[0], c[1].TALENT[1][0], 'SKILL'));
     TINP.append(makeInput(c[0], c[1].TALENT[1][1], 'TSKILL'));
@@ -87,6 +87,7 @@ function makeChar(){
     else name = c[1][name];
     const DIV = document.createElement('div');
     DIV.classList = 'container';
+    if(addTotal) DIV.classList.add('ct')
     if(!c[1][cat] || Object.keys(c[1][cat]).length == 0) return DIV;
     let counter = total = 0;
     Object.entries(c[1][cat]).reverse().forEach(item => {
@@ -135,7 +136,7 @@ function makeWpn(){
   let weapons = document.getElementById('Weapons');
   Object.entries(calc.WEAPONS).forEach(w => {
     const ROW = document.createElement("div");
-    ROW.classList = "farm-row";
+    ROW.classList = "farm-row weapons";
     ROW.dataset.color = w[1].RARITY;
     weapons.append(ROW);
 
@@ -186,6 +187,7 @@ function makeWpn(){
     else name = w[1][name];
     const DIV = document.createElement('div');
     DIV.classList = 'container';
+    if(addTotal) DIV.classList.add('ct')
     if(!w[1][cat]) return DIV;
     let counter = total = 0;
     Object.entries(w[1][cat]).reverse().forEach(item => {
@@ -235,7 +237,6 @@ function updateC(char, attr, value){
   let user = sessionStorage.get('user');
   user.Characters = userChar;
   sessionStorage.set('user', user);
-  console.log(char, attr, value, sessionStorage.get('user'));
   makeChar();
 }
 
@@ -248,7 +249,6 @@ function updateW(wpn, attr, value){
   let user = sessionStorage.get('user');
   user.Weapons = userWpn;
   sessionStorage.set('user', user);
-  console.log(wpn, attr, value, sessionStorage.get('user'));
   makeWpn();
 }
 
