@@ -16,8 +16,8 @@ function home(){
     SEC.innerHTML = '';
     SEC.append(TITLE);
     
-    let isTotal = SEC.parentElement.id === "h-lt";
-    SEC.addEventListener('click', function(){makePage(section, isTotal)}, false);
+    let isTotal = SEC.classList.contains('sec-total');
+    SEC.addEventListener('click', function(){page(section, isTotal)}, false);
 
     const TBL = document.createElement("div");
     TBL.classList = "home-tbl";
@@ -28,6 +28,8 @@ function home(){
       makeRow(TBL, section, row, ri, true);
     });
   });
+
+  resize()
 }
 
 function makeRow(TBL, section, row, ri, isHide){
@@ -163,13 +165,37 @@ function setData(section, row, COMP, isHide){
   }
 }
 
+function resize(){
+  let r = parseInt(getComputedStyle(document.getElementById('home')).getPropertyValue('grid-auto-rows'))
+  let g = parseInt(getComputedStyle(document.getElementById('home')).getPropertyValue('grid-gap'))
+
+  containers = document.getElementsByClassName('home-sec');
+  for(x = 0; x < containers.length; x++){
+    let section = containers[x];
+    let cont = section.querySelector('.home-tbl')
+    let h = cont? cont.getBoundingClientRect().height+g: 0;
+    let calc = Math.ceil((30+h)/(r+g));
+    section.style.gridRowEnd = `span ${calc}`;
+  }
+}
+
+function page(section, isTotal){
+  makePage(section, isTotal);
+  mqs = section;
+  mqt = isTotal;
+  mediaQuery.addEventListener('change',handleMedia)
+  mediaQuery2.addEventListener('change',handleMedia)
+}
+
 function makePage(section, isTotal){
   document.getElementById('home').classList.add('hide')
   const PAGE = document.getElementById('page');
   PAGE.classList.remove('hide')
 
   if(section[0] ==='EXP') isTotal = true;
-
+  if(section[0] ==='COMMON') PAGE.classList.add('page-dets')
+  else PAGE.classList.remove('page-dets')
+  
   const CLOSE = PAGE.firstElementChild;
   PAGE.innerHTML = '';
   PAGE.append(CLOSE);
@@ -244,14 +270,16 @@ function makePage(section, isTotal){
 
 function makeInv(TBL, section, ri){
   let row = [section[1], userInv[section[0]][section[1]]]
+  let rowi = getComputedStyle(document.getElementById('page')).getPropertyValue('--rowi')
+  let coli = getComputedStyle(document.getElementById('page')).getPropertyValue('--coli')
 
   const ROW = document.createElement("div");
-  ROW.classList = "home-row";
-  if(TBL.dataset.total === 'true') ROW.style = `grid-row: ${(2*ri+2)};`;
+  ROW.classList = "home-row home-inv";
+  if(TBL.dataset.total === 'true') ROW.style = `grid-row: ${2*ri + +rowi};`;
   else ROW.style = `grid-row: ${(ri+1)};`;
   TBL.append(ROW);
 
-  let index = 3  
+  let index = +coli+1;
   Object.entries(row[1]).reverse().forEach((item, i) => {
     if(item[0] === '0'){
       ROW.append(Object.assign(document.createElement("div"),{
@@ -352,15 +380,25 @@ function rolling(pivot, attribute, name, value){
   if(flag) pivot[attribute][name] = name in pivot[attribute]? vadd(pivot[attribute][name], value): value;
 }
 
+
 function closePage(){
+  mediaQuery.removeEventListener('change',handleMedia)
+  mediaQuery2.removeEventListener('change',handleMedia)
   document.getElementById('home').classList.remove('hide')
   document.getElementById('page').classList.add('hide')
   home();
 }
-  
+
 function save(){
   let user = sessionStorage.get('user');
   user.Inventory = userInv;
   sessionStorage.set('user', user);
   setInv();
+}
+
+const mediaQuery = window.matchMedia('(min-width: 880px)')
+const mediaQuery2 = window.matchMedia('(min-width: 1020px)')
+let mqs, mqt;
+function handleMedia(){
+  makePage(mqs, mqt);
 }

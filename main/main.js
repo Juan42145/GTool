@@ -135,7 +135,6 @@ function calculate(){
       let v = [0,0,0];
       for(let i = 0; i < 3; i++){
         if(talent[i][1] > talent[i][0]){
-          console.log(talent[i][1], talent[i][0])
           let c = talent[i][0] > 1? DB.DB_Calculate.TALENT[attribute][talent[i][0]]: 0;
           let t = talent[i][1] > 1? DB.DB_Calculate.TALENT[attribute][talent[i][1]]: 0;
           v[i] = vsub(t, c);
