@@ -25,10 +25,11 @@ function setInv(){
   let store = JSON.stringify(sessionStorage.get('cacheI'));
   console.log(store)
   if(store == 'null'){
-    console.log('I empty')
+    toast('No Inventory to Save');
     return;
   }
 
+  toast('Saving Inventory');
   const script = document.createElement('script');
   script.setAttribute('src', url + `?setInv=handleInv&cord=${store}`);
   document.body.append(script);
@@ -36,12 +37,13 @@ function setInv(){
 
 function setChar(){
   let store = JSON.stringify(sessionStorage.get('cacheC'));
+  console.log(store)
   if(store == 'null'){
-    console.log('C empty')
+    toast('No Character to Save');
     return;
   }
-  console.log(store)
   
+  toast('Saving Characters');
   const script = document.createElement('script');
   script.setAttribute('src', url + `?setChar=handleChar&cord=${store}`);
   document.body.append(script);
@@ -49,12 +51,13 @@ function setChar(){
 
 function setWpn(){
   let store = JSON.stringify(sessionStorage.get('cacheW'));
+  console.log(store)
   if(store == 'null'){
-    console.log('W empty')
+    toast('No Weapon to Save');
     return;
   }
-  console.log(store)
   
+  toast('Saving Weapons');
   const script = document.createElement('script');
   script.setAttribute('src', url + `?setWpn=handleWpn&cord=${store}`);
   document.body.append(script);
@@ -78,17 +81,17 @@ function handleAuth(isCorrect){
 
 function handleInv(){
   toast('Saved Inventory');
-  sessionStorage.set('cacheI',{});
+  sessionStorage.set('cacheI',null);
 }
  
 function handleChar(){
   toast('Saved Characters');
-  sessionStorage.set('cacheI',{});
+  sessionStorage.set('cacheC',null);
 }
 
 function handleWpn(){
   toast('Saved Weapons');
-  sessionStorage.set('cacheW',{});
+  sessionStorage.set('cacheW',null);
 }
 
 /*ALERT*/

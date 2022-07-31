@@ -47,6 +47,7 @@ function inventory(){
             recalculate(section[0], row[0]);
             caching('cacheI', section[0] + '_' + item[0] + '_' + row[1]['ROW'], INP.value);
           }, false);
+          INP.addEventListener('click', (e)=>{focusText(e)})
           ITEM.append(INP);
         }
       });

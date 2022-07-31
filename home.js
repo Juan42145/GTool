@@ -181,8 +181,8 @@ function resize(){
 
 function page(section, isTotal){
   makePage(section, isTotal);
-  mqs = section;
-  mqt = isTotal;
+  gs = section;
+  gt = isTotal;
   mediaQuery.addEventListener('change',handleMedia)
   mediaQuery2.addEventListener('change',handleMedia)
 }
@@ -311,7 +311,13 @@ function makeInv(TBL, section, ri){
         userInv[section[0]][row[0]][item[0]] = +INP.value;
         recalculate(section[0], row[0]);
         caching('cacheI', section[0] + '_' + item[0] + '_' + row[1]['ROW'], INP.value);
+
+        let user = sessionStorage.get('user');
+        user.Inventory = userInv;
+        sessionStorage.set('user', user);
+        makePage(gs,gt)
       }, false);
+      INP.addEventListener('click', (e)=>{focusText(e)})
       ITEM.append(INP);
     }
   });
@@ -398,7 +404,7 @@ function save(){
 
 const mediaQuery = window.matchMedia('(min-width: 880px)')
 const mediaQuery2 = window.matchMedia('(min-width: 1020px)')
-let mqs, mqt;
+let gs, gt;
 function handleMedia(){
-  makePage(mqs, mqt);
+  makePage(gs, gt);
 }

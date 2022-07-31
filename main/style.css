@@ -90,6 +90,10 @@ nav {
   --nav_active_bg: var(--clr_pearl);
   --nav_active_tx: var(--clr_navy);
 
+  --size: 8rem;
+  --border: 1rem;
+
+
   width: 0;
   height: inherit;
   padding-top: 10rem;
@@ -118,13 +122,30 @@ nav a {
 }
 
 nav .closebtn {
+  position: absolute;
+  font-size: 4rem;
+  top: 1rem;
+  right: 1rem;
+  padding: 0;
+  margin: 0;
+  line-height: calc(var(--size) - 2*var(--border));
+  height: var(--size);
+  width: var(--size);
+  border-radius: 50%;
+  border: 1rem solid var(--nav_close_border);
+  background-color: var(--nav_close_bg);
+  color: var(--nav_close_tx);
+  text-align: center;
+}
+
+nav .homebtn {
   --size: 8rem;
   --border: 1rem;
 
   position: absolute;
   font-size: 4rem;
   top: 1rem;
-  right: 1rem;
+  left: 1rem;
   padding: 0;
   margin: 0;
   line-height: calc(var(--size) - 2*var(--border));

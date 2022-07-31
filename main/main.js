@@ -10,6 +10,7 @@ function caching(id, key, value){
   let cache = sessionStorage.get(id);
   if(!cache) cache = {};
   cache[key] = value;
+  console.log(cache)
   sessionStorage.set(id, cache);
 }
 
@@ -36,6 +37,11 @@ function getImage(section, item, rank){
   if(link.includes('*')) link = 'paimon.moe/images/paimon_faq.png'
   
   return "https://" + link;
+}
+
+/*FOCUS INPUT*/
+function focusText(e){
+  e.target.setSelectionRange(e.target.value.length, e.target.value.length);
 }
 
 /*CALC DATA*/

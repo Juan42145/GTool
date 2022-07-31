@@ -78,6 +78,7 @@ function makeChar(){
       type: "text", pattern: "\\d*", value: v
     });
     INP.addEventListener("change", function(){updateC(char, attr, INP.value)}, false);
+    INP.addEventListener('click', (e)=>{focusText(e)})
     return INP;
   }
   
@@ -179,6 +180,7 @@ function makeWpn(){
       type: "text", pattern: "\\d*", value: v
     });
     INP.addEventListener("change", function(){updateW(wpn, attr, INP.value)}, false);
+    INP.addEventListener('click', (e)=>{focusText(e)})
     return INP;
   }
   

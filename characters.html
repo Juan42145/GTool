@@ -12,6 +12,7 @@
 <body onload="characters()">
 
   <nav id="nav">
+    <a href="index.html" class="homebtn">&curren;</a>
     <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
     <a href="home.html">HOME</a>
     <a href="inventory.html">INVENTORY</a>
@@ -111,23 +112,23 @@
         </div>
         <div class="phase">
           <div class="input-text">Phase</div>
-          <input type="text" pattern="\d*" id="PHASE" onchange="update(this)">
-          <input type="text" pattern="\d*" id="TARGET" onchange="update(this)">
+          <input type="text" pattern="\d*" id="PHASE" onchange="update(this)" onclick="focusText(event)">
+          <input type="text" pattern="\d*" id="TARGET" onchange="update(this)" onclick="focusText(event)">
         </div>
         <div class="normal">
           <div class="input-text">Normal</div>
-          <input type="text" pattern="\d*" id="NORMAL" onchange="update(this)">
-          <input type="text" pattern="\d*" id="TNORMAL" onchange="update(this)">
+          <input type="text" pattern="\d*" id="NORMAL" onchange="update(this)" onclick="focusText(event)">
+          <input type="text" pattern="\d*" id="TNORMAL" onchange="update(this)" onclick="focusText(event)">
         </div>
         <div class="skill">
           <div class="input-text">Skill</div>
-          <input type="text" pattern="\d*" id="SKILL" onchange="update(this)">
-          <input type="text" pattern="\d*" id="TSKILL" onchange="update(this)">
+          <input type="text" pattern="\d*" id="SKILL" onchange="update(this)" onclick="focusText(event)">
+          <input type="text" pattern="\d*" id="TSKILL" onchange="update(this)" onclick="focusText(event)">
         </div>
         <div class="burst">
           <div class="input-text">Burst</div>
-          <input type="text" pattern="\d*" id="BURST" onchange="update(this)">
-          <input type="text" pattern="\d*" id="TBURST" onchange="update(this)">
+          <input type="text" pattern="\d*" id="BURST" onchange="update(this)" onclick="focusText(event)">
+          <input type="text" pattern="\d*" id="TBURST" onchange="update(this)" onclick="focusText(event)">
         </div>
       </div>
 

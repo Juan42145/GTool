@@ -12,6 +12,7 @@
 <body onload="weapons()">
 
   <nav id="nav">
+    <a href="index.html" class="homebtn">&curren;</a>
     <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
     <a href="home.html">HOME</a>
     <a href="inventory.html">INVENTORY</a>
@@ -103,8 +104,8 @@
           </div>
           <div class="inp">
             <div class="input-text">Phase</div>
-            <input type="text" pattern="\d*" id="PHASE" onchange="update(this)">
-            <input type="text" pattern="\d*" id="TARGET" onchange="update(this)">
+            <input type="text" pattern="\d*" id="PHASE" onchange="update(this)" onclick="focusText(event)">
+            <input type="text" pattern="\d*" id="TARGET" onchange="update(this)" onclick="focusText(event)">
           </div>
         </div>
 
