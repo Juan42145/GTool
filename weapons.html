@@ -33,13 +33,15 @@
 
   <div id="weapon-menu">
     <div class="options">
-      <button class="button" onclick="filterOwned(this)">Owned</button>
-      <button onclick="filterWpn(this, 1)"><img></button>
-      <button onclick="filterWpn(this, 2)"><img></button>
-      <button onclick="filterWpn(this, 3)"><img></button>
-      <button onclick="filterWpn(this, 4)"><img></button>
-      <button onclick="filterWpn(this, 5)"><img></button>
-      <button class="button" onclick="sortTable(0)">&udarr;</button>
+      <button class="owned" onclick="filterOwned(this)">Owned</button>
+      <div class="filter-btn">
+        <button onclick="filterWpn(this, 1)"><img></button>
+        <button onclick="filterWpn(this, 2)"><img></button>
+        <button onclick="filterWpn(this, 3)"><img></button>
+        <button onclick="filterWpn(this, 4)"><img></button>
+        <button onclick="filterWpn(this, 5)"><img></button>
+      </div>
+      <button class="arrow" onclick="sortTable(0)">&udarr;</button>
     </div>
 
     <table id="table">
@@ -52,9 +54,9 @@
         <th onclick="sortTable(5)">ATK</th>
         <th onclick="sortTable(6)">Stat</th>
         <th onclick="sortTable(6)">Value</th>
-        <th onclick="sortTable(7)">Ascension</th>
-        <th onclick="sortTable(8)">Elite</th>
-        <th onclick="sortTable(9)">Common</th>
+        <th onclick="sortTable(7)">ASC</th>
+        <th onclick="sortTable(8)">ELT</th>
+        <th onclick="sortTable(9)">CMN</th>
       </thead>
       <tbody id="weapons"></tbody>
     </table>
@@ -100,7 +102,7 @@
             Farm
           </div>
           <div class="inp">
-            <div>Phase</div>
+            <div class="input-text">Phase</div>
             <input type="text" pattern="\d*" id="PHASE" onchange="update(this)">
             <input type="text" pattern="\d*" id="TARGET" onchange="update(this)">
           </div>

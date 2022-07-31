@@ -143,6 +143,7 @@ function makeRow(w){
   ROW.append(CELL);
 
   CELL = document.createElement('td');
+  CELL.classList = 'img'
   const IMG = document.createElement('img');
   IMG.onerror = function(){this.classList.add('hide')};
   
