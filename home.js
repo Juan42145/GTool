@@ -140,7 +140,7 @@ function getInventory(section, name, items){
   Object.entries(items).forEach((item, i) => {
     if(item[1] !== 0) flag = item[0];
     if(i < l && item[1] < inv[item[0]]){
-      calc[item[0]] = item[1];
+      calc[item[0]] = +item[1];
       inv[+item[0]+1] += Math.floor(inv[item[0]] - item[1])/3;
     } else{
       calc[item[0]] = Math.floor(inv[item[0]]);
@@ -308,7 +308,7 @@ function makeInv(TBL, section, ri){
       INP.addEventListener("change", function(){
         if(this.value == '') INP.value = 0;
         
-        userInv[section[0]][row[0]][item[0]] = INP.value;
+        userInv[section[0]][row[0]][item[0]] = +INP.value;
         recalculate(section[0], row[0]);
         caching('cacheI', section[0] + '_' + item[0] + '_' + row[1]['ROW'], INP.value);
       }, false);
