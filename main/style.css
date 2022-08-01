@@ -282,6 +282,19 @@ header {
   color: var(--clr_white);
 }
 
+
+/*TOOLTIP*/
+#tt {
+  position: absolute;
+  display: block;
+}
+#ttcont {
+  display: block;
+  padding: 0.5rem 1rem;
+  background: var(--clr_charcoal);
+  color: var(--clr_white);
+}
+
 /*BACKGROUNDS*/
 .r_1{
   background: url('https://static.wikia.nocookie.net/gensin-impact/images/6/69/Rarity_1_background.png') top left no-repeat;

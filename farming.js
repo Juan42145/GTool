@@ -86,8 +86,10 @@ function makeChar(){
     if(name === 'EXP' || name == 'Mora') name = name;
     else if(name == 'WEEKLY') name = c[1][name].split(' ')[1];
     else name = c[1][name];
+
     const DIV = document.createElement('div');
     DIV.classList = 'container';
+
     if(addTotal) DIV.classList.add('ct')
     if(!c[1][cat] || Object.keys(c[1][cat]).length == 0) return DIV;
     let counter = total = 0;
@@ -97,6 +99,9 @@ function makeChar(){
         counter++;
       }
       if(item[1] === 0) return;
+      DIV.addEventListener('mouseover', ()=>{tooltip.show(name)})
+      DIV.addEventListener('mouseout', ()=>{tooltip.hide()})
+
       const CARD = document.createElement('div');
       CARD.classList = `item r_${item[0]}`;
       DIV.append(CARD);
@@ -187,8 +192,10 @@ function makeWpn(){
   function makeDiv(w, sec, name, cat, addTotal){
     if(name === 'Crystals' || name == 'Mora') name = name;
     else name = w[1][name];
+
     const DIV = document.createElement('div');
     DIV.classList = 'container';
+
     if(addTotal) DIV.classList.add('ct')
     if(!w[1][cat]) return DIV;
     let counter = total = 0;
@@ -198,6 +205,9 @@ function makeWpn(){
         counter++;
       }
       if(item[1] === 0) return;
+      DIV.addEventListener('mouseover', ()=>{tooltip.show(name)})
+      DIV.addEventListener('mouseout', ()=>{tooltip.hide()})
+
       const CARD = document.createElement('div');
       CARD.classList = `item r_${item[0]}`;
       DIV.append(CARD);

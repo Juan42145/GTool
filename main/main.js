@@ -44,6 +44,24 @@ function focusText(e){
   e.target.setSelectionRange(e.target.value.length, e.target.value.length);
 }
 
+/*TOOLTIP*/
+var tooltip = function(){
+  var id = 'tt'; var top = 3; var left = 3; var maxw = 300; var tt,c,h;
+  return{
+    show:function(v){
+      if(tt == null){
+        tt = document.createElement('div'); tt.setAttribute('id',id); c = document.createElement('div'); c.setAttribute('id',id + 'cont');
+        tt.appendChild(c); document.body.appendChild(tt);
+      } 
+      tt.style.display = 'block'; c.innerHTML = v; tt.style.width = 'auto'; tt.style.opacity = 1; document.onmousemove = this.pos;
+      if(tt.offsetWidth > maxw){tt.style.width = maxw + 'px'}
+      h = parseInt(tt.offsetHeight) + top;
+    },
+    pos:function(e){ var u = e.pageY; var l = e.pageX; tt.style.top = (u - h) + 'px'; tt.style.left = (l + left) + 'px'; },
+    hide:function(){ tt.style.opacity = 0; document.onmousemove = null; }
+  };
+}();
+
 /*CALC DATA*/
 function calculate(){
   let pivot = {

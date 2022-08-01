@@ -67,7 +67,6 @@
 .farm-inp {
   display: grid;
   grid-template-columns: repeat(2, min-content);
-  grid-template-rows: repeat(auto-fit, min-content);
   width: 4rem;
   padding: 0.2rem 0;
   place-content: space-around space-between;

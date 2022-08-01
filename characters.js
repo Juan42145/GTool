@@ -113,12 +113,19 @@ function showInfo(c){
   }
 
   document.getElementById('FARM').checked = c[1].FARM
+
   document.getElementById('BOSS').src = getImage('BOSSES', info.BOSS, 4)
+  tool('BOSS', info.BOSS)
   document.getElementById('LOCAL').src = getImage('LOCALS', info.LOCAL, 1)
+  tool('LOCAL', info.LOCAL)
   document.getElementById('COMMON').src = getImage('ENEMIES', info.COMMON, 1)
+  tool('COMMON', info.COMMON)
   document.getElementById('TALENT').src = getImage('BOOKS', info.TALENT, 2)
+  tool('TALENT', info.TALENT)
   document.getElementById('WEEKLY').src = getImage('WEEKLY', info.WEEKLY, 0)
+  tool('WEEKLY', info.WEEKLY)
   document.getElementById('DROP').src = getImage('WEEKLYS', info.DROP, 5)
+  tool('DROP', info.DROP)
 
   document.getElementById('PHASE').value = c[1].PHASE
   document.getElementById('TARGET').value = c[1].TARGET
@@ -134,6 +141,12 @@ function showInfo(c){
   document.getElementById('ATK').textContent = info.ATK
   document.getElementById('DEF').textContent = info.DEF
   document.getElementById('VALUE').textContent = info.VALUE
+}
+
+function tool(id, name){
+  let e = document.getElementById(id)
+  e.addEventListener('mouseover', ()=>{tooltip.show(name)})
+  e.addEventListener('mouseout', ()=>{tooltip.hide()})
 }
 
 function editIn(){

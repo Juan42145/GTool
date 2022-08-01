@@ -240,9 +240,13 @@ function showInfo(w){
   }
 
   document.getElementById('FARM').checked = w[1].FARM
+
   document.getElementById('ASCENSION').src = getImage('WEAPONS', info.ASCENSION, 2)
+  tool('ASCENSION', info.ASCENSION)
   document.getElementById('ELITE').src = getImage('ENEMIES', info.ELITE, 2)
+  tool('ELITE', info.ELITE)
   document.getElementById('COMMON').src = getImage('ENEMIES', info.COMMON, 1)
+  tool('COMMON', info.COMMON)
 
   document.getElementById('PHASE').value = w[1].PHASE
   document.getElementById('TARGET').value = w[1].TARGET
@@ -250,6 +254,12 @@ function showInfo(w){
   document.getElementById('STAT').textContent = info.STAT
   document.getElementById('ATK').textContent = info.ATK
   document.getElementById('VALUE').textContent = info.VALUE
+}
+
+function tool(id, name){
+  let e = document.getElementById(id)
+  e.addEventListener('mouseover', ()=>{tooltip.show(name)})
+  e.addEventListener('mouseout', ()=>{tooltip.hide()})
 }
 
 function editIn(){
