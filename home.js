@@ -24,7 +24,7 @@ function home(){
     TBL.dataset.total = isTotal;
     SEC.append(TBL);
   
-    Object.entries(section[1]).forEach((row, ri) => {
+    Object.entries(section[1]).sort(sortOrder(section[0])).forEach((row, ri) => {
       makeRow(TBL, section, row, ri, true);
     });
   });
@@ -97,8 +97,8 @@ function makeRow(TBL, section, row, ri, isHide){
   });
 
   let complete = ROW.querySelectorAll(".home-item").length <= ROW.querySelectorAll(".completed").length;
-  if(complete) NAME.classList.add('completed');
-  else NAME.classList.remove('completed');
+  if(complete) {NAME.classList.add('completed'); ROW.classList.add('completed')}
+  else {NAME.classList.remove('completed'); ROW.classList.remove('completed');}
 
   if(TBL.dataset.total === 'true'){
     const TOTAL = document.createElement("div");
@@ -120,6 +120,8 @@ function makeRow(TBL, section, row, ri, isHide){
     if(complete) TOTAL.classList.add('completed');
     else TOTAL.classList.remove('completed');
   }
+
+  return complete;
 }
 
 function translate(section, row){
@@ -179,12 +181,22 @@ function resize(){
   }
 }
 
+function sortOrder(section){
+  return function (a,b){
+    let ts, ta, tb;
+    [ts, ta] = translate(section, a[0]);
+    [ts, tb] = translate(section, b[0]);
+    let k = Object.keys(userInv[ts])
+    return k.indexOf(ta) - k.indexOf(tb)
+  }
+}
+
 function page(section, isTotal){
-  makePage(section, isTotal);
   gs = section;
   gt = isTotal;
   mediaQuery.addEventListener('change',handleMedia)
   mediaQuery2.addEventListener('change',handleMedia)
+  makePage(section, isTotal);
 }
 
 function makePage(section, isTotal){
@@ -204,10 +216,10 @@ function makePage(section, isTotal){
   TBL.dataset.total = isTotal;
   PAGE.append(TBL);
   
-  Object.entries(section[1]).forEach((row, ri) => {
-    makeRow(TBL, section, row, ri, false);
+  Object.entries(section[1]).sort(sortOrder(section[0])).forEach((row, ri) => {
+    let complete = makeRow(TBL, section, row, ri, false);
     let s = translate(section[0], row[0]);
-    makeInv(TBL, s, ri);
+    makeInv(TBL, s, ri, complete);
   });
 
   if(section[0] === 'MORA'){
@@ -268,7 +280,7 @@ function makePage(section, isTotal){
   }
 }
 
-function makeInv(TBL, section, ri){
+function makeInv(TBL, section, ri, complete){
   let row = [section[1], userInv[section[0]][section[1]]]
   let rowi = getComputedStyle(document.getElementById('page')).getPropertyValue('--rowi')
   let coli = getComputedStyle(document.getElementById('page')).getPropertyValue('--coli')
@@ -278,6 +290,9 @@ function makeInv(TBL, section, ri){
   if(TBL.dataset.total === 'true') ROW.style = `grid-row: ${2*ri + +rowi};`;
   else ROW.style = `grid-row: ${(ri+1)};`;
   TBL.append(ROW);
+
+  if(complete) ROW.classList.add('completed');
+  else ROW.classList.remove('completed');
 
   let index = +coli+1;
   Object.entries(row[1]).reverse().forEach((item, i) => {
@@ -386,13 +401,17 @@ function rolling(pivot, attribute, name, value){
   if(flag) pivot[attribute][name] = name in pivot[attribute]? vadd(pivot[attribute][name], value): value;
 }
 
-
 function closePage(){
   mediaQuery.removeEventListener('change',handleMedia)
   mediaQuery2.removeEventListener('change',handleMedia)
   document.getElementById('home').classList.remove('hide')
   document.getElementById('page').classList.add('hide')
   home();
+}
+
+function update(inp){
+  document.body.style.setProperty('--filter', inp.checked? 'none': 'contents')
+  resize();
 }
 
 function save(){

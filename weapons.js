@@ -50,7 +50,7 @@ function filterWpn(btn, value){
 }
 
 function sortTable(value){
-  let sorts = [function(){}, sortF, sortR , sortName, sortPhase, sortATK, sortStat, sortA, sortE, sortC]
+  let sorts = [function(){}, sortF, sortR , sortName, sortPhase, sortATK, sortStat, sortA, sortE, sortC, sortRR]
   if(second === value && count === 2){
     second = count = value = 0;
     flip = false;
@@ -105,6 +105,10 @@ function sortE(a,b){
 function sortC(a,b){
   let k = Object.keys(sessionStorage.get('DB').DB_Master.ENEMIES)
   return k.indexOf(DB[a[0]].COMMON) - k.indexOf(DB[b[0]].COMMON)
+}
+
+function sortRR(a,b){
+  return DB[b[0]].RARITY - DB[a[0]].RARITY;
 }
 
 function makeRow(w){
