@@ -182,7 +182,7 @@
   }
 
   .weapons{
-    grid-template-columns: repeat(2, max-content);
+    grid-template-columns: minmax(min-content, 25rem) repeat(1, max-content);
     grid-template-rows: max-content;
     place-content: start;
     gap: 4rem;
@@ -203,7 +203,8 @@
   }
 
   .farm-wpn{
-    display: flex;
+    display: grid;
+    grid-template-columns: max-content 1fr;
   }
 
   .farm-wpn .image{
