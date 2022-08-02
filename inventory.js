@@ -21,7 +21,7 @@ function inventory(){
       Object.entries(row[1]).reverse().forEach((item, i) => {
         if(item[0] === '0'){
           ROW.append(Object.assign(document.createElement("div"),{
-            id:row[0], classList: "inv-total", textContent: Math.floor(item[1]).toLocaleString('en-us'),
+            id:'I_'+row[0], classList: "inv-total", textContent: Math.floor(item[1]).toLocaleString('en-us'),
           }));
         }
         else if(item[1] !== '' && item[0] !== 'ROW'){

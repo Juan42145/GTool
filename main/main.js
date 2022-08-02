@@ -216,7 +216,7 @@ function recalculate(section, row){
     }
   });
   if(counter > 1){
-    document.getElementById(row).textContent = Math.floor(total).toLocaleString('en-us')
+    document.getElementById('I_'+row).textContent = Math.floor(total).toLocaleString('en-us')
     userInv[section][row][0] = total;
   }
 }
