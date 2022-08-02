@@ -135,11 +135,14 @@ function translate(section, row){
 function getInventory(section, name, items){
   let inv = {...userInv[section][name]};
   let calc = {...inv};
+  let totals = {};
   let l = Object.keys(items).length-1;
   let agg = 0;
-
+  calc[0] = 0;
   let flag = 0;
   Object.entries(items).forEach((item, i) => {
+    calc[0] += calc[item[0]]/(3**(l - i))
+    totals[item[0]] = calc[0];
     if(item[1] !== 0) flag = item[0];
     if(i < l && item[1] < inv[item[0]]){
       calc[item[0]] = +item[1];
@@ -150,6 +153,7 @@ function getInventory(section, name, items){
     agg += item[1]/(3**(l - i));
   });
   calc[flag] = Math.floor(inv[flag]);
+  calc[0] = totals[flag]
   calc['total'] = agg;
   return calc;
 }
@@ -298,7 +302,7 @@ function makeInv(TBL, section, ri, complete){
   Object.entries(row[1]).reverse().forEach((item, i) => {
     if(item[0] === '0'){
       ROW.append(Object.assign(document.createElement("div"),{
-        id:'I_'+row[0], classList: "home-total home-inv", textContent: Math.floor(item[1]).toLocaleString('en-us'),
+        id:'I_'+row[0], classList: "home-total home-inv", textContent: (Math.floor(item[1]*100)/100).toLocaleString('en-us'),
       }));
     }
     else if(item[1] !== '' && item[0] !== 'ROW'){
