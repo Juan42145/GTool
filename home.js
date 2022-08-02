@@ -33,12 +33,19 @@ function home(){
 }
 
 function makeRow(TBL, section, row, ri, isHide){
-  const ROW = document.createElement("div");
-  ROW.classList = "home-row";
-  TBL.append(ROW);
+  let ROW = document.getElementById('r_'+row[0])
+  if(ROW && !isHide){
+    ROW.innerHTML = '';
+  } else{
+    ROW = document.createElement("div");
+    ROW.classList = "home-row";
+    TBL.append(ROW);
+  }
   
   if(!isHide && TBL.dataset.total === 'true') ROW.style = `grid-row: ${(2*ri+1)};`;
   else ROW.style = `grid-row: ${(ri+1)};`;
+
+  if(!isHide) ROW.id = 'r_'+row[0];
 
   const NAME = document.createElement("div");
   NAME.classList = "home-name";
@@ -222,8 +229,7 @@ function makePage(section, isTotal){
   
   Object.entries(section[1]).sort(sortOrder(section[0])).forEach((row, ri) => {
     let complete = makeRow(TBL, section, row, ri, false);
-    let s = translate(section[0], row[0]);
-    makeInv(TBL, s, ri, complete);
+    makeInv(TBL, section, row, ri, complete);
   });
 
   if(section[0] === 'MORA'){
@@ -284,8 +290,10 @@ function makePage(section, isTotal){
   }
 }
 
-function makeInv(TBL, section, ri, complete){
-  let row = [section[1], userInv[section[0]][section[1]]]
+function makeInv(TBL, section, row, ri, complete){
+  let temp = [section, row];
+  section = translate(section[0], row[0]);
+  row = [section[1], userInv[section[0]][section[1]]]
   let rowi = getComputedStyle(document.getElementById('page')).getPropertyValue('--rowi')
   let coli = getComputedStyle(document.getElementById('page')).getPropertyValue('--coli')
 
@@ -334,7 +342,7 @@ function makeInv(TBL, section, ri, complete){
         let user = sessionStorage.get('user');
         user.Inventory = userInv;
         sessionStorage.set('user', user);
-        makePage(gs,gt)
+        makeRow(TBL,temp[0],temp[1],ri,false);
       }, false);
       INP.addEventListener('click', (e)=>{focusText(e)})
       ITEM.append(INP);
