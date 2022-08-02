@@ -89,6 +89,9 @@ function getRows(value){
       IMG.onerror = function(){this.classList.add('hide')};
       IMG.src = getImage(value, item, rank);
       CARD.append(IMG);
+
+      CARD.addEventListener('mouseover', ()=>{tooltip.show(item)})
+      CARD.addEventListener('mouseout', ()=>{tooltip.hide()})
     }
 
     if(value == 'LOCALS'){
@@ -179,6 +182,9 @@ function getCols(value){
       IMG.onerror = function(){this.classList.add('hide')};
       IMG.src = getImage(value, item, rank);
       CARD.append(IMG);
+
+      CARD.addEventListener('mouseover', ()=>{tooltip.show(item)})
+      CARD.addEventListener('mouseout', ()=>{tooltip.hide()})
     }
 
     if(value == 'LOCALS'){
