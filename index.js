@@ -29,8 +29,7 @@ function process(data, store){
 }
 
 function parse(range, storeRow) {
-  let headers = range.shift()
-  let data = {};
+  const headers = range.shift(), data = {};
   for(let r in range) {
     const row = {};
     headers.forEach((h, c) => {
@@ -45,33 +44,27 @@ function parse(range, storeRow) {
 
 function processInventory(user){
   let inv = user.Inventory;
-  Object.entries(inv).forEach(section => {
-    Object.entries(section[1]).forEach(row => {
-      let counter = total = 0;
-      Object.entries(row[1]).reverse().forEach(item => {
-        if(item[1] !== '' && item[0] !== 'ROW'){
-          total += item[1]/(3**counter);
-          counter++;
+  Object.entries(inv).forEach(([category, ccont]) => {
+    Object.entries(ccont).forEach(([item, icont]) => {
+      let counter = 0, total = 0;
+      Object.entries(icont).reverse().forEach(([rank, value]) => {
+        if(value !== '' && rank !== 'ROW'){
+          total += value/(3**counter); counter++;
         }
       });
-      if(counter > 1){
-        inv[section[0]][row[0]]['0'] = total;
-      }
+      if(counter > 1) inv[category][item]['0'] = total;
     });
   });
-  user.Inventory = inv;
-  return user;
+  user.Inventory = inv; return user;
 }
 
 /*INDEX*/
 function init(){
-  getDB();
-  sessionStorage.set('calc', true);
+  getDB(); sessionStorage.set('calc', true);
 }
 
 function receiveDB(DB){
-  sessionStorage.set('DB', process(DB, false));
-  preloadImages();
+  sessionStorage.set('DB', process(DB, false)); preloadImages();
 }
 
 function userData(){
@@ -85,17 +78,13 @@ function receiveUser(user){
 
 /*FORM*/
 function login(){
-  const P = document.getElementById("password");
-  getAuth(P.value);
+  const P = document.getElementById("password"); getAuth(P.value);
 }
 
 function receiveAuth(isCorrect){
-  const P = document.getElementById("password");
-  P.value = ''
+  const P = document.getElementById("password"); P.value = '';
   if(isCorrect){
-    P.blur()
-    P.placeholder = 'Loading';
-    userData();
+    P.blur(); P.placeholder = 'Loading'; userData();
   } else{
     P.placeholder = 'Naur';
   }
@@ -103,11 +92,11 @@ function receiveAuth(isCorrect){
 
 /*IMAGES*/
 function preloadImages(){
-  Object.entries(sessionStorage.get('DB').DB_Master).forEach(section => {
-    Object.entries(section[1]).forEach(item => {
-      Object.entries(item[1]).forEach(rank => {        
-        if(rank[1].includes('/') && !rank[1].includes('*')){
-          (new Image()).src = "https://" + rank[1];
+  Object.entries(sessionStorage.get('DB').DB_Master).forEach(([category, ccont]) => {
+    Object.entries(ccont).forEach(([item, icont]) => {
+      Object.entries(icont).forEach(([rank, link]) => {        
+        if(link.includes('/') && !link.includes('*')){
+          (new Image()).src = "https://" + link;
         }
       })
     })

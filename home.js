@@ -7,7 +7,7 @@ const D = (new Date()).getDay();
 function home(){
   if(sessionStorage.get('calc')) calculate();
 
-  Object.entries(sessionStorage.get('pivot')).forEach(section => {
+  Object.entries(sessionStorage.get('pivot')).forEach((section) => {
     const SEC = document.getElementById(section[0]);
     if(Object.keys(section[1]).length === 0) return;
 
