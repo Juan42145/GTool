@@ -46,6 +46,9 @@ function inventory(){
             userInv[section[0]][row[0]][item[0]] = INP.value;
             recalculate(section[0], row[0]);
             caching('cacheI', section[0] + '_' + item[0] + '_' + row[1]['ROW'], INP.value);
+            let user = sessionStorage.get('user');
+            user.Inventory = userInv;
+            sessionStorage.set('user', user);
           }, false);
           INP.addEventListener('click', (e)=>{focusText(e)})
           ITEM.append(INP);
