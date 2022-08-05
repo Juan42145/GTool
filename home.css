@@ -283,7 +283,7 @@ body{
     padding: 1rem;
   }
 
-  .home-sec#EXP, #MORA, #LOCAL{
+  #RESOURCES, #LOCALS{
     grid-column: 3;
   }
 
@@ -301,11 +301,11 @@ body{
     grid-column: 2;
   }
 
-  #WEEKLY, #BOSS{
+  #WEEKLYS, #BOSSES{
     grid-column: 3;
   }
 
-  .home-sec#EXP, #MORA, #LOCAL{
+  #RESOURCES, #LOCALS{
     grid-column: 4;
   }
 
@@ -338,15 +338,15 @@ body{
     grid-column: 2;
   }
 
-  #BOSS{
+  #BOSSES{
     grid-column: 3;
   }
   
-  #LOCAL{
+  #LOCALS{
     grid-column: 4;
   }
 
-  .home-sec#EXP, #MORA, #WEEKLY{
+  #RESOURCES, #WEEKLYS{
     grid-column: 5;
   }
 
@@ -370,7 +370,7 @@ body{
     padding: 1rem;
   }
 
-  #GEM, #ELITE{
+  #GEMS, #ELITE{
     grid-column: 2;
   }
 
@@ -378,15 +378,15 @@ body{
     grid-column: 3;
   }
 
-  #BOSS{
+  #BOSSES{
     grid-column: 4;
   }
   
-  #LOCAL{
+  #LOCALS{
     grid-column: 5;
   }
 
-  .home-sec#EXP, #MORA, #WEEKLY{
+  #RESOURCES, #WEEKLYS{
     grid-column: 6;
   }
 }

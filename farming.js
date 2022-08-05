@@ -20,7 +20,7 @@ function makeChar(){
 
     let link = name === 'Traveler'? 'traveler_geo': name.toLowerCase().replaceAll(' ','_');
     const IMG = create(CHAR, 'img', {'class':'image','src':'https://paimon.moe/images/characters/'+link+'.png'})
-    IMG.onerror = function(){this.classList.add('hide')};
+    IMG.onerror = ()=>this.classList.add('hide');
 
     const NAME = create(CHAR, 'div', {'class':'farm-name'}); NAME.textContent = name;
 
@@ -45,7 +45,7 @@ function makeWpn(){
 
     let link = name.toLowerCase().replaceAll(' ','_').replaceAll('"','').replaceAll("'", '');
     const IMG = create(WPN, 'img', {'class':'image','src':'https://paimon.moe/images/weapons/'+link+'.png'})
-    IMG.onerror = function(){this.classList.add('hide')};
+    IMG.onerror = ()=>this.classList.add('hide');
 
     const NAME = create(WPN, 'div', {'class':'farm-name'}); NAME.textContent = name;
 
@@ -57,7 +57,7 @@ function makeWpn(){
     const INP = Object.assign(document.createElement("input"),{
       type: "text", pattern: "\\d*", value: v
     });
-    INP.addEventListener("change", function(){updateW(wpn, attr, INP.value)}, false);
+    INP.addEventListener("change", ()=>updateW(wpn, attr, INP.value), false);
     INP.addEventListener('click', (e)=>{focusText(e)})
     return INP;
   }
@@ -99,13 +99,13 @@ function makeFarm(COMP, name, section, id){
         total += value/(3**counter); counter++;
       }
       if(value === 0) return;
-      DIV.addEventListener('mouseover', ()=>{tooltip.show(name)})
-      DIV.addEventListener('mouseout', ()=>{tooltip.hide()})
+      DIV.addEventListener('mouseover', ()=>tooltip.show(name))
+      DIV.addEventListener('mouseout', ()=>tooltip.hide())
   
       const CARD = create(DIV, 'div', {'class':'item r_'+rank})
   
       const IMG = create(CARD, 'img', {'class':'image','src':getImage(category, item, rank)})
-      IMG.onerror = function(){this.classList.add('hide')};
+      IMG.onerror = ()=>this.classList.add('hide');
   
       const NEED = create(CARD, 'p', {'class':'need'}); NEED.textContent = value;
     });

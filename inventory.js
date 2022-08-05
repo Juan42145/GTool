@@ -25,11 +25,11 @@ function inventory(){
           const CARD = create(ROW, 'div', {'class':'inv-item r_'+rank})
 
           const IMG = create(CARD, 'img', {'class':'inv-image','src':getImage(category, item, rank)})
-          IMG.onerror = function(){this.classList.add('hide')};
+          IMG.onerror = ()=>this.classList.add('hide');
           
           const INP = create(CARD, 'input', {
             'type':'text','pattern':'\\d*','value': value, 'data-column':rank})
-          INP.addEventListener('change', function(){
+          INP.addEventListener('change', ()=>{
             //INP.value = parseInt(this.value.replace(/\D/g,''),10).toLocaleString();
             if(this.value == '') INP.value = 0;
             

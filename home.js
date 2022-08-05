@@ -33,7 +33,6 @@ function home(){
 function makeRow(TBL, category, iData, ii, isPage){
   let [item, materials] = iData;
 
-  //No longer problem with multiple names
   let ROW = document.getElementById('r_'+item)
   if(ROW && isPage) ROW.innerHTML = '';
   else ROW = create(TBL, 'div', {'class':'home-row'})
@@ -58,7 +57,7 @@ function makeRow(TBL, category, iData, ii, isPage){
       if(isPage) CARD.style = 'grid-column: '+index;
 
       const IMG = create(CARD, 'img', {'class':'home-image','src':getImage(tc,ti,rank)})
-      IMG.onerror = function(){this.classList.add('hide')}; //REVISE
+      IMG.onerror = ()=>this.classList.add('hide');
 
       if(item === 'EXP') calc[rank] = Math.floor(calc[0]);
       
@@ -258,11 +257,11 @@ function makeInv(TBL, category, iData, ii, complete){
       index++;
 
       const IMG = create(CARD, 'img', {'class':'home-image','src':getImage(category, item, rank)})
-      IMG.onerror = function(){this.classList.add('hide')};
+      IMG.onerror = ()=>this.classList.add('hide');
       
       const INP = create(CARD, 'input', {
         'type':'text','pattern':'\\d*','value': value, 'data-column':rank})
-      INP.addEventListener('change', function(){
+      INP.addEventListener('change', ()=>{
         if(this.value == '') INP.value = 0;
         
         userInv[category][item][rank] = +INP.value; store('Inventory', userInv);
@@ -293,7 +292,7 @@ function makeDets(TBL, category, itemName, iData, ii){
     CARD.style = 'grid-column: '+index;
 
     const IMG = create(CARD, 'img', {'class':'home-image','src':getImage(category, item, rank)})
-    IMG.onerror = function(){this.classList.add('hide')};
+    IMG.onerror = ()=>this.classList.add('hide');
 
     const NEED = create(CARD, 'p', {});
     NEED.textContent = value.toLocaleString('en-us');

@@ -66,9 +66,9 @@ function getRows(category){
     if(isText) CARD.textContent = item;
     else{
       const IMG = create(CARD, 'img', {'class':'image','src':getImage(category, item, rank)})
-      IMG.onerror = function(){this.classList.add('hide')};
-      CARD.addEventListener('mouseover', ()=>{tooltip.show(item)})
-      CARD.addEventListener('mouseout', ()=>{tooltip.hide()})
+      IMG.onerror = ()=>this.classList.add('hide');
+      CARD.addEventListener('mouseover', ()=>tooltip.show(item))
+      CARD.addEventListener('mouseout', ()=>tooltip.hide())
     }
 
     if(category == 'LOCALS'){
@@ -92,7 +92,7 @@ function getRows(category){
       else CARD.style = 'grid-row: span '+span;
 
       const IMG = create(CARD, 'img', {'class':'image','src':getImage(group[category], item, 0)})
-      IMG.onerror = function(){this.classList.add('hide')};
+      IMG.onerror = ()=>this.classList.add('hide');
     });
     document.getElementById('compare').classList.add('rowG')
   }
@@ -137,9 +137,9 @@ function getCols(category){
     if(isText) CARD.textContent = item;
     else{
       const IMG = create(CARD, 'img', {'class':'image','src':getImage(category, item, rank)})
-      IMG.onerror = function(){this.classList.add('hide')};
-      CARD.addEventListener('mouseover', ()=>{tooltip.show(item)})
-      CARD.addEventListener('mouseout', ()=>{tooltip.hide()})
+      IMG.onerror = ()=>this.classList.add('hide');
+      CARD.addEventListener('mouseover', ()=>tooltip.show(item))
+      CARD.addEventListener('mouseout', ()=>tooltip.hide())
     }
 
     if(category == 'LOCALS'){
@@ -163,7 +163,7 @@ function getCols(category){
       else CARD.style = 'grid-column: span '+span;
 
       const IMG = create(CARD, 'img', {'class':'image','src':getImage(group[category], item, 0)})
-      IMG.onerror = function(){this.classList.add('hide')};
+      IMG.onerror = ()=>this.classList.add('hide');
     });
     document.getElementById('compare').classList.add('colG')
   }
@@ -184,6 +184,6 @@ function getChar(array, lookR, lookC, rHeaders, cHeaders, check){
     let link = name === 'Traveler'? 'traveler_geo': name.toLowerCase().replaceAll(' ','_');
     const IMG = create(CARD, 'img', {'class':'char-image c_'+info.RARITY,
       'src':'https://paimon.moe/images/characters/'+link+'.png'})
-    IMG.onerror = function(){this.classList.add('hide')};
+    IMG.onerror = ()=>this.classList.add('hide');
   });
 }

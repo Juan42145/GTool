@@ -1,6 +1,6 @@
 const DB = sessionStorage.get('DB').DB_Characters;
 let userChar = sessionStorage.get('user').Characters;
-let owned = false, flip = false; sorting = function(){};
+let owned = false, flip = false; sorting = ()=>{};
 
 /*--CHARACTERS--*/
 function characters(){
@@ -20,7 +20,7 @@ function filterOwned(btn){
 }
 
 function getSort(value){
-  let sorts = [function(){}, sortName, sortAscension, sortRarity, sortConstellation]
+  let sorts = [()=>{}, sortName, sortAscension, sortRarity, sortConstellation]
   sorting = sorts[value]; characters();
 }
 
@@ -49,7 +49,7 @@ function makeCard(char){
 
   const CARD = create(document.getElementById('characters'), 'div',
     {'class':'card c_'+info.RARITY});
-  CARD.addEventListener('click', function(){showInfo(char)}, false);
+  CARD.addEventListener('click', ()=>showInfo(char), false);
 
   if(state.OWNED){
     const TAG = create(CARD, 'p', {'class':'tag'});
@@ -60,12 +60,12 @@ function makeCard(char){
   }
 
   const ICON = create(CARD, 'img', {'class':'icon','src':getImage('ELEMENT', info.ELEMENT, 0)})
-  ICON.onerror = function(){this.classList.add('hide')};
+  ICON.onerror = ()=>this.classList.add('hide');
 
   let link = name === 'Traveler'? 'traveler_geo': name.toLowerCase().replaceAll(' ','_');
   const IMG = create(CARD, 'img',
     {'class':'image','src': 'https://paimon.moe/images/characters/'+link+'.png'})
-  IMG.onerror = function(){this.classList.add('hide')};
+  IMG.onerror = ()=>this.classList.add('hide');
 
   const NAME = create(CARD, 'p', {'class':'name'}); NAME.textContent = name;
 }
@@ -124,8 +124,8 @@ function setImage(id, category, item, rank){
 
 function tool(id, name){
   let e = document.getElementById(id)
-  e.addEventListener('mouseover', ()=>{tooltip.show(name)})
-  e.addEventListener('mouseout', ()=>{tooltip.hide()})
+  e.addEventListener('mouseover', ()=>tooltip.show(name))
+  e.addEventListener('mouseout', ()=>tooltip.hide())
 }
 
 function editIn(){

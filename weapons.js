@@ -2,7 +2,7 @@ const DB = sessionStorage.get('DB').DB_Weapons;
 let userWpn = sessionStorage.get('user').Weapons;
 let filters = ['Sword','Claymore','Bow','Polearm','Catalyst'];
 let filter = 0, second = 0, count = 0; owned = false, flip = false;
-let sorting = function(){};
+let sorting = ()=>{};
 
 /*--WEAPONS--*/
 document.addEventListener('DOMContentLoaded', () => {
@@ -45,7 +45,7 @@ function filterWpn(btn, value){
 }
 
 function sortTable(value){
-  let sorts = [function(){}, sortF, sortR , sortName, sortPhase, sortATK, sortStat, sortA, sortE, sortC, sortRR]
+  let sorts = [()=>{}, sortF, sortR , sortName, sortPhase, sortATK, sortStat, sortA, sortE, sortC, sortRR]
   if(second === value && count === 2){
     second = 0; count = 0; value = 0; flip = false;
   }
@@ -116,7 +116,7 @@ function makeRow(wpn){
   
   const FARM = create(CELL, 'input', {'class': 'farm', 'type':'checkbox'});
   FARM.checked = state.FARM;
-  FARM.addEventListener('change', function(){
+  FARM.addEventListener('change', ()=>{
     userWpn[name].FARM = FARM.checked;
     sessionStorage.set('calc', true); store('Weapons', userWpn);
     caching('cacheW', userWpn[name].ROW, userWpn[name]);
@@ -127,7 +127,7 @@ function makeRow(wpn){
   
   let link = name.toLowerCase().replaceAll(' ','_').replaceAll('"','').replaceAll("'", '');
   const IMG = create(CELL, 'img', {'src': 'https://paimon.moe/images/weapons/'+link+'.png'})
-  IMG.onerror = function(){this.classList.add('hide')};
+  IMG.onerror = ()=>this.classList.add('hide');
 
   if(state.OWNED){
     const TAG = create(CELL, 'p', {'class':'tag'});
@@ -157,18 +157,18 @@ function makeRow(wpn){
 
   CELL = create(ROW, 'td', {'class':'r_2'});
   
-  const ASC = create(CELL, 'img', {'src':getImage('TROPHIES', info.TROPHY, 2)});
-  ASC.onerror = function(){this.classList.add('hide')};
+  const TROPHY = create(CELL, 'img', {'src':getImage('TROPHIES', info.TROPHY, 2)});
+  TROPHY.onerror = ()=>this.classList.add('hide');
 
   CELL = create(ROW, 'td', {'class':'r_2'});
   
   const ELITE = create(CELL, 'img', {'src':getImage('ENEMIES', info.ELITE, 2)});
-  ELITE.onerror = function(){this.classList.add('hide')};
+  ELITE.onerror = ()=>this.classList.add('hide');
 
   CELL = create(ROW, 'td', {'class':'r_1'});
 
   const COMMON = create(CELL, 'img', {'src':getImage('ENEMIES', info.COMMON, 1)});
-  COMMON.onerror = function(){this.classList.add('hide')};
+  COMMON.onerror = ()=>this.classList.add('hide');
 }
 
 /*--INFO PAGE--*/
