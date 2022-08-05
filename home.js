@@ -37,12 +37,15 @@ function makeRow(TBL, category, iData, ii, isPage){
   if(ROW && isPage) ROW.innerHTML = '';
   else ROW = create(TBL, 'div', {'class':'home-row'})
   
-  if(isPage && TBL.dataset.total === 'true') ROW.style = 'grid-row: '+(2*ii+1);
+  const NAME = create(ROW, 'div', {'class':'home-name'}); NAME.textContent = item;
+
+  if(isPage && TBL.dataset.total === 'true') {
+    ROW.style = 'grid-row: '+(2*ii+1); NAME.classList.add('tots')
+  }
   else ROW.style = 'grid-row: '+(ii+1);
 
   if(isPage) ROW.id = 'r_'+item;
-
-  const NAME = create(ROW, 'div', {'class':'home-name'}); NAME.textContent = item;
+  if(category === 'RESOURCES') ROW.classList.add('long');
 
   if(category === 'BOOKS' || category === 'TROPHIES' || category === 'WEEKLYS')
     setData(category, item, NAME, isPage);
@@ -59,14 +62,11 @@ function makeRow(TBL, category, iData, ii, isPage){
       const IMG = create(CARD, 'img', {'class':'home-image','src':getImage(tc,ti,rank)})
       IMG.onerror = ()=>this.classList.add('hide');
 
-      if(item === 'EXP') calc[rank] = Math.floor(calc[0]);
-      
-      const INV = create(CARD, 'p', {'class':'c-inv'}) //MAKE DIV
+      const INV = create(CARD, 'div', {'class':'c-inv p'})
       INV.textContent = calc[rank].toLocaleString('en-us');
-      const NEED = create(CARD, 'p', {'class':'c-need'})
+      const NEED = create(CARD, 'div', {'class':'c-need p'})
       NEED.textContent = '/' + value.toLocaleString('en-us');
 
-      //MORA STYLING
 
       if(calc[rank] >= value) CARD.classList.add('completed');
       else CARD.classList.remove('completed');
@@ -81,9 +81,9 @@ function makeRow(TBL, category, iData, ii, isPage){
     const TOTAL = create(ROW, 'div', {'class':'home-total'})
 
     const INV = create(TOTAL, 'p', {'class':'c-inv'})
-    INV.textContent = Math.floor(calc[0]*100)/100;
+    INV.textContent = (Math.floor(calc[0]*100)/100).toLocaleString('en-us');;
     const NEED = create(TOTAL, 'p', {'class':'c-need'})
-    NEED.textContent = Math.floor(calc['total']*100)/100;
+    NEED.textContent = (Math.floor(calc['total']*100)/100).toLocaleString('en-us');;
 
     if(category == 'BOOKS' || category == 'TROPHIES')
       setData(category, item, TOTAL, isPage);
@@ -118,6 +118,9 @@ function getInventory(category, item, materials){
     agg += value/(3**(len - mi));
   });
   calc[flag] = Math.floor(inv[flag]); calc[0] = totals[flag]; calc['total'] = agg;
+  if(item === 'EXP' || item === 'Ore'){
+    calc[0] = Math.floor(inv[0]); calc[flag] = Math.floor(inv[0])
+  }
   return calc;
 }
 
@@ -170,6 +173,7 @@ function makePage(cData, isTotal){
   if(category ==='COMMON') PAGE.classList.add('page-dets')
   else PAGE.classList.remove('page-dets')
   
+  //ALTERNATIVE
   const CLOSE = PAGE.firstElementChild; PAGE.innerHTML = ''; PAGE.append(CLOSE);
   const TBL = create(PAGE, 'div', {'class':'home-tbl tbl-inv','data-total':isTotal})
   
@@ -246,8 +250,8 @@ function makeInv(TBL, category, iData, ii, complete){
   let index = +coli+1;
   Object.entries(materials).reverse().forEach(([rank, value]) => {
     if(rank === '0'){
-      const TOTAL = create(ROW, 'div', {'class':'home-total home-inv','id':'I_'+item})
-      TOTAL.textContent = Math.floor(value).toLocaleString('en-us');
+      /*const TOTAL = create(ROW, 'div', {'class':'home-total home-inv','id':'I_'+item})
+      TOTAL.textContent = Math.floor(value).toLocaleString('en-us');*/
     }
     else if(value !== '' && rank !== 'ROW'){
       const CARD = create(ROW, 'div', {'class':'home-item r_'+rank})

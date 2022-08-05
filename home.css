@@ -135,7 +135,7 @@ body{
   max-height: 4rem;
 }
 
-.home p {
+.home .p {
   font-size: 0.9rem;
 }
 
@@ -148,20 +148,19 @@ body{
   justify-self: start;
 }
 
-#MORA .home-item{
-  grid-template-rows: 6rem;
-  background-size: 6rem;
+.long .home-item{
+  grid-template-rows: 4rem 1rem 1rem;
+  grid-template-columns: 1fr;
 }
 
-#MORA .home-total{
-  grid-column: 1;
-  grid-template-rows: min-content min-content;
-  place-content: center;
+.long .home-image{
+  grid-column: span 1;
 }
 
-.mora.home-total p{
-  font-size: 1.2rem;
-  justify-self: end !important;
+.long .p{
+  height: 100%;
+  width: 100%;
+  background-color: var(--home_card_bg);
 }
 
 .home-color:not(.completed){
@@ -226,6 +225,10 @@ body{
   font-size: 1.5rem;
 }
 
+.page .tots, .page .home-total{
+  grid-row: span 2;
+}
+
 .page .home-total{
   padding: 1rem;
 }
@@ -265,13 +268,13 @@ body{
   grid-template-columns: 1fr;
 }
 
-.morad .home-item{
-  grid-template-rows: 6rem;
-  background-size: 6rem;
+.long .home-total{
+  place-content: center;
 }
 
-.morad .home-total{
-  place-content: center end;
+.long .home-total p{
+  width: 100%;
+  text-align: end;
 }
 
 @media screen and (min-width: 600px) {
