@@ -2,56 +2,43 @@ let userInv = sessionStorage.get('user').Inventory;
 
 /*INVENTORY*/
 function inventory(){
-  Object.entries(userInv).forEach(section => {
-    const SEC = document.getElementById(section[0])
-    const TBL = document.createElement("div");
-    TBL.classList = "inv-tbl";
-    SEC.append(TBL);
+  Object.entries(userInv).forEach(([category, items]) => {
+    const SEC = document.getElementById(category);
+
+    const TITLE = create(SEC, 'div', {'class': 'sec-title'});
+    TITLE.textContent = category;
+
+    const TBL = create(SEC, 'div', {'class':'inv-tbl'});
   
-    Object.entries(section[1]).forEach((row, ri) => {
-      const ROW = document.createElement("div");
-      ROW.classList = "inv-row";
-      ROW.style = `grid-row: ${(ri+1)};`;
-      TBL.append(ROW);
+    Object.entries(items).forEach(([item, materials], ii) => {
+      const ROW = create(TBL, 'div', {'class':'inv-row'})
+      ROW.style = 'grid-row: '+(ii+1);
 
-      ROW.append(Object.assign(document.createElement("div"),{
-        classList: "inv-name", textContent: row[0],
-      }));
+      const NAME = create(ROW, 'div', {'class':'inv-name'}); NAME.textContent = item;
       
-      Object.entries(row[1]).reverse().forEach((item, i) => {
-        if(item[0] === '0'){
-          ROW.append(Object.assign(document.createElement("div"),{
-            id:'I_'+row[0], classList: "inv-total", textContent: Math.floor(item[1]).toLocaleString('en-us'),
-          }));
+      Object.entries(materials).reverse().forEach(([rank, value], mi) => {
+        if(rank === '0'){
+          const TOTAL = create(ROW, 'div', {'class':'inv-total','id':'I_'+item})
+          TOTAL.textContent = Math.floor(value).toLocaleString('en-us');
         }
-        else if(item[1] !== '' && item[0] !== 'ROW'){
-          const ITEM = document.createElement("div");
-          ITEM.classList = `inv-item r_${item[0]}`;
-          ROW.append(ITEM);
+        else if(value !== '' && rank !== 'ROW'){
+          const CARD = create(ROW, 'div', {'class':'inv-item r_'+rank})
 
-          const IMG = document.createElement("img")
-          IMG.classList = "inv-image";
+          const IMG = create(CARD, 'img', {'class':'inv-image','src':getImage(category, item, rank)})
           IMG.onerror = function(){this.classList.add('hide')};
-          IMG.src = getImage(section[0], row[0], item[0]);
-          ITEM.append(IMG);
           
-          const INP = Object.assign(document.createElement("input"),{
-            type: "text", pattern: "\\d*", value: item[1]
-          });
-          INP.dataset.column = item[0];
-          INP.addEventListener("change", function(){
+          const INP = create(CARD, 'input', {
+            'type':'text','pattern':'\\d*','value': value, 'data-column':rank})
+          INP.addEventListener('change', function(){
             //INP.value = parseInt(this.value.replace(/\D/g,''),10).toLocaleString();
             if(this.value == '') INP.value = 0;
             
-            userInv[section[0]][row[0]][item[0]] = INP.value;
-            recalculate(section[0], row[0]);
-            caching('cacheI', section[0] + '_' + item[0] + '_' + row[1]['ROW'], INP.value);
-            let user = sessionStorage.get('user');
-            user.Inventory = userInv;
-            sessionStorage.set('user', user);
+            userInv[category][item][rank] = INP.value; store('Inventory', userInv);
+            caching('cacheI', category + '_' + rank + '_' + materials['ROW'], INP.value);
+            
+            recalculate(category, item);
           }, false);
           INP.addEventListener('click', (e)=>{focusText(e)})
-          ITEM.append(INP);
         }
       });
     });
@@ -59,8 +46,5 @@ function inventory(){
 }
 
 function saveInventory(){
-  let user = sessionStorage.get('user');
-  user.Inventory = userInv;
-  sessionStorage.set('user', user);
-  setInv();
+  store('Inventory', userInv); setInv();
 }

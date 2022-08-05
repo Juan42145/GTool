@@ -1,32 +1,27 @@
 const DB = sessionStorage.get('DB').DB_Characters;
 let userChar = sessionStorage.get('user').Characters;
-let owned = flip = false;
-let sorting = function(){};
+let owned = false, flip = false; sorting = function(){};
 
-/*CHARACTERS*/
+/*--CHARACTERS--*/
 function characters(){
   document.getElementById('characters').innerHTML = '';
-  let array = Object.entries(userChar).sort(sorting);
-  if(flip) array.reverse();
-  array.forEach(c => {
+  let array = Object.entries(userChar).sort(sorting); if(flip) array.reverse();
+  array.forEach(char => {
     if(owned){
-      if(c[1].OWNED) makeCard(c);
+      if(char[1].OWNED) makeCard(char);
     } else{
-      makeCard(c);
+      makeCard(char);
     }
   });
 }
 
 function filterOwned(btn){
-  owned = !owned;
-  characters()
-  btn.classList.toggle('selected')
+  owned = !owned; btn.classList.toggle('selected'); characters()
 }
 
 function getSort(value){
   let sorts = [function(){}, sortName, sortAscension, sortRarity, sortConstellation]
-  sorting = sorts[value];
-  characters();
+  sorting = sorts[value]; characters();
 }
 
 function sortName(a,b){
@@ -46,101 +41,85 @@ function sortConstellation(a,b){
 }
 
 function setFlip(btn){
-  flip = !flip;
-  characters()
-  btn.classList.toggle('flip')
+  flip = !flip; btn.classList.toggle('flip'); characters();
 }
 
-function makeCard(c){
-  const info = DB[c[0]];
+function makeCard(char){
+  let [name, state] = char; const info = DB[name];
 
-  const CARD = document.createElement('div');
-  CARD.classList.add('card');
-  CARD.classList.add('c_'+info.RARITY);
-  CARD.addEventListener('click', function(){showInfo(c)}, false);
-  document.getElementById('characters').append(CARD)
+  const CARD = create(document.getElementById('characters'), 'div',
+    {'class':'card c_'+info.RARITY});
+  CARD.addEventListener('click', function(){showInfo(char)}, false);
 
-  if(c[1].OWNED){
-    const TAG = document.createElement("p");
-    TAG.classList = "tag";
-    TAG.innerText = 'C'+ +c[1].CONSTELLATION;
-    CARD.append(TAG);
+  if(state.OWNED){
+    const TAG = create(CARD, 'p', {'class':'tag'});
+    TAG.textContent = 'C'+ +state.CONSTELLATION;
   }
   else{
-    CARD.classList.add('missing')
+    CARD.classList.add('missing');
   }
 
-  const ICON = document.createElement('img');
-  ICON.classList = "icon";
+  const ICON = create(CARD, 'img', {'class':'icon','src':getImage('ELEMENT', info.ELEMENT, 0)})
   ICON.onerror = function(){this.classList.add('hide')};
-  ICON.src = getImage('ELEMENT', info.ELEMENT, 0);
-  CARD.append(ICON);
 
-  const IMG = document.createElement("img")
-  IMG.classList = "image";
+  let link = name === 'Traveler'? 'traveler_geo': name.toLowerCase().replaceAll(' ','_');
+  const IMG = create(CARD, 'img',
+    {'class':'image','src': 'https://paimon.moe/images/characters/'+link+'.png'})
   IMG.onerror = function(){this.classList.add('hide')};
-  CARD.append(IMG);
-  
-  let link = c[0] === 'Traveler'? 'traveler_geo': c[0].toLowerCase().replaceAll(' ','_');
-  IMG.src = "https://paimon.moe/images/characters/"+link+".png";
 
-  const NAME = document.createElement("p");
-  NAME.classList= "name";
-  NAME.innerText = c[0];
-  CARD.append(NAME);
+  const NAME = create(CARD, 'p', {'class':'name'}); NAME.textContent = name;
 }
 
-function showInfo(c){
+/*--INFO PAGE--*/
+function showInfo(char){
+  let [name, state] = char; const info = DB[name];
   document.getElementById('char-menu').classList.add('hide')
   document.getElementById('char').classList.remove('hide')
 
-  const info = DB[c[0]];
-  let link = c[0] === 'Traveler'? 'traveler_geo': c[0].toLowerCase().replaceAll(' ','_');
-  document.getElementById('char-img').src = "https://paimon.moe/images/characters/full/"+link+".png";
+  let link = name === 'Traveler'? 'traveler_geo': name.toLowerCase().replaceAll(' ','_');
+  document.getElementById('char-img').src = 'https://paimon.moe/images/characters/full/'+link+'.png';
   document.getElementById('char').dataset.color = info.ELEMENT;
   
-  document.getElementById('NAME').textContent = c[0];
-  document.getElementById('RARITY').classList = 's'+info.RARITY
-  document.getElementById('WEAPON').textContent = info.WEAPON
-  document.getElementById('ELEMENT').src = getImage('ELEMENT', info.ELEMENT, 0)
+  document.getElementById('NAME').textContent = name;
+  document.getElementById('RARITY').classList = 's'+info.RARITY;
+  document.getElementById('WEAPON').textContent = info.WEAPON;
+  document.getElementById('ELEMENT').src = getImage('ELEMENT', info.ELEMENT, 0);
   
-  if(c[1].OWNED){
-    document.getElementById('CONSTELLATION').classList.remove('hide')
-    document.getElementById('CONSTELLATION').textContent = 'C'+c[1].CONSTELLATION;
+  if(state.OWNED){
+    document.getElementById('CONSTELLATION').classList.remove('hide');
+    document.getElementById('CONSTELLATION').textContent = 'C'+state.CONSTELLATION;
   } else{
-    document.getElementById('CONSTELLATION').classList.add('hide')
+    document.getElementById('CONSTELLATION').classList.add('hide');
     document.getElementById('CONSTELLATION').textContent = '';
   }
 
-  document.getElementById('FARM').checked = c[1].FARM
+  document.getElementById('FARM').checked = state.FARM;
 
-  document.getElementById('BOSS').src = getImage('BOSSES', info.BOSS, 4)
-  tool('BOSS', info.BOSS)
-  document.getElementById('LOCAL').src = getImage('LOCALS', info.LOCAL, 1)
-  tool('LOCAL', info.LOCAL)
-  document.getElementById('COMMON').src = getImage('ENEMIES', info.COMMON, 1)
-  tool('COMMON', info.COMMON)
-  document.getElementById('TALENT').src = getImage('BOOKS', info.TALENT, 2)
-  tool('TALENT', info.TALENT)
-  document.getElementById('WEEKLY').src = getImage('WEEKLY', info.WEEKLY, 0)
-  tool('WEEKLY', info.WEEKLY)
-  document.getElementById('DROP').src = getImage('WEEKLYS', info.DROP, 5)
-  tool('DROP', info.DROP)
+  setImage('BOSS', 'BOSSES', info.BOSS, 4);
+  setImage('LOCAL', 'LOCALS', info.LOCAL, 1);
+  setImage('COMMON', 'ENEMIES', info.COMMON, 1);
+  setImage('BOOK', 'BOOKS', info.BOOK, 2);
+  setImage('WEEKLY BOSS', 'WEEKLY BOSS', info['WEEKLY BOSS'], 0);
+  setImage('WEEKLY', 'WEEKLYS', info.WEEKLY, 5);
 
-  document.getElementById('PHASE').value = c[1].PHASE
-  document.getElementById('TARGET').value = c[1].TARGET
-  document.getElementById('NORMAL').value = c[1].NORMAL
-  document.getElementById('TNORMAL').value = c[1].TNORMAL
-  document.getElementById('SKILL').value = c[1].SKILL
-  document.getElementById('TSKILL').value = c[1].TSKILL
-  document.getElementById('BURST').value = c[1].BURST
-  document.getElementById('TBURST').value = c[1].TBURST
+  document.getElementById('PHASE').value = state.PHASE
+  document.getElementById('TARGET').value = state.TARGET
+  document.getElementById('NORMAL').value = state.NORMAL
+  document.getElementById('TNORMAL').value = state.TNORMAL
+  document.getElementById('SKILL').value = state.SKILL
+  document.getElementById('TSKILL').value = state.TSKILL
+  document.getElementById('BURST').value = state.BURST
+  document.getElementById('TBURST').value = state.TBURST
 
   document.getElementById('STAT').textContent = info.STAT
   document.getElementById('HP').textContent = info.HP
   document.getElementById('ATK').textContent = info.ATK
   document.getElementById('DEF').textContent = info.DEF
   document.getElementById('VALUE').textContent = info.VALUE
+}
+
+function setImage(id, category, item, rank){
+  document.getElementById(id).src = getImage(category, item, rank); tool(id, item)
 }
 
 function tool(id, name){
@@ -179,8 +158,7 @@ function plus(){
   let value;
   if(cons === 'C6') return;
   else if(cons === ''){
-    userChar[name]['OWNED'] = true;
-    value = 0;
+    userChar[name]['OWNED'] = true; value = 0;
   }
   else if(cons !== '' && cons !== 'C6') {
     value = +cons[1] + 1;
@@ -189,11 +167,8 @@ function plus(){
   document.getElementById('CONSTELLATION').textContent = 'C' + value;
   userChar[name]['CONSTELLATION'] = value;
 
-  caching('cacheC', userChar[name]['ROW'], userChar[name])
-
-  let user = sessionStorage.get('user');
-  user.Characters = userChar;
-  sessionStorage.set('user', user);
+  store('Characters', userChar);
+  caching('cacheC', userChar[name]['ROW'], userChar[name]);
 }
 
 function minus(){
@@ -202,48 +177,34 @@ function minus(){
   let value, string;
   if(cons === '') return;
   else if(cons === 'C0'){
-    value = '';
-    string = '';
-    userChar[name]['OWNED'] = false;
+    value = ''; string = ''; userChar[name]['OWNED'] = false;
   }
   else if(cons !== '' && cons !== 'C0') {
-    value = +cons[1] - 1;
-    string = 'C' + value;
+    value = +cons[1] - 1; string = 'C' + value;
   }
 
   document.getElementById('CONSTELLATION').textContent = string;
   userChar[name]['CONSTELLATION'] = value;
 
+  store('Characters', userChar);
   caching('cacheC', userChar[name]['ROW'], userChar[name]);
-
-  let user = sessionStorage.get('user');
-  user.Characters = userChar;
-  sessionStorage.set('user', user);
 }
 
 function closeChar(){
   document.getElementById('char-menu').classList.remove('hide')
   document.getElementById('char').classList.add('hide')
-  editOut();
-  characters();
+  editOut(); characters();
 }
 
 function update(e){
   let name = document.getElementById('NAME').textContent;
-  if(e.id === "FARM") userChar[name][e.id] = e.checked;
+  if(e.id === 'FARM') userChar[name][e.id] = e.checked;
   else userChar[name][e.id] = e.value;
   
-  sessionStorage.set('calc', true);
+  sessionStorage.set('calc', true); store('Characters', userChar);
   caching('cacheC', userChar[name]['ROW'], userChar[name]);
-
-  let user = sessionStorage.get('user');
-  user.Characters = userChar;
-  sessionStorage.set('user', user);
 }
 
 function saveCharacters(){
-  let user = sessionStorage.get('user');
-  user.Characters = userChar;
-  sessionStorage.set('user', user);
-  setChar();
+  store('Characters', userChar); setChar();
 }

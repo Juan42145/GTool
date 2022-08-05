@@ -1,183 +1,56 @@
 let userChar = sessionStorage.get('user').Characters;
 let userWpn = sessionStorage.get('user').Weapons;
+let calc;
 
 function farm(){
-  makeChar();
-  makeWpn();
+  if(sessionStorage.get('calc')) calculate(); calc = sessionStorage.get('calculator');
+  makeChar(); makeWpn();
 }
 
 function makeChar(){
   document.getElementById('Characters').innerHTML = '';
-  if(sessionStorage.get('calc')) calculate();
-  let calc = sessionStorage.get('calculator');
-
   let characters = document.getElementById('Characters');
-  Object.entries(calc.CHARACTERS).forEach(c => {
-    const ROW = document.createElement("div");
-    ROW.classList = "farm-row";
-    ROW.dataset.color = c[1].ELEMENT;
-    characters.append(ROW);
+  Object.entries(calc.CHARACTERS).forEach(([name, attrs]) => {
+    const ROW = create(characters, 'div', 
+      {'class':'farm-row','data-color':attrs.AFARM.GEM[0]})
 
-    const CHAR = document.createElement("div");
-    CHAR.classList = 'farm-char';
-    ROW.append(CHAR);
-    const ASC = document.createElement("div");
-    ASC.classList = 'farm-asc';
-    ROW.append(ASC);
-    const TLN = document.createElement("div");
-    TLN.classList = 'farm-tln';
-    ROW.append(TLN);
+    const CHAR = create(ROW, 'div', {'class':'farm-char'})
+    const ASCN = create(ROW, 'div', {'class':'farm-ascn'})
+    const TLNT = create(ROW, 'div', {'class':'farm-tlnt'})
 
-    const IMG = document.createElement("img")
-    IMG.classList = "image";
+    let link = name === 'Traveler'? 'traveler_geo': name.toLowerCase().replaceAll(' ','_');
+    const IMG = create(CHAR, 'img', {'class':'image','src':'https://paimon.moe/images/characters/'+link+'.png'})
     IMG.onerror = function(){this.classList.add('hide')};
-    CHAR.append(IMG);
 
-    let link = c[0] === 'Traveler'? 'traveler_geo': c[0].toLowerCase().replaceAll(' ','_');
-    IMG.src = "https://paimon.moe/images/characters/"+link+".png";
+    const NAME = create(CHAR, 'div', {'class':'farm-name'}); NAME.textContent = name;
 
-    const NAME = document.createElement("div");
-    NAME.classList = 'farm-name';
-    NAME.textContent = c[0];
-    CHAR.append(NAME);
+    makeInputs(ASCN, name, 'CHARACTERS', 'AFARM', attrs.ASCENSION);
+    makeInputs(TLNT, name, 'CHARACTERS', 'TFARM',
+      [...attrs.TALENT[0],...attrs.TALENT[1],...attrs.TALENT[2]]);
 
-    const AINP = document.createElement("div");
-    AINP.classList = 'farm-inp';
-    ASC.append(AINP);
-
-    AINP.append(makeInput(c[0], c[1].ASCENSION[0], 'PHASE'));
-    AINP.append(makeInput(c[0], c[1].ASCENSION[1], 'TARGET'));
-
-    const TINP = document.createElement("div");
-    TINP.classList = 'farm-inp';
-    TLN.append(TINP);
-
-    TINP.append(makeInput(c[0], c[1].TALENT[0][0], 'NORMAL'));
-    TINP.append(makeInput(c[0], c[1].TALENT[0][1], 'TNORMAL'));
-    TINP.append(makeInput(c[0], c[1].TALENT[1][0], 'SKILL'));
-    TINP.append(makeInput(c[0], c[1].TALENT[1][1], 'TSKILL'));
-    TINP.append(makeInput(c[0], c[1].TALENT[2][0], 'BURST'));
-    TINP.append(makeInput(c[0], c[1].TALENT[2][1], 'TBURST'));
-
-    ASC.append(makeDiv(c,'GEMS','ELEMENT','$GEM', true))
-    ASC.append(makeDiv(c,'BOSSES','BOSS','$BOSS', false))
-    ASC.append(makeDiv(c,'LOCALS','LOCAL','$LOCAL', false))
-    ASC.append(makeDiv(c,'ENEMIES','A_COMMON','$A_COMMON', true))
-    ASC.append(makeDiv(c,'RESOURCES','EXP','$EXP', false))
-    ASC.append(makeDiv(c,'RESOURCES','Mora','$A_MORA', false))
-
-    TLN.append(makeDiv(c,'BOOKS','BOOK','$BOOK', true))
-    TLN.append(makeDiv(c,'ENEMIES','T_COMMON','$T_COMMON', true))
-    TLN.append(makeDiv(c,'WEEKLYS','WEEKLY','$WEEKLY', false))
-    TLN.append(makeDiv(c,'RESOURCES','Mora','$T_MORA', false))
-
-  });
-
-  function makeInput(char, v, attr){
-    const INP = Object.assign(document.createElement("input"),{
-      type: "text", pattern: "\\d*", value: v
-    });
-    INP.addEventListener("change", function(){updateC(char, attr, INP.value)}, false);
-    INP.addEventListener('click', (e)=>{focusText(e)})
-    return INP;
-  }
-  
-  function makeDiv(c, sec, name, cat, addTotal){
-    if(name === 'EXP' || name == 'Mora') name = name;
-    else if(name == 'WEEKLY') name = c[1][name].split(' ')[1];
-    else name = c[1][name];
-
-    const DIV = document.createElement('div');
-    DIV.classList = 'container';
-
-    if(addTotal) DIV.classList.add('ct')
-    if(!c[1][cat] || Object.keys(c[1][cat]).length == 0) return DIV;
-    let counter = total = 0;
-    Object.entries(c[1][cat]).reverse().forEach(item => {
-      if(addTotal){
-        total += item[1]/(3**counter);
-        counter++;
-      }
-      if(item[1] === 0) return;
-      DIV.addEventListener('mouseover', ()=>{tooltip.show(name)})
-      DIV.addEventListener('mouseout', ()=>{tooltip.hide()})
-
-      const CARD = document.createElement('div');
-      CARD.classList = `item r_${item[0]}`;
-      DIV.append(CARD);
-  
-      const IMG = document.createElement("img")
-      IMG.classList = "image";
-      IMG.onerror = function(){this.classList.add('hide')};
-      IMG.src = getImage(sec, name, item[0]);
-      CARD.append(IMG);
-  
-      const NEED = document.createElement("p");
-      NEED.classList= "need";
-      NEED.innerText = item[1];
-      CARD.append(NEED)
-    });
-  
-    if(addTotal){
-      const TOTAL = document.createElement("div");
-      TOTAL.classList = `total`;
-      DIV.append(TOTAL);
-      
-      const NEED = document.createElement("p");
-      NEED.classList = "need";
-      NEED.textContent = Math.ceil(total*100)/100;
-      TOTAL.append(NEED);
-    }
-  
-    return DIV
-  }
-  
+    makeFarm(ASCN, name, 'CHARACTERS', 'AFARM');
+    makeFarm(TLNT, name, 'CHARACTERS', 'TFARM');
+  });  
 }
 
 function makeWpn(){
   document.getElementById('Weapons').innerHTML = '';
-  if(sessionStorage.get('calc')) calculate();
-  let calc = sessionStorage.get('calculator');
-
   let weapons = document.getElementById('Weapons');
-  Object.entries(calc.WEAPONS).forEach(w => {
-    const ROW = document.createElement("div");
-    ROW.classList = "farm-row weapons";
-    ROW.dataset.color = w[1].RARITY;
-    weapons.append(ROW);
+  Object.entries(calc.WEAPONS).forEach(([name, attrs]) => {
+    const ROW = create(weapons, 'div', 
+      {'class':'farm-row weapons','data-color':attrs.RARITY})
 
-    const WPN = document.createElement("div");
-    WPN.classList = 'farm-wpn';
-    ROW.append(WPN);
-    const WD = document.createElement("div");
-    WD.classList = 'farm-wpndata';
-    ROW.append(WD);
+    const WPN = create(ROW, 'div', {'class':'farm-wpn'})
+    const WD = create(ROW, 'div', {'class':'farm-wpndata'})
 
-    const IMG = document.createElement("img")
-    IMG.classList = "image";
+    let link = name.toLowerCase().replaceAll(' ','_').replaceAll('"','').replaceAll("'", '');
+    const IMG = create(WPN, 'img', {'class':'image','src':'https://paimon.moe/images/weapons/'+link+'.png'})
     IMG.onerror = function(){this.classList.add('hide')};
-    WPN.append(IMG);
 
-    let link = w[0].toLowerCase().replaceAll(' ','_').replaceAll('"','').replaceAll("'", '');
-    IMG.src = "https://paimon.moe/images/weapons/"+link+".png";
+    const NAME = create(WPN, 'div', {'class':'farm-name'}); NAME.textContent = name;
 
-    const NAME = document.createElement("div");
-    NAME.classList = 'farm-name';
-    NAME.textContent = w[0];
-    WPN.append(NAME);
-
-    const INP = document.createElement("div");
-    INP.classList = 'farm-inp';
-    WD.append(INP);
-
-    INP.append(makeInput(w[0], w[1].PHASE[0], 'PHASE'));
-    INP.append(makeInput(w[0], w[1].PHASE[1], 'TARGET'));
-
-    WD.append(makeDiv(w,'WEAPONS','ASCENSION','$ASCENSION', true))
-    WD.append(makeDiv(w,'ENEMIES','ELITE','$ELITE', true))
-    WD.append(makeDiv(w,'ENEMIES','COMMON','$COMMON', true))
-    WD.append(makeDiv(w,'RESOURCES','Crystals','$CRYSTALS', false))
-    WD.append(makeDiv(w,'RESOURCES','Mora','$MORA', false))
+    makeInputs(WD, name, 'WEAPONS', 'FARM', attrs.PHASE);
+    makeFarm(WD, name, 'WEAPONS', 'FARM');
   });
 
   function makeInput(wpn, v, attr){
@@ -188,87 +61,138 @@ function makeWpn(){
     INP.addEventListener('click', (e)=>{focusText(e)})
     return INP;
   }
+}
+
+function makeInputs(COMP, name, section, id, values){
+  const DIV = create(COMP, 'div', {'class':'farm-inp'})
+  let attrNames = values.length === 2? ['PHASE','TARGET']:['NORMAL','TNORMAL','SKILL','TSKILL','BURST','TBURST']
+  values.forEach((value,i) => {
+    const INP = create(DIV, 'input', {'type':'text','pattern':'\\d*','value': value})
+    INP.addEventListener('change', ()=>{
+      if(section === 'CHARACTERS') updateC(name, attrNames[i], INP.value);
+      if(section === 'WEAPONS') updateW(name, attrNames[i], INP.value);
+      makeFarm(COMP, name, section, id);
+    }, false);
+    INP.addEventListener('click', (e)=>{focusText(e)})
+  });
+}
+
+function makeFarm(COMP, name, section, id){
+  if(sessionStorage.get('calc')) calculate(); calc = sessionStorage.get('calculator');
   
-  function makeDiv(w, sec, name, cat, addTotal){
-    if(name === 'Crystals' || name == 'Mora') name = name;
-    else name = w[1][name];
-
-    const DIV = document.createElement('div');
-    DIV.classList = 'container';
-
+  let FARM = document.getElementById('f_'+id+name.replaceAll(' ','_'))
+  if(FARM) FARM.innerHTML = '';
+  else FARM = create(COMP, 'div',
+    {'class':'farm-farm','id':'f_'+id+name.replaceAll(' ','_')})
+  
+  Object.entries(calc[section][name][id]).forEach(([category, [item, materials]]) => {
+    addTotal = getTotal(category);
+    category = translate(category); item = decode(category, item);
+    
+    const DIV = create(FARM, 'div', {'class':'container'})
     if(addTotal) DIV.classList.add('ct')
-    if(!w[1][cat]) return DIV;
-    let counter = total = 0;
-    Object.entries(w[1][cat]).reverse().forEach(item => {
+    
+    if(!materials) return
+    let counter = 0, total = 0;
+    Object.entries(materials).reverse().forEach(([rank, value]) => {
       if(addTotal){
-        total += item[1]/(3**counter);
-        counter++;
+        total += value/(3**counter); counter++;
       }
-      if(item[1] === 0) return;
+      if(value === 0) return;
       DIV.addEventListener('mouseover', ()=>{tooltip.show(name)})
       DIV.addEventListener('mouseout', ()=>{tooltip.hide()})
-
-      const CARD = document.createElement('div');
-      CARD.classList = `item r_${item[0]}`;
-      DIV.append(CARD);
   
-      const IMG = document.createElement("img")
-      IMG.classList = "image";
+      const CARD = create(DIV, 'div', {'class':'item r_'+rank})
+  
+      const IMG = create(CARD, 'img', {'class':'image','src':getImage(category, item, rank)})
       IMG.onerror = function(){this.classList.add('hide')};
-      IMG.src = getImage(sec, name, item[0]);
-      CARD.append(IMG);
   
-      const NEED = document.createElement("p");
-      NEED.classList= "need";
-      NEED.innerText = item[1];
-      CARD.append(NEED)
+      const NEED = create(CARD, 'p', {'class':'need'}); NEED.textContent = value;
     });
-  
     if(addTotal){
-      const TOTAL = document.createElement("div");
-      TOTAL.classList = `total`;
-      DIV.append(TOTAL);
+      const TOTAL = create(DIV, 'div', {'class':'total'})
       
-      const NEED = document.createElement("p");
-      NEED.classList = "need";
+      const NEED = create(TOTAL, 'p', {'class':'need'});
       NEED.textContent = Math.ceil(total*100)/100;
-      TOTAL.append(NEED);
     }
-  
-    return DIV
+  });
+}
+
+function translate(category){
+  let dict = {
+    'BOOK': 'BOOKS',
+    'TROPHY': 'TROPHIES',
+    'EXP': 'RESOURCES',
+    'MORA': 'RESOURCES',
+    'ORE': 'RESOURCES',
+    'GEM': 'GEMS',
+    'WEEKLY': 'WEEKLYS',
+    'ELITE': 'ENEMIES',
+    'BOSS': 'BOSSES',
+    'COMMON': 'ENEMIES',
+    'LOCAL': 'LOCALS',
   }
-  
+  return dict[category];
 }
 
-function updateC(char, attr, value){
-  userChar[char][attr] = value;
-  
-  sessionStorage.set('calc', true);
-  caching('cacheC', userChar[char]['ROW'], userChar[char]);
-  
-  let user = sessionStorage.get('user');
-  user.Characters = userChar;
-  sessionStorage.set('user', user);
-  makeChar();
+function decode(category, item){
+  return category === 'WEEKLYS'? item.split(' ')[1]: item;
 }
 
-function updateW(wpn, attr, value){
-  userWpn[wpn][attr] = value;
-  
-  sessionStorage.set('calc', true);
-  caching('cacheW', userWpn[wpn]['ROW'], userWpn[wpn]);
-  
-  let user = sessionStorage.get('user');
-  user.Weapons = userWpn;
-  sessionStorage.set('user', user);
-  makeWpn();
+function getTotal(category){
+  let dict = {
+    'BOOK': true,
+    'TROPHY': true,
+    'EXP': false,
+    'MORA': false,
+    'ORE': false,
+    'GEM': true,
+    'WEEKLY': false,
+    'ELITE': true,
+    'BOSS': false,
+    'COMMON': true,
+    'LOCAL': false,
+  }
+  return dict[category];
 }
+
+function updateC(name, attr, value){
+  userChar[name][attr] = value;
+  sessionStorage.set('calc', true); store('Characters', userChar);
+  caching('cacheC', userChar[name]['ROW'], userChar[name]);
+}
+
+function updateW(name, attr, value){
+  userWpn[name][attr] = value;
+  sessionStorage.set('calc', true); store('Weapons', userWpn);
+  caching('cacheW', userWpn[name]['ROW'], userWpn[name]);
+}
+
+/*
+function makePageC(char){
+  document.getElementById('home').classList.add('hide')
+  const PAGE = document.getElementById('page');
+  PAGE.classList.remove('hide')
+  const CLOSE = PAGE.firstElementChild;
+  PAGE.innerHTML = '';
+  PAGE.append(CLOSE);
+
+  const TBL = document.createElement("div");
+  TBL.classList = "farm-tbl";
+  PAGE.append(TBL);
+
+  //makeRow
+  //makeInv
+}
+
+function makeRow(char){
+
+}*/
 
 function save(){
   let user = sessionStorage.get('user');
   user.Characters = userChar;
   user.Weapons = userWpn;
   sessionStorage.set('user', user);
-  setChar();
-  setWpn();
+  setChar(); setWpn();
 }

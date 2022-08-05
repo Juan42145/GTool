@@ -1,42 +1,38 @@
 const DB = sessionStorage.get('DB').DB_Weapons;
 let userWpn = sessionStorage.get('user').Weapons;
 let filters = ['Sword','Claymore','Bow','Polearm','Catalyst'];
-let filter = second = count = 0;
-let owned = flip = false;
+let filter = 0, second = 0, count = 0; owned = false, flip = false;
 let sorting = function(){};
 
-/*WEAPONS*/
+/*--WEAPONS--*/
 document.addEventListener('DOMContentLoaded', () => {
   let menu = document.getElementsByClassName('options')[0];
-  filters.forEach((w, i) => {
-    menu.getElementsByTagName('img')[i].src = getImage('WEAPON', w, 0);
+  filters.forEach((wpn, i) => {
+    menu.getElementsByTagName('img')[i].src = getImage('WEAPON', wpn, 0);
   });
 },false)
 
 function weapons(){
   document.getElementById('weapons').innerHTML = '';
-  let array = Object.entries(userWpn).sort(sorting);
-  if(flip) array.reverse();
-  array.forEach(w => {
+  let array = Object.entries(userWpn).sort(sorting); if(flip) array.reverse();
+  array.forEach(wpn => {
     if(owned && filter !== 0){
-      if(w[1].OWNED && DB[w[0]].TYPE === filters[filter-1]) makeRow(w)
+      if(wpn[1].OWNED && DB[wpn[0]].TYPE === filters[filter-1]) makeRow(wpn)
     }
     else if(owned){
-      if(w[1].OWNED) makeRow(w);
+      if(wpn[1].OWNED) makeRow(wpn);
     }
     else if(filter !== 0){
-      if(DB[w[0]].TYPE === filters[filter-1]) makeRow(w);
+      if(DB[wpn[0]].TYPE === filters[filter-1]) makeRow(wpn);
     }
     else{
-      makeRow(w);
+      makeRow(wpn);
     }
   });
 }
 
 function filterOwned(btn){
-  owned = !owned;
-  weapons();
-  btn.classList.toggle('selected')
+  owned = !owned; btn.classList.toggle('selected'); weapons();
 }
 
 function filterWpn(btn, value){
@@ -45,27 +41,21 @@ function filterWpn(btn, value){
     if(filter !== 0) document.getElementsByClassName('picked')[0].classList.toggle('picked')
     filter = value;
   }
-  weapons();
-  btn.classList.toggle('picked')
+  btn.classList.toggle('picked'); weapons();
 }
 
 function sortTable(value){
   let sorts = [function(){}, sortF, sortR , sortName, sortPhase, sortATK, sortStat, sortA, sortE, sortC, sortRR]
   if(second === value && count === 2){
-    second = count = value = 0;
-    flip = false;
+    second = 0; count = 0; value = 0; flip = false;
   }
   else if(second === value){
-    count = 2;
-    flip = true;
+    count = 2; flip = true;
   } 
   else {
-    second = value;
-    count = 1;
-    flip = false;
+    second = value; count = 1; flip = false;
   }
-  sorting = sorts[value];
-  weapons();
+  sorting = sorts[value]; weapons();
 }
 
 function sortF(a,b){
@@ -93,8 +83,8 @@ function sortStat(a,b){
 }
 
 function sortA(a,b){
-  let k = Object.keys(sessionStorage.get('DB').DB_Master.WEAPONS)
-  return k.indexOf(DB[a[0]].ASCENSION) - k.indexOf(DB[b[0]].ASCENSION)
+  let k = Object.keys(sessionStorage.get('DB').DB_Master.TROPHIES)
+  return k.indexOf(DB[a[0]].TROPHY) - k.indexOf(DB[b[0]].TROPHY)
 }
 
 function sortE(a,b){
@@ -111,149 +101,109 @@ function sortRR(a,b){
   return DB[b[0]].RARITY - DB[a[0]].RARITY;
 }
 
-function makeRow(w){
-  const info = DB[w[0]];
+function makeRow(wpn){
+  let [name, state] = wpn; const info = DB[name];
 
-  const ROW = document.createElement('tr');
-  ROW.classList.add('w_'+info.RARITY);
-  document.getElementById('weapons').append(ROW);
+  const ROW = create(document.getElementById('weapons'), 'tr', {'class':'w_'+info.RARITY})
   ROW.addEventListener('click', (e)=>{
-    if(e.target.classList == 'farm') return
-    showInfo(w)
+    if(e.target.classList == 'farm') return;
+    showInfo(wpn)
   }, false);
 
   let CELL;
 
-  CELL = document.createElement('td');
-  CELL.classList = 'farm';
-  const FARM = Object.assign(document.createElement("input"),{
-    type: "checkbox", classList: "farm", checked: w[1].FARM
-  });
-  FARM.addEventListener("change", function(){
-      
-    userWpn[w[0]].FARM = FARM.checked;
-
-    sessionStorage.set('calc', true);
-    caching('cacheW', userWpn[w[0]].ROW, userWpn[w[0]]);
-    
-    let user = sessionStorage.get('user');
-    user.Weapons = userWpn;
-    sessionStorage.set('user', user);
-
-  }, false);
-  FARM.removeEventListener('click',()=>showInfo(w), false)
-
-  CELL.append(FARM)
-  ROW.append(CELL);
-
-  CELL = document.createElement('td');
-  CELL.classList = 'img'
-  const IMG = document.createElement('img');
-  IMG.onerror = function(){this.classList.add('hide')};
+  CELL = create(ROW, 'td', {'class':'farm'})
   
-  let link = w[0].toLowerCase().replaceAll(' ','_').replaceAll('"','').replaceAll("'", '');
-  IMG.src = "https://paimon.moe/images/weapons/"+link+".png";
+  const FARM = create(CELL, 'input', {'class': 'farm', 'type':'checkbox'});
+  FARM.checked = state.FARM;
+  FARM.addEventListener('change', function(){
+    userWpn[name].FARM = FARM.checked;
+    sessionStorage.set('calc', true); store('Weapons', userWpn);
+    caching('cacheW', userWpn[name].ROW, userWpn[name]);
+  }, false);
 
-  if(w[1].OWNED){
-    const TAG = document.createElement("p");
-    TAG.classList = "tag";
-    TAG.innerText = 'R'+ +w[1].REFINEMENT;
-    CELL.append(TAG);
+
+  CELL = create(ROW, 'td', {'class':'img'})
+  
+  let link = name.toLowerCase().replaceAll(' ','_').replaceAll('"','').replaceAll("'", '');
+  const IMG = create(CELL, 'img', {'src': 'https://paimon.moe/images/weapons/'+link+'.png'})
+  IMG.onerror = function(){this.classList.add('hide')};
+
+  if(state.OWNED){
+    const TAG = create(CELL, 'p', {'class':'tag'});
+    TAG.textContent = 'R'+ +state.REFINEMENT;
   }
   else{
     ROW.classList.add('missing')
   }
-  
-  CELL.append(IMG)
-  ROW.append(CELL);
 
-  const NAME = document.createElement("td");
-  NAME.classList= "name";
-  NAME.textContent = w[0];
-  ROW.append(NAME)
+  const NAME = create(ROW, 'td', {'class':'name'});
+  NAME.textContent = name;
 
-  const PHASE = document.createElement("td");
-  PHASE.classList= "phase";
-  PHASE.textContent = w[1].PHASE;
-  ROW.append(PHASE)
+  const PHASE = create(ROW, 'td', {'class':'phase'});
+  PHASE.textContent = state.PHASE;
 
-  const TYPE = document.createElement("td");
-  TYPE.classList= "type";
+  const TYPE = create(ROW, 'td', {'class':'type'});
   TYPE.textContent = info.TYPE;
-  ROW.append(TYPE)
 
-  const ATK = document.createElement("td");
-  ATK.classList= "atk";
+  const ATK = create(ROW, 'td', {'class':'atk'});
   ATK.textContent = info.ATK;
-  ROW.append(ATK)
 
-  const STAT = document.createElement("td");
-  STAT.classList= "stat";
+  const STAT = create(ROW, 'td', {'class':'stat'});
   STAT.textContent = info.STAT;
-  ROW.append(STAT)
 
-  const VALUE = document.createElement("td");
-  VALUE.classList= "value";
+  const VALUE = create(ROW, 'td', {'class':'value'});
   VALUE.textContent = info.VALUE;
-  ROW.append(VALUE)
 
-  CELL = document.createElement('td');
-  CELL.classList = 'r_2';
-  const ASC = document.createElement('img');
+  CELL = create(ROW, 'td', {'class':'r_2'});
+  
+  const ASC = create(CELL, 'img', {'src':getImage('TROPHIES', info.TROPHY, 2)});
   ASC.onerror = function(){this.classList.add('hide')};
-  ASC.src = getImage("WEAPONS", info.ASCENSION, 2);
-  CELL.append(ASC);
-  ROW.append(CELL);
 
-  CELL = document.createElement('td');
-  CELL.classList = 'r_2';
-  const ELITE = document.createElement('img');
+  CELL = create(ROW, 'td', {'class':'r_2'});
+  
+  const ELITE = create(CELL, 'img', {'src':getImage('ENEMIES', info.ELITE, 2)});
   ELITE.onerror = function(){this.classList.add('hide')};
-  ELITE.src = getImage("ENEMIES", info.ELITE, 2);
-  CELL.append(ELITE);
-  ROW.append(CELL);
 
-  CELL = document.createElement('td');
-  CELL.classList = 'r_1';
-  const COMMON = document.createElement('img');
+  CELL = create(ROW, 'td', {'class':'r_1'});
+
+  const COMMON = create(CELL, 'img', {'src':getImage('ENEMIES', info.COMMON, 1)});
   COMMON.onerror = function(){this.classList.add('hide')};
-  COMMON.src = getImage("ENEMIES", info.COMMON, 1);
-  CELL.append(COMMON);
-  ROW.append(CELL);
 }
 
-function showInfo(w){
+/*--INFO PAGE--*/
+function showInfo(wpn){
+  let [name, state] = wpn; const info = DB[name];
   document.getElementById('weapon-menu').classList.add('hide')
   document.getElementById('wpn').classList.remove('hide')
 
-  const info = DB[w[0]];
-  let link = w[0].toLowerCase().replaceAll(' ','_').replaceAll('"','').replaceAll("'", '');
-  document.getElementById('wpn-img').src = "https://paimon.moe/images/weapons/"+link+".png";
+  let link = name.toLowerCase().replaceAll(' ','_').replaceAll('"','').replaceAll("'", '');
+  document.getElementById('wpn-img').src = 'https://paimon.moe/images/weapons/'+link+'.png';
   document.getElementById('wpn').dataset.color = info.RARITY;
   
-  document.getElementById('NAME').textContent = w[0];
-  document.getElementById('RARITY').classList = 's'+info.RARITY
-  document.getElementById('WEAPON').textContent = info.TYPE
+  document.getElementById('NAME').textContent = name;
+  document.getElementById('RARITY').classList = 's'+info.RARITY;
+  document.getElementById('TYPE').textContent = info.TYPE;
   
-  if(w[1].OWNED){
+  if(state.OWNED){
     document.getElementById('REFINEMENT').classList.remove('hide')
-    document.getElementById('REFINEMENT').textContent = 'R'+w[1].REFINEMENT;
+    document.getElementById('REFINEMENT').textContent = 'R'+state.REFINEMENT;
   } else{
     document.getElementById('REFINEMENT').classList.add('hide')
     document.getElementById('REFINEMENT').textContent = '';
   }
 
-  document.getElementById('FARM').checked = w[1].FARM
+  document.getElementById('FARM').checked = state.FARM
 
-  document.getElementById('ASCENSION').src = getImage('WEAPONS', info.ASCENSION, 2)
-  tool('ASCENSION', info.ASCENSION)
+  document.getElementById('TROPHY').src = getImage('TROPHIES', info.TROPHY, 2)
+  tool('TROPHY', info.TROPHY)
   document.getElementById('ELITE').src = getImage('ENEMIES', info.ELITE, 2)
   tool('ELITE', info.ELITE)
   document.getElementById('COMMON').src = getImage('ENEMIES', info.COMMON, 1)
   tool('COMMON', info.COMMON)
 
-  document.getElementById('PHASE').value = w[1].PHASE
-  document.getElementById('TARGET').value = w[1].TARGET
+  document.getElementById('PHASE').value = state.PHASE
+  document.getElementById('TARGET').value = state.TARGET
 
   document.getElementById('STAT').textContent = info.STAT
   document.getElementById('ATK').textContent = info.ATK
@@ -296,21 +246,16 @@ function plus(){
   let value;
   if(ref === 'R5') return;
   else if(ref === ''){
-    userWpn[name]['OWNED'] = true;
-    value = 1;
+    userWpn[name]['OWNED'] = true; value = 1;
   }
   else if(ref !== '' && ref !== 'R5') {
     value = +ref[1] + 1;
   }
 
   document.getElementById('REFINEMENT').textContent = 'R' + value;
-  userWpn[name]['REFINEMENT'] = value;
-
+  userWpn[name]['REFINEMENT'] = value; store('Weapons', userWpn);
   caching('cacheW', userWpn[name]['ROW'], userWpn[name]);
 
-  let user = sessionStorage.get('user');
-  user.Weapons = userWpn;
-  sessionStorage.set('user', user);
 }
 
 function minus(){
@@ -319,48 +264,32 @@ function minus(){
   let value, string;
   if(ref === '') return;
   else if(ref === 'R1'){
-    value = '';
-    string = '';
-    userWpn[name]['OWNED'] = false;
+    value = ''; string = ''; userWpn[name]['OWNED'] = false;
   }
   else if(ref !== '' && ref !== 'C0') {
-    value = +ref[1] - 1;
-    string = 'R' + value;
+    value = +ref[1] - 1; string = 'R' + value;
   }
 
   document.getElementById('REFINEMENT').textContent = string;
-  userWpn[name]['REFINEMENT'] = value;
-
+  userWpn[name]['REFINEMENT'] = value; store('Weapons', userWpn);
   caching('cacheW', userWpn[name]['ROW'],userWpn[name]);
-
-  let user = sessionStorage.get('user');
-  user.Weapons = userWpn;
-  sessionStorage.set('user', user);
 }
 
 function closeChar(){
   document.getElementById('weapon-menu').classList.remove('hide')
   document.getElementById('wpn').classList.add('hide')
-  editOut();
-  weapons();
+  editOut(); weapons();
 }
 
 function update(e){
   let name = document.getElementById('NAME').textContent;
-  if(e.id === "FARM") userWpn[name][e.id] = e.checked;
+  if(e.id === 'FARM') userWpn[name][e.id] = e.checked;
   else userWpn[name][e.id] = e.value;
   
-  sessionStorage.set('calc', true);
+  sessionStorage.set('calc', true); store('Weapons', userWpn);
   caching('cacheW', userWpn[name]['ROW'],userWpn[name]);
-
-  let user = sessionStorage.get('user');
-  user.Weapons = userWpn;
-  sessionStorage.set('user', user);
 }
 
 function saveWeapons(){
-  let user = sessionStorage.get('user');
-  user.Weapons = userWpn;
-  sessionStorage.set('user', user);
-  setWpn();
+  store('Weapons', userWpn); setWpn();
 }

@@ -1,180 +1,136 @@
 const DB = sessionStorage.get('DB').DB_Master;
 let userInv = sessionStorage.get('user').Inventory;
-const REGION = Object.keys(DB.ELEMENT);
-const D = (new Date()).getDay();
+const REGION = Object.keys(DB.ELEMENT); const D = (new Date()).getDay();
 
 /*HOME*/
 function home(){
   if(sessionStorage.get('calc')) calculate();
 
-  Object.entries(sessionStorage.get('pivot')).forEach((section) => {
-    const SEC = document.getElementById(section[0]);
-    if(Object.keys(section[1]).length === 0) return;
+  Object.entries(sessionStorage.get('pivot')).forEach(cData => {
+    let [category, items] = cData;
 
-    SEC.classList.remove("hide");
-    const TITLE = SEC.firstElementChild;
-    SEC.innerHTML = '';
-    SEC.append(TITLE);
+    if(Object.keys(items).length === 0) return;
+
+    const SEC = document.getElementById(category);
+    SEC.classList.remove('hide'); SEC.innerHTML = '';
+
+    const TITLE = create(SEC, 'div', {'class': 'sec-title'});
+    TITLE.textContent = category;
     
     let isTotal = SEC.classList.contains('sec-total');
-    SEC.addEventListener('click', function(){page(section, isTotal)}, false);
+    SEC.addEventListener('click', () => page(cData, isTotal), false);
 
-    const TBL = document.createElement("div");
-    TBL.classList = "home-tbl";
-    TBL.dataset.total = isTotal;
-    SEC.append(TBL);
+    const TBL = create(SEC, 'div', {'class':'home-tbl', 'data-total': isTotal})
   
-    Object.entries(section[1]).sort(sortOrder(section[0])).forEach((row, ri) => {
-      makeRow(TBL, section, row, ri, true);
+    Object.entries(items).sort(sortOrder(category)).forEach((iData, ii) => {
+      makeRow(TBL, category, iData, ii, false);
     });
   });
 
   resize()
 }
 
-function makeRow(TBL, section, row, ri, isHide){
-  let ROW = document.getElementById('r_'+row[0])
-  if(ROW && !isHide){
-    ROW.innerHTML = '';
-  } else{
-    ROW = document.createElement("div");
-    ROW.classList = "home-row";
-    TBL.append(ROW);
-  }
+function makeRow(TBL, category, iData, ii, isPage){
+  let [item, materials] = iData;
+
+  //No longer problem with multiple names
+  let ROW = document.getElementById('r_'+item)
+  if(ROW && isPage) ROW.innerHTML = '';
+  else ROW = create(TBL, 'div', {'class':'home-row'})
   
-  if(!isHide && TBL.dataset.total === 'true') ROW.style = `grid-row: ${(2*ri+1)};`;
-  else ROW.style = `grid-row: ${(ri+1)};`;
+  if(isPage && TBL.dataset.total === 'true') ROW.style = 'grid-row: '+(2*ii+1);
+  else ROW.style = 'grid-row: '+(ii+1);
 
-  if(!isHide) ROW.id = 'r_'+row[0];
+  if(isPage) ROW.id = 'r_'+item;
 
-  const NAME = document.createElement("div");
-  NAME.classList = "home-name";
-  NAME.textContent = row[0];
+  const NAME = create(ROW, 'div', {'class':'home-name'}); NAME.textContent = item;
 
-  if(!isHide || row[0] != 'Mora') ROW.append(NAME);
-  if(section[0] == 'BOOK' || section[0] == 'WEAPON' || section[0] == 'WEEKLY') setData(section[0], row[0], NAME, isHide);
+  if(category === 'BOOKS' || category === 'TROPHIES' || category === 'WEEKLYS')
+    setData(category, item, NAME, isPage);
 
-  let [tSec, tRow] = translate(section[0], row[0]);
-  let values = getInventory(tSec, tRow, row[1]);
+  let tc = translate(category), ti = decode(category, item);
+  let calc = getInventory(tc, ti, materials);
+  Object.entries(materials).reverse().forEach(([rank, value], mi) => {
+    let index = mi+3;
+    if(value){
+      const CARD = create(ROW, 'div', {'class':'home-item r_'+rank})
 
-  Object.entries(row[1]).reverse().forEach((item, i) => {
-    let index = i+3;
-    if(item[1]){
-      const ITEM = document.createElement("div");
-      ITEM.classList = `home-item r_${item[0]}`;
-      ROW.append(ITEM);
+      if(isPage) CARD.style = 'grid-column: '+index;
 
-      if(!isHide) ITEM.style = `grid-column: ${index};`;
+      const IMG = create(CARD, 'img', {'class':'home-image','src':getImage(tc,ti,rank)})
+      IMG.onerror = function(){this.classList.add('hide')}; //REVISE
 
-      const IMG = document.createElement("img");
-      IMG.classList = "home-image";
-      IMG.onerror = function(){this.classList.add('hide')};
-      IMG.src = getImage(tSec, tRow, item[0]);
-      ITEM.append(IMG);
-
-      if(row[0] === 'EXP'){
-        values[item[0]] = Math.floor(values[0]);
-      }
+      if(item === 'EXP') calc[rank] = Math.floor(calc[0]);
       
-      const INV = document.createElement("p");
-      INV.classList = "c-inv";
-      INV.innerText = values[item[0]].toLocaleString('en-us');
-      const NEED = document.createElement("p");
-      NEED.classList= "c-need";
-      NEED.innerText = "/" + item[1].toLocaleString('en-us');
+      const INV = create(CARD, 'p', {'class':'c-inv'}) //MAKE DIV
+      INV.textContent = calc[rank].toLocaleString('en-us');
+      const NEED = create(CARD, 'p', {'class':'c-need'})
+      NEED.textContent = '/' + value.toLocaleString('en-us');
 
-      if(row[0] === 'Mora'){
-        const TOTAL = document.createElement("div");
-        TOTAL.classList = `home-total mora`;
-        ROW.append(TOTAL);
+      //MORA STYLING
 
-        if(values[item[0]] >= item[1]) TOTAL.classList.add('completed');
-        else TOTAL.classList.remove('completed');
-
-        TOTAL.append(INV);
-        TOTAL.append(NEED);
-      } else{
-        ITEM.append(INV);
-        ITEM.append(NEED);
-      }
-
-      if(values[item[0]] >= item[1]) ITEM.classList.add('completed');
-      else ITEM.classList.remove('completed');
+      if(calc[rank] >= value) CARD.classList.add('completed');
+      else CARD.classList.remove('completed');
     }
   });
 
-  let complete = ROW.querySelectorAll(".home-item").length <= ROW.querySelectorAll(".completed").length;
+  let complete = ROW.querySelectorAll('.home-item').length <= ROW.querySelectorAll('.completed').length;
   if(complete) {NAME.classList.add('completed'); ROW.classList.add('completed')}
   else {NAME.classList.remove('completed'); ROW.classList.remove('completed');}
 
   if(TBL.dataset.total === 'true'){
-    const TOTAL = document.createElement("div");
-    TOTAL.classList = `home-total`;
-    ROW.append(TOTAL);
+    const TOTAL = create(ROW, 'div', {'class':'home-total'})
 
-    const INV = document.createElement("p");
-    INV.classList = "c-inv";
-    INV.textContent = Math.floor(values[0]*100)/100;
-    TOTAL.append(INV);
-    
-    const NEED = document.createElement("p");
-    NEED.classList = "c-need";
-    NEED.textContent = Math.floor(values['total']*100)/100;
-    TOTAL.append(NEED);
+    const INV = create(TOTAL, 'p', {'class':'c-inv'})
+    INV.textContent = Math.floor(calc[0]*100)/100;
+    const NEED = create(TOTAL, 'p', {'class':'c-need'})
+    NEED.textContent = Math.floor(calc['total']*100)/100;
 
-    if(section[0] == 'BOOK' || section[0] == 'WEAPON') setData(section[0], row[0], TOTAL, isHide);
+    if(category == 'BOOKS' || category == 'TROPHIES')
+      setData(category, item, TOTAL, isPage);
 
     if(complete) TOTAL.classList.add('completed');
     else TOTAL.classList.remove('completed');
   }
-
   return complete;
 }
 
-function translate(section, row){
-  if(section === "COMMON" || section === "ELITE") return ["ENEMIES", row];
-  else if(section === "EXP" || section === "MORA") return ["RESOURCES", row];
-  else if(section === "BOSS") return ["BOSSES", row];
-  else if(section === "WEEKLY") return [section + "S", row.split(' ')[1]];
-  else return [section + "S", row]; 
+function translate(category){
+  return category == 'ELITE' || category == 'COMMON'? 'ENEMIES': category;
+}
+
+function decode(category, item){
+  return category === 'WEEKLYS'? item.split(' ')[1]: item;
 }
  
-function getInventory(section, name, items){
-  let inv = {...userInv[section][name]};
-  let calc = {...inv};
-  let totals = {};
-  let l = Object.keys(items).length-1;
-  let agg = 0;
+function getInventory(category, item, materials){
+  let inv = {...userInv[category][item]}, calc = {...inv};
+  let len = Object.keys(materials).length-1;
+  let totals = {}, agg = 0, flag = 0;
   calc[0] = 0;
-  let flag = 0;
-  Object.entries(items).forEach((item, i) => {
-    calc[0] += calc[item[0]]/(3**(l - i))
-    totals[item[0]] = calc[0];
-    if(item[1] !== 0) flag = item[0];
-    if(i < l && item[1] < inv[item[0]]){
-      calc[item[0]] = +item[1];
-      inv[+item[0]+1] += Math.floor(inv[item[0]] - item[1])/3;
+  Object.entries(materials).forEach(([rank, value], mi) => {
+    calc[0] += calc[rank]/(3**(len - mi)); totals[rank] = calc[0];
+    if(value !== 0) flag = rank;
+    if(mi < len && value < inv[rank]){
+      calc[rank] = +value; inv[+rank+1] += Math.floor(inv[rank] - value)/3;
     } else{
-      calc[item[0]] = Math.floor(inv[item[0]]);
+      calc[rank] = Math.floor(inv[rank]);
     }
-    agg += item[1]/(3**(l - i));
+    agg += value/(3**(len - mi));
   });
-  calc[flag] = Math.floor(inv[flag]);
-  calc[0] = totals[flag]
-  calc['total'] = agg;
+  calc[flag] = Math.floor(inv[flag]); calc[0] = totals[flag]; calc['total'] = agg;
   return calc;
 }
 
-function setData(section, row, COMP, isHide){
-  let [sec, item] = translate(section, row);
-  COMP.classList.add('home-color')
-  COMP.dataset.color = 'Anemo';
-  let index = Object.keys(DB[sec]).indexOf(item);
-  if(section === 'WEEKLY'){
+function setData(category, item, COMP, isPage){
+  let ti = decode(category, item), index = Object.keys(DB[category]).indexOf(ti);
+  COMP.classList.add('home-color');
+  if(category === 'WEEKLY'){
     COMP.dataset.color = REGION[Math.floor(index/6) + 1];
   } else{
     COMP.dataset.color = REGION[Math.floor(index/3) + 1];
-    if(isHide && D !== 0 && (D-1)%3 !== index%3) COMP.parentElement.classList.add('hide');
+    if(!isPage && D !== 0 && (D-1)%3 !== index%3)
+      COMP.parentElement.classList.add('hide');
   }
 }
 
@@ -184,233 +140,177 @@ function resize(){
 
   containers = document.getElementsByClassName('home-sec');
   for(x = 0; x < containers.length; x++){
-    let section = containers[x];
-    let cont = section.querySelector('.home-tbl')
+    let section = containers[x]; let cont = section.querySelector('.home-tbl')
     let h = cont? cont.getBoundingClientRect().height+g: 0;
-    let calc = Math.ceil((30+h)/(r+g));
-    section.style.gridRowEnd = `span ${calc}`;
+    let calc = Math.ceil((30+h)/(r+g)); section.style.gridRowEnd = `span ${calc}`;
   }
 }
 
-function sortOrder(section){
+function sortOrder(category){
   return function (a,b){
-    let ts, ta, tb;
-    [ts, ta] = translate(section, a[0]);
-    [ts, tb] = translate(section, b[0]);
-    let k = Object.keys(userInv[ts])
-    return k.indexOf(ta) - k.indexOf(tb)
+    let tc = translate(category)
+    let ta = decode(category, a[0]), tb = decode(category, b[0]);
+    let k = Object.keys(userInv[tc]); return k.indexOf(ta) - k.indexOf(tb)
   }
 }
 
-function page(section, isTotal){
-  gs = section;
-  gt = isTotal;
-  mediaQuery.addEventListener('change',handleMedia)
-  mediaQuery2.addEventListener('change',handleMedia)
-  makePage(section, isTotal);
+function page(cData, isTotal){
+  gc = cData; gt = isTotal;
+  mediaQuery.addEventListener('change',handleMedia);
+  mediaQuery2.addEventListener('change',handleMedia);
+  makePage(cData, isTotal);
 }
 
-function makePage(section, isTotal){
-  document.getElementById('home').classList.add('hide')
-  const PAGE = document.getElementById('page');
-  PAGE.classList.remove('hide')
+function makePage(cData, isTotal){
+  let [category, items] = cData;
 
-  if(section[0] ==='EXP') isTotal = true;
-  if(section[0] ==='COMMON') PAGE.classList.add('page-dets')
+  document.getElementById('home').classList.add('hide');
+  const PAGE = document.getElementById('page'); PAGE.classList.remove('hide');
+
+  if(category ==='RESOURCES') isTotal = true;
+  if(category ==='COMMON') PAGE.classList.add('page-dets')
   else PAGE.classList.remove('page-dets')
   
-  const CLOSE = PAGE.firstElementChild;
-  PAGE.innerHTML = '';
-  PAGE.append(CLOSE);
-  const TBL = document.createElement("div");
-  TBL.classList = "home-tbl tbl-inv";
-  TBL.dataset.total = isTotal;
-  PAGE.append(TBL);
+  const CLOSE = PAGE.firstElementChild; PAGE.innerHTML = ''; PAGE.append(CLOSE);
+  const TBL = create(PAGE, 'div', {'class':'home-tbl tbl-inv','data-total':isTotal})
   
-  Object.entries(section[1]).sort(sortOrder(section[0])).forEach((row, ri) => {
-    let complete = makeRow(TBL, section, row, ri, false);
-    makeInv(TBL, section, row, ri, complete);
-  });
+  Object.entries(items).sort(sortOrder(category)).forEach((iData, ii) => {
+    let complete = makeRow(TBL, category, iData, ii, true);
+    makeInv(TBL, category, iData, ii, complete);
+  })
 
-  if(section[0] === 'MORA'){
-    let cMora = {'3':0}, tMora = {'3':0}, wMora = {'3':0};
-    Object.values(sessionStorage.get('calculator').CHARACTERS).forEach(c => {
-      cMora[3] += c.$A_MORA? c.$A_MORA[3]: 0;
-      tMora[3] += c.$T_MORA? c.$T_MORA[3]: 0;
+  if(category === 'RESOURCES'){
+    let cMora = ['Mora',{'3':0}], tMora = ['Mora',{'3':0}], wMora = ['Mora',{'3':0}];
+    Object.values(sessionStorage.get('calculator').CHARACTERS).forEach(char => {
+      cMora[1][3] += char.AFARM.MORA[1]? char.AFARM.MORA[1][3]: 0;
+      tMora[1][3] += char.TFARM.MORA[1]? char.TFARM.MORA[1][3]: 0;
     })
-    Object.values(sessionStorage.get('calculator').WEAPONS).forEach(c => {
-      wMora[3] += c.$MORA? c.$MORA[3]: 0;
+    Object.values(sessionStorage.get('calculator').WEAPONS).forEach(wpn => {
+      wMora[1][3] += wpn.FARM.MORA[1]? wpn.FARM.MORA[1][3]: 0;
     })
 
-    const SEC = document.createElement('div')
-    SEC.classList = 'home-sec'
-    PAGE.append(SEC);
+    const SEC = create(PAGE, 'div', {'class':'home-sec'})
 
-    const TITLE = document.createElement('div');
-    TITLE.classList = 'sec-title'
+    const TITLE = create(SEC, 'div', {'class': 'sec-title'})
     TITLE.textContent = 'Mora'
-    SEC.append(TITLE);
 
-    const DETS = document.createElement("div");
-    DETS.classList = "home-tbl morad";
-    DETS.dataset.total = isTotal;
-    SEC.append(DETS);
+    const DETS = create(SEC, 'div', {'class':'home-tbl morad','data-total':isTotal})
     makeDets(DETS, 'RESOURCES', 'Characters', cMora, 0);
     makeDets(DETS, 'RESOURCES', 'Talents', tMora, 1);
     makeDets(DETS, 'RESOURCES', 'Weapons', wMora, 2);
   }
 
-  if(section[0] === 'COMMON'){
+  if(category === 'COMMON'){
     let common = {'Characters': {}, 'Talents': {}, 'Weapons': {}};
-    Object.values(sessionStorage.get('calculator').CHARACTERS).forEach(c => {
-      if(c.$A_COMMON) rolling(common, 'Characters', c.A_COMMON, c.$A_COMMON)
-      if(c.$T_COMMON) rolling(common, 'Talents', c.T_COMMON, c.$T_COMMON)
+    Object.values(sessionStorage.get('calculator').CHARACTERS).forEach(char => {
+      if(char.AFARM.COMMON[1])
+        rolling(common, 'Characters', char.AFARM.COMMON[0], char.AFARM.COMMON[1])
+      if(char.TFARM.COMMON[1])
+        rolling(common, 'Talents', char.TFARM.COMMON[0], char.TFARM.COMMON[1])
     })
-    Object.values(sessionStorage.get('calculator').WEAPONS).forEach(w => {
-      if(w.$COMMON) rolling(common, 'Weapons', w.COMMON, w.$COMMON)
+    Object.values(sessionStorage.get('calculator').WEAPONS).forEach(wpn => {
+      if(wpn.FARM.COMMON[1])
+        rolling(common, 'Weapons', wpn.FARM.COMMON[0], wpn.FARM.COMMON[1])
     })
 
-    Object.entries(common).forEach(section => {
-      const SEC = document.createElement('div')
-      SEC.classList = 'home-sec'
-      PAGE.append(SEC);
+    Object.entries(common).forEach(([section, items]) => {
+      const SEC = create(PAGE, 'div', {'class':'home-sec'})
 
-      const TITLE = document.createElement('div');
-      TITLE.classList = 'sec-title'
-      TITLE.textContent = section[0]
-      SEC.append(TITLE);
-      const DETS = document.createElement("div");
-      DETS.classList = "home-tbl";
-      DETS.dataset.total = isTotal;
-      SEC.append(DETS);
-      Object.entries(section[1]).forEach((row, ri) => {
-        makeDets(DETS, 'ENEMIES', row[0], row[1], ri);
+      const TITLE = create(SEC, 'div', {'class':'sec-title'})
+      TITLE.textContent = section;
+
+      const DETS = create(SEC, 'div', {'class':'home-tbl','data-total':isTotal})
+
+      Object.entries(items).forEach(([item, materials], ii) => {
+        makeDets(DETS, 'ENEMIES', item, [item, materials], ii);
       })
     });
   }
 }
 
-function makeInv(TBL, section, row, ri, complete){
-  let temp = [section, row];
-  section = translate(section[0], row[0]);
-  row = [section[1], userInv[section[0]][section[1]]]
+function makeInv(TBL, category, iData, ii, complete){
+  let cName = category;
+  let [item, materials] = iData;
+  category = translate(category), item = decode(category, item)
+  materials = userInv[category][item];
   let rowi = getComputedStyle(document.getElementById('page')).getPropertyValue('--rowi')
   let coli = getComputedStyle(document.getElementById('page')).getPropertyValue('--coli')
 
-  const ROW = document.createElement("div");
-  ROW.classList = "home-row home-inv";
-  if(TBL.dataset.total === 'true') ROW.style = `grid-row: ${2*ri + +rowi};`;
-  else ROW.style = `grid-row: ${(ri+1)};`;
-  TBL.append(ROW);
+  const ROW = create(TBL, 'div', {'class':'home-row home-inv'})
+
+  if(TBL.dataset.total === 'true') ROW.style = 'grid-row: '+(2*ii + +rowi);
+  else ROW.style = 'grid-row: '+(ii+1);
 
   if(complete) ROW.classList.add('completed');
   else ROW.classList.remove('completed');
 
   let index = +coli+1;
-  Object.entries(row[1]).reverse().forEach((item, i) => {
-    if(item[0] === '0'){
-      ROW.append(Object.assign(document.createElement("div"),{
-        id:'I_'+row[0], classList: "home-total home-inv", textContent: (Math.floor(item[1]*100)/100).toLocaleString('en-us'),
-      }));
+  Object.entries(materials).reverse().forEach(([rank, value]) => {
+    if(rank === '0'){
+      const TOTAL = create(ROW, 'div', {'class':'home-total home-inv','id':'I_'+item})
+      TOTAL.textContent = Math.floor(value).toLocaleString('en-us');
     }
-    else if(item[1] !== '' && item[0] !== 'ROW'){
-      const ITEM = document.createElement("div");
-      ITEM.classList = `home-item r_${item[0]}`;
-      ROW.append(ITEM);
-      
-      if(TBL.dataset.total === 'true') ITEM.style = `grid-column: ${index};`;
-      else ITEM.style = `grid-column: 5;`;
+    else if(value !== '' && rank !== 'ROW'){
+      const CARD = create(ROW, 'div', {'class':'home-item r_'+rank})
+
+      if(TBL.dataset.total === 'true') CARD.style = 'grid-column: '+index;
+      else CARD.style = 'grid-column: 5';
       index++;
 
-      const IMG = document.createElement("img")
-      IMG.classList = "home-image";
+      const IMG = create(CARD, 'img', {'class':'home-image','src':getImage(category, item, rank)})
       IMG.onerror = function(){this.classList.add('hide')};
-      IMG.src = getImage(section[0], row[0], item[0]);
-      ITEM.append(IMG);
       
-      const INP = Object.assign(document.createElement("input"),{
-        type: "text", pattern: "\\d*", value: item[1]
-      });
-      INP.dataset.column = item[0];
-      INP.addEventListener("change", function(){
+      const INP = create(CARD, 'input', {
+        'type':'text','pattern':'\\d*','value': value, 'data-column':rank})
+      INP.addEventListener('change', function(){
         if(this.value == '') INP.value = 0;
         
-        userInv[section[0]][row[0]][item[0]] = +INP.value;
-        recalculate(section[0], row[0]);
-        caching('cacheI', section[0] + '_' + item[0] + '_' + row[1]['ROW'], INP.value);
+        userInv[category][item][rank] = +INP.value; store('Inventory', userInv);
+        caching('cacheI', category + '_' + rank + '_' + materials['ROW'], INP.value);
 
-        let user = sessionStorage.get('user');
-        user.Inventory = userInv;
-        sessionStorage.set('user', user);
-        makeRow(TBL,temp[0],temp[1],ri,false);
+        recalculate(category, item); makeRow(TBL, cName, iData, ii, true);
       }, false);
       INP.addEventListener('click', (e)=>{focusText(e)})
-      ITEM.append(INP);
     }
   });
 }
 
-function makeDets(TBL, section, name, row, ri){
-  const ROW = document.createElement("div");
-  ROW.classList = "home-row dets";
-  TBL.append(ROW);
+function makeDets(TBL, category, itemName, iData, ii){
+  let [item, materials] = iData;
   
-  ROW.style = `grid-row: ${(ri+1)};`;
+  const ROW = create(TBL, 'div', {'class':'home-row dets'})
+  ROW.style = 'grid-row: '+(ii+1);
 
-  const NAME = document.createElement("div");
-  NAME.classList = "home-name";
-  NAME.textContent = name;
-  ROW.append(NAME);
+  const NAME = create(ROW, 'div', {'class':'home-name'}); NAME.textContent = itemName;
 
   let counter = total = 0;
-  Object.entries(row).reverse().forEach((item, i) => {
-    let index = i+3;
-    total += item[1]/(3**counter);
-    counter++;
-    if(item[1]){
-      const ITEM = document.createElement("div");
-      ITEM.classList = `home-item r_${item[0]}`;
-      ROW.append(ITEM);
+  Object.entries(materials).reverse().forEach(([rank, value], mi) => {
+    let index = mi+3;
+    total += value/(3**counter); counter++;
+    if(!value) return;
 
-      ITEM.style = `grid-column: ${index};`;
+    const CARD = create(ROW, 'div', {'class':'home-item r_'+rank});
+    CARD.style = 'grid-column: '+index;
 
-      const IMG = document.createElement("img");
-      IMG.classList = "home-image";
-      IMG.onerror = function(){this.classList.add('hide')};
-      ITEM.append(IMG);
+    const IMG = create(CARD, 'img', {'class':'home-image','src':getImage(category, item, rank)})
+    IMG.onerror = function(){this.classList.add('hide')};
 
-      const NEED = document.createElement("p");
-      NEED.innerText = item[1].toLocaleString('en-us');
-
-      if(section === 'RESOURCES'){
-        IMG.src = getImage(section, 'Mora', item[0]);
-        const TOTAL = document.createElement("div");
-        TOTAL.classList = `home-total`;
-        ROW.append(TOTAL);
-
-        TOTAL.append(NEED);
-      } else{
-        IMG.src = getImage(section, name, item[0]);
-        ITEM.append(NEED);
-      }
-    }
+    const NEED = create(CARD, 'p', {});
+    NEED.textContent = value.toLocaleString('en-us');
   });
   if(TBL.dataset.total === 'true'){
-    const TOTAL = document.createElement("div");
-    TOTAL.classList = `home-total`;
-    ROW.append(TOTAL);
+    const TOTAL = create(ROW, 'div', {'class':'home-total'})
 
-    const NEED = document.createElement("p");
+    const NEED = create(TOTAL, 'p');
     NEED.textContent = Math.floor(total*100)/100;
-    TOTAL.append(NEED);
   }
 }
 
-function rolling(pivot, attribute, name, value){
+function rolling(pivot, category, item, value){
   let flag = Object.values(value).some(v => {
     return v !== 0;
   });
-  if(flag) pivot[attribute][name] = name in pivot[attribute]? vadd(pivot[attribute][name], value): value;
+  if(flag) pivot[category][item] = item in pivot[category]? vadd(pivot[category][item], value): value;
 }
 
 function closePage(){
@@ -427,15 +327,12 @@ function update(inp){
 }
 
 function save(){
-  let user = sessionStorage.get('user');
-  user.Inventory = userInv;
-  sessionStorage.set('user', user);
-  setInv();
+  store('Inventory', userInv); setInv();
 }
 
 const mediaQuery = window.matchMedia('(min-width: 880px)')
 const mediaQuery2 = window.matchMedia('(min-width: 1020px)')
-let gs, gt;
+let gc, gt;
 function handleMedia(){
-  makePage(gs, gt);
+  makePage(gc, gt);
 }

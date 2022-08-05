@@ -36,7 +36,7 @@ function parse(range, storeRow) {
       if(c === 0) return;
       row[h] = range[r][c];
     })
-    if(storeRow) row["ROW"] = r;
+    if(storeRow) row['ROW'] = r;
     data[range[r][0]] = row;
   }
   return data;
@@ -44,10 +44,10 @@ function parse(range, storeRow) {
 
 function processInventory(user){
   let inv = user.Inventory;
-  Object.entries(inv).forEach(([category, ccont]) => {
-    Object.entries(ccont).forEach(([item, icont]) => {
+  Object.entries(inv).forEach(([category, items]) => {
+    Object.entries(items).forEach(([item, materials]) => {
       let counter = 0, total = 0;
-      Object.entries(icont).reverse().forEach(([rank, value]) => {
+      Object.entries(materials).reverse().forEach(([rank, value]) => {
         if(value !== '' && rank !== 'ROW'){
           total += value/(3**counter); counter++;
         }
@@ -73,16 +73,16 @@ function userData(){
 
 function receiveUser(user){
   sessionStorage.set('user', processInventory(process(user, true)));
-  window.open("home.html",'_self')
+  window.open('home.html','_self')
 }
 
 /*FORM*/
 function login(){
-  const P = document.getElementById("password"); getAuth(P.value);
+  const P = document.getElementById('password'); getAuth(P.value);
 }
 
 function receiveAuth(isCorrect){
-  const P = document.getElementById("password"); P.value = '';
+  const P = document.getElementById('password'); P.value = '';
   if(isCorrect){
     P.blur(); P.placeholder = 'Loading'; userData();
   } else{
@@ -92,11 +92,11 @@ function receiveAuth(isCorrect){
 
 /*IMAGES*/
 function preloadImages(){
-  Object.entries(sessionStorage.get('DB').DB_Master).forEach(([category, ccont]) => {
-    Object.entries(ccont).forEach(([item, icont]) => {
-      Object.entries(icont).forEach(([rank, link]) => {        
+  Object.entries(sessionStorage.get('DB').DB_Master).forEach(([category, items]) => {
+    Object.entries(items).forEach(([item, materials]) => {
+      Object.entries(materials).forEach(([rank, link]) => {        
         if(link.includes('/') && !link.includes('*')){
-          (new Image()).src = "https://" + link;
+          (new Image()).src = 'https://' + link;
         }
       })
     })

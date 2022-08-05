@@ -1,7 +1,6 @@
 const DB = sessionStorage.get('DB');
 let userChar = sessionStorage.get('user').Characters;
-let isShown = false;
-let isLine = false;
+let isShown = false; isLine = false;
 
 function compare(){
   document.getElementById('cols').innerHTML = '';
@@ -11,117 +10,89 @@ function compare(){
   let isOwned = document.getElementById('owned').checked;
   let rowi = document.getElementById('row').value.toUpperCase();
   let coli = document.getElementById('col').value.toUpperCase();
-  let rows = getRows(translate(rowi));
-  let cols = getCols(translate(coli));
+  let rows = getRows(translate(rowi)); cols = getCols(translate(coli));
 
   if(isShown){
-    let nRows = rows.length;
-    let nCols = cols.length;
+    let nRows = rows.length; nCols = cols.length;
     const TABLE = document.getElementById('table');
     let cells = new Array(nRows);
     for(let r = 0; r < nRows; r++){
       cells[r] = new Array(nCols);
       for(let c = 0; c < nCols; c++){
-        const DIV = document.createElement('div');
-        DIV.classList = 'cell';
+        const DIV = create(TABLE, 'div', {'class':'cell'})
         DIV.style = `grid-column: ${c+3}; grid-row: ${r+3};`
-        TABLE.append(DIV);
-
         if(isLine) DIV.classList.add('line');
-
         cells[r][c] = DIV;
       }
     }
-  
     getChar(cells, rowi, coli, rows, cols, isOwned);
   }
 }
 
-function translate(value){
-  if(value === "BOSS") return "BOSSES";
-  else if(value === "DROP") return "WEEKLYS";
-  else if(value === "TALENT") return "BOOKS";
-  else if(value === "LOCAL") return "LOCALS";
-  else return value;
+function translate(category){
+  if(category === "BOSS") return "BOSSES";
+  else if(category === "WEEKLY") return "WEEKLYS";
+  else if(category === "BOOK") return "BOOKS";
+  else if(category === "LOCAL") return "LOCALS";
+  else return category;
 }
 
-function getRows(value){
-  let array = rank = 0;
-  let isText = false;
-  let isSet = value == 'LOCALS' || value == 'BOOKS' || value == 'WEEKLYS';
-  let span = cum = prev = 3;
+function getRows(category){
+  let array = 0, rank = 0, isText = false, span = 3, cum = 3, prev = 3;
+  let isSet = category == 'LOCALS' || category == 'BOOKS' || category == 'WEEKLYS';
 
-  if(value == '...'){
-    return;
+  if(category == '...') return;
+  else if(category == 'MODEL'){
+    isText = true; array = Object.keys(DB.DB_Master[category]);
   }
-  else if(value == 'MODEL'){
-    isText = true;
-    array = Object.keys(DB.DB_Master[value]);
-    //rank = Object.keys(DB.DB_Master[value][array[0]])[0];
+  else if(category == 'COMMON'){
+    array = Object.keys(DB.DB_Master[category]); array.splice(array.indexOf(''),1)
+    category = 'ENEMIES'; rank = Object.keys(DB.DB_Master[category][array[0]])[0];
   }
-  else if(value == 'COMMON'){
-    array = Object.keys(DB.DB_Master[value]);
-    array.splice(array.indexOf(''),1)
-    value = 'ENEMIES';
-    rank = Object.keys(DB.DB_Master[value][array[0]])[0];
-  }
-  else if(value == 'STAT'){
-    isText= true;
-    array = Object.keys(DB.DB_Master[value]);
+  else if(category == 'STAT'){
+    isText= true; array = Object.keys(DB.DB_Master[category]);
   }
   else{
-    array = Object.keys(DB.DB_Master[value]);
-    rank = Object.keys(DB.DB_Master[value][array[0]])[0];
+    array = Object.keys(DB.DB_Master[category]);
+    rank = Object.keys(DB.DB_Master[category][array[0]])[0];
   }
 
-  if(value == 'LOCALS') span = {};
+  if(category == 'LOCALS') span = {};
 
   const ROW = document.getElementById('rows');
   array.forEach(item => {
-    const CARD = document.createElement('div');
-    CARD.classList = 'row header';
-    ROW.append(CARD);
+    const CARD = create(ROW, 'div', {'class':'row header'})
 
     if(isText) CARD.textContent = item;
     else{
-      const IMG = document.createElement("img");
-      IMG.classList = "image";
+      const IMG = create(CARD, 'img', {'class':'image','src':getImage(category, item, rank)})
       IMG.onerror = function(){this.classList.add('hide')};
-      IMG.src = getImage(value, item, rank);
-      CARD.append(IMG);
-
       CARD.addEventListener('mouseover', ()=>{tooltip.show(item)})
       CARD.addEventListener('mouseout', ()=>{tooltip.hide()})
     }
 
-    if(value == 'LOCALS'){
-      if(prev !== DB.DB_Master['LOCAL'][item][0]){
-        cum = 1;
-        prev = DB.DB_Master['LOCAL'][item][0]
+    if(category == 'LOCALS'){
+      if(prev !== DB.DB_Master['SPECIALTIES'][item][0]){
+        cum = 1; prev = DB.DB_Master['SPECIALTIES'][item][0]
       }
       else cum++;
-      span[DB.DB_Master['LOCAL'][item][0]] = cum;
+      span[DB.DB_Master['SPECIALTIES'][item][0]] = cum;
     }
   });
 
   if(isSet){
-    let group = { 'LOCALS': 'REGION', 'BOOKS': 'REGION', 'WEEKLYS': 'WEEKLY'};
-    Object.keys(DB.DB_Master[group[value]]).forEach((item, i) => {
-      if(value == 'LOCALS' && !span[item]) return;
-      if(value == 'BOOKS' && Object.keys(DB.DB_Master['BOOKS']).length/3 <= i) return;
+    let group = { 'LOCALS': 'REGION', 'BOOKS': 'REGION', 'WEEKLYS': 'WEEKLY BOSS'};
+    Object.keys(DB.DB_Master[group[category]]).forEach((item, i) => {
+      if(category == 'LOCALS' && !span[item]) return;
+      if(category == 'BOOKS' && Object.keys(DB.DB_Master['BOOKS']).length/3 <= i) return;
 
-      const CARD = document.createElement('div');
-      CARD.classList = 'row-group header';
-      ROW.append(CARD);
+      const CARD = create(ROW, 'div', {'class':'row-group header'})
 
-      if(value == 'LOCALS') CARD.style = `grid-row: span ${span[item]};`
-      else CARD.style = `grid-row: span ${span};`
+      if(category == 'LOCALS') CARD.style = 'grid-row: span '+span[item];
+      else CARD.style = 'grid-row: span '+span;
 
-      const IMG = document.createElement("img");
-      IMG.classList = "image";
+      const IMG = create(CARD, 'img', {'class':'image','src':getImage(group[category], item, 0)})
       IMG.onerror = function(){this.classList.add('hide')};
-      IMG.src = getImage(group[value], item, 0);
-      CARD.append(IMG);
     });
     document.getElementById('compare').classList.add('rowG')
   }
@@ -131,91 +102,68 @@ function getRows(value){
   return array;
 }
 
-function getCols(value){
-  let array = rank = 0;
-  let isText = isLine = false;
-  let isSet = value == 'LOCALS' || value == 'BOOKS' || value == 'WEEKLYS';
-  let span = cum = prev = 3;
+function getCols(category){
+  let array = 0, rank = 0, isText = false, span = 3, cum = 3, prev = 3;
+  let isSet = category == 'LOCALS' || category == 'BOOKS' || category == 'WEEKLYS';
+  isLine = false;
 
-  if(value == '...'){
-    isLine = true;
-    isText= true;
-    array = [undefined];
+  if(category == '...'){
+    isLine = true; isText= true; array = [undefined];
   }
-  else if(value == 'RARITY'){
-    isLine = true;
-    isText= true;
-    array = [4,5];
+  else if(category == 'RARITY'){
+    isLine = true; isText= true; array = [4,5];
   }
-  else if(value == 'MODEL'){
-    isText = true;
-    array = Object.keys(DB.DB_Master[value]);
-    //rank = Object.keys(DB.DB_Master[value][array[0]])[0];
+  else if(category == 'MODEL'){
+    isText = true; array = Object.keys(DB.DB_Master[category]);
   }
-  else if(value == 'COMMON'){
-    array = Object.keys(DB.DB_Master[value]);
-    array.splice(array.indexOf(''),1)
-    value = 'ENEMIES';
-    rank = Object.keys(DB.DB_Master[value][array[0]])[0];
+  else if(category == 'COMMON'){
+    array = Object.keys(DB.DB_Master[category]); array.splice(array.indexOf(''),1)
+    category = 'ENEMIES'; rank = Object.keys(DB.DB_Master[category][array[0]])[0];
   }
-  else if(value == 'STAT'){
-    isText= true;
-    array = Object.keys(DB.DB_Master[value]);
+  else if(category == 'STAT'){
+    isText= true; array = Object.keys(DB.DB_Master[category]);
   }
   else{
-    array = Object.keys(DB.DB_Master[value]);
-    rank = Object.keys(DB.DB_Master[value][array[0]])[0];
+    array = Object.keys(DB.DB_Master[category]);
+    rank = Object.keys(DB.DB_Master[category][array[0]])[0];
   }
 
-  if(value == 'LOCALS') span = {};
+  if(category == 'LOCALS') span = {};
 
   const COL = document.getElementById('cols');
   array.forEach(item => {
-    const CARD = document.createElement('div');
-    CARD.classList = 'col header';
-    COL.append(CARD);
+    const CARD = create(COL, 'div', {'class':'col header'})
 
     if(isText) CARD.textContent = item;
     else{
-      const IMG = document.createElement("img");
-      IMG.classList = "image";
+      const IMG = create(CARD, 'img', {'class':'image','src':getImage(category, item, rank)})
       IMG.onerror = function(){this.classList.add('hide')};
-      IMG.src = getImage(value, item, rank);
-      CARD.append(IMG);
-
       CARD.addEventListener('mouseover', ()=>{tooltip.show(item)})
       CARD.addEventListener('mouseout', ()=>{tooltip.hide()})
     }
 
-    if(value == 'LOCALS'){
-      if(prev !== DB.DB_Master['LOCAL'][item][0]){
-        cum = 1;
-        prev = DB.DB_Master['LOCAL'][item][0]
+    if(category == 'LOCALS'){
+      if(prev !== DB.DB_Master['SPECIALTIES'][item][0]){
+        cum = 1; prev = DB.DB_Master['SPECIALTIES'][item][0]
       }
       else cum++;
-      span[DB.DB_Master['LOCAL'][item][0]] = cum;
+      span[DB.DB_Master['SPECIALTIES'][item][0]] = cum;
     }
   });
 
   if(isSet){
-    let group = { 'LOCALS': 'REGION', 'BOOKS': 'REGION', 'WEEKLYS': 'WEEKLY'};
-    Object.keys(DB.DB_Master[group[value]]).forEach((item, i) => {
-      if(value == 'LOCALS' && !span[item]) return;
-      if(value == 'BOOKS' && Object.keys(DB.DB_Master['BOOKS']).length/3 <= i) return;
+    let group = { 'LOCALS': 'REGION', 'BOOKS': 'REGION', 'WEEKLYS': 'WEEKLY BOSS'};
+    Object.keys(DB.DB_Master[group[category]]).forEach((item, i) => {
+      if(category == 'LOCALS' && !span[item]) return;
+      if(category == 'BOOKS' && Object.keys(DB.DB_Master['BOOKS']).length/3 <= i) return;
 
-      const CARD = document.createElement('div');
-      CARD.classList = 'col-group header';
-      COL.append(CARD);
+      const CARD = create(COL, 'div', {'class':'col-group header'})
 
-      console.log(span)
-      if(value == 'LOCALS') CARD.style = `grid-column: span ${span[item]};`
-      else CARD.style = `grid-column: span ${span};`
+      if(category == 'LOCALS') CARD.style = 'grid-column: span '+span[item];
+      else CARD.style = 'grid-column: span '+span;
 
-      const IMG = document.createElement("img");
-      IMG.classList = "image";
+      const IMG = create(CARD, 'img', {'class':'image','src':getImage(group[category], item, 0)})
       IMG.onerror = function(){this.classList.add('hide')};
-      IMG.src = getImage(group[value], item, 0);
-      CARD.append(IMG);
     });
     document.getElementById('compare').classList.add('colG')
   }
@@ -226,23 +174,16 @@ function getCols(value){
 
 function getChar(array, lookR, lookC, rHeaders, cHeaders, check){
   let data = DB.DB_Characters;
-  Object.entries(data).forEach(character => {
-    if(check) if(!userChar[character[0]].OWNED) return;
-    let rowi = rHeaders.indexOf(character[1][lookR])
-    let coli = cHeaders.indexOf(character[1][lookC])
+  Object.entries(data).forEach(([name, info]) => {
+    if(check) if(!userChar[name].OWNED) return;
+    let rowi = rHeaders.indexOf(info[lookR]), coli = cHeaders.indexOf(info[lookC])
 
     if(rowi === -1 || coli === -1) return;
-    const CARD = document.createElement('div');
-    CARD.classList = 'card';
-    array[rowi][coli].append(CARD);
+    const CARD = create(array[rowi][coli], 'div', {'class':'card'})
     
-    const IMG = document.createElement("img");
-    IMG.classList = "char-image";
+    let link = name === 'Traveler'? 'traveler_geo': name.toLowerCase().replaceAll(' ','_');
+    const IMG = create(CARD, 'img', {'class':'char-image c_'+info.RARITY,
+      'src':'https://paimon.moe/images/characters/'+link+'.png'})
     IMG.onerror = function(){this.classList.add('hide')};
-    CARD.append(IMG);
-    IMG.classList.add('c_'+character[1].RARITY);
-    
-    let link = character[0] === 'Traveler'? 'traveler_geo': character[0].toLowerCase().replaceAll(' ','_');
-    IMG.src = "https://paimon.moe/images/characters/"+link+".png";
   });
 }

@@ -6,41 +6,55 @@ Storage.prototype.get = function(key){
   return JSON.parse(this.getItem(key));
 }
 
+//Temporary Storage
+function store(id, value){
+  let user = sessionStorage.get('user'); user[id] = value;
+  sessionStorage.set('user', user);
+}
+
 function caching(id, key, value){
   let cache = sessionStorage.get(id); if(!cache) cache = {};
   cache[key] = value; console.log(cache);
   sessionStorage.set(id, cache);
 }
 
-/*--NAVBAR--*/
-function openNav(){
-  const NAV = document.getElementById("nav");
-  NAV.style.width = "100%"; NAV.style.left = "0";
+//Create Element
+function create(parent, element, attr){
+  const E = document.createElement(element); parent.append(E);
+  if(!attr) return E;
+  Object.entries(attr).forEach(([attribute, value]) => {
+    E.setAttribute(attribute, value);
+  })
+  return E;
 }
 
-function closeNav(){
-  const NAV = document.getElementById("nav");
-  NAV.style.width = "0"; NAV.style.left = "-1rem";
+//Focus Input
+function focusText(e){
+  e.target.setSelectionRange(e.target.value.length, e.target.value.length);
 }
 
 /*--IMAGES--*/
 function getImage(category, item, rank){
   if(item === '') return 'https://paimon.moe/images/paimon_faq.png';
 
-  if(item === "AMORA" || item === "TMORA") item = "Mora";
-
   let link = sessionStorage.get('DB').DB_Master[category][item][rank];
   if(link.includes('*')) link = 'paimon.moe/images/paimon_faq.png'
   
-  return "https://" + link;
+  return 'https://' + link;
 }
 
-/*FOCUS INPUT*/
-function focusText(e){
-  e.target.setSelectionRange(e.target.value.length, e.target.value.length);
+/*--NAVBAR--*/
+function openNav(){
+  const NAV = document.getElementById('nav');
+  NAV.style.width = '100%'; NAV.style.left = '0';
 }
 
-/*TOOLTIP*/
+function closeNav(){
+  const NAV = document.getElementById('nav');
+  NAV.style.width = '0'; NAV.style.left = '-1rem';
+}
+
+/*--TOOLTIP--*/
 var tooltip = function(){
   var id = 'tt'; var top = 3; var left = 3; var maxw = 300; var tt,c,h;
   return{
@@ -65,19 +79,32 @@ var tooltip = function(){
   };
 }();
 
-/*CALC DATA*/
+/*--INVENTORY--*/
+function recalculate(category, item){
+  let counter = 0, total = 0;
+  Object.entries(userInv[category][item]).reverse().forEach(([rank, value]) => {
+    if(value !== '' && rank !== 'ROW' && rank !== '0'){
+      total += value/(3**counter); counter++;
+    }
+  });
+  if(counter > 1){
+    document.getElementById('I_'+item).textContent = Math.floor(total).toLocaleString('en-us')
+    userInv[category][item][0] = total;
+  }
+}
+
+/*--CALC DATA--*/
 function calculate(){
   let pivot = {
-    'BOOK':{},
-    'WEAPON':{},
-    'EXP':{},
-    'MORA':{},
-    'GEM':{},
-    'WEEKLY':{},
+    'BOOKS':{},
+    'TROPHIES':{},
+    'RESOURCES':{},
+    'GEMS':{},
+    'WEEKLYS':{},
     'ELITE':{},
-    'BOSS':{},
+    'BOSSES':{},
     'COMMON':{},
-    'LOCAL':{}
+    'LOCALS':{}
   };
 
   let calculator = {
@@ -87,55 +114,47 @@ function calculate(){
 
   const DB = sessionStorage.get('DB'); const user = sessionStorage.get('user');
 
-  Object.keys(user.Characters).forEach(c => {
-    if(!user.Characters[c].FARM) return;
+  Object.keys(user.Characters).forEach(char => {
+    if(!user.Characters[char].FARM) return;
 
-    const state = user.Characters[c]; const info = DB.DB_Characters[c];
+    const state = user.Characters[char]; const info = DB.DB_Characters[char];
     const ascension = [+state.PHASE, +state.TARGET];
-    const talent = [[+state.NORMAL, +state.TNORMAL],[+state.SKILL, +state.TSKILL],[+state.BURST, +state.TBURST]];
-    calculator.CHARACTERS[c] = {
-      ASCENSION: ascension,
-      TALENT: talent,
-      ELEMENT: info.ELEMENT,
-      $GEM: calcA('GEM', ascension, info.ELEMENT),
-      BOSS: info.BOSS,
-      $BOSS: calcA('BOSS', ascension, info.BOSS),
-      LOCAL: info.LOCAL,
-      $LOCAL: calcA('LOCAL', ascension, info.LOCAL),
-      A_COMMON: info.COMMON,
-      $A_COMMON: calcA('COMMON', ascension, info.COMMON),
-      BOOK: info.TALENT,
-      $BOOK: calcT('BOOK', talent, info.TALENT),
-      T_COMMON: info.COMMON,
-      $T_COMMON: calcT('COMMON', talent, info.COMMON),
-      WEEKLY: info.WEEKLY + ' ' +info.DROP,
-      $WEEKLY: calcT('WEEKLY', talent, info.WEEKLY + ' ' +info.DROP),
-      $EXP: calcA('EXP', ascension, 'EXP'),
-      $A_MORA: calcA('MORA', ascension, 'Mora'),
-      $T_MORA: calcT('MORA', talent, 'Mora'),
-      $RESIN: 0,
-      $TIME: 0,
+    const talent =[[+state.NORMAL, +state.TNORMAL],
+      [+state.SKILL, +state.TSKILL],[+state.BURST, +state.TBURST]];
+    calculator.CHARACTERS[char] = {
+      ASCENSION: ascension, TALENT: talent,
+      AFARM: {
+        GEM: [info.ELEMENT, calcA('GEM', ascension, info.ELEMENT)],
+        BOSS: [info.BOSS, calcA('BOSS', ascension, info.BOSS)],
+        LOCAL: [info.LOCAL, calcA('LOCAL', ascension, info.LOCAL)],
+        COMMON: [info.COMMON, calcA('COMMON', ascension, info.COMMON)],
+        EXP: ['EXP', calcA('EXP', ascension, 'EXP')],
+        MORA: ['Mora', calcA('MORA', ascension, 'Mora')],
+      },
+      TFARM: {
+        BOOK: [info.BOOK, calcT('BOOK', talent, info.BOOK)],
+        COMMON: [info.COMMON, calcT('COMMON', talent, info.COMMON)],
+        WEEKLY: [info['WEEKLY BOSS'] + ' ' +info.WEEKLY, calcT('WEEKLY', talent, info['WEEKLY BOSS'] + ' ' +info.WEEKLY)],
+        MORA: ['Mora', calcT('MORA', talent, 'Mora')],
+      }
     }
   })
 
-  Object.keys(user.Weapons).forEach(w => {
-    if(!user.Weapons[w].FARM) return;
+  Object.keys(user.Weapons).forEach(wpn => {
+    if(!user.Weapons[wpn].FARM) return;
 
-    const state = user.Weapons[w]; const info = DB.DB_Weapons[w];
+    const state = user.Weapons[wpn]; const info = DB.DB_Weapons[wpn];
     const phase = [+state.PHASE, +state.TARGET];
-    calculator.WEAPONS[w] = {
+    calculator.WEAPONS[wpn] = {
       RARITY: info.RARITY,
       PHASE: phase,
-      ASCENSION: info.ASCENSION,
-      $ASCENSION: calcW('ASCENSION', phase, info.ASCENSION, info.RARITY),
-      ELITE: info.ELITE,
-      $ELITE: calcW('ELITE', phase, info.ELITE, info.RARITY),
-      COMMON: info.COMMON,
-      $COMMON: calcW('COMMON', phase, info.COMMON, info.RARITY),
-      $CRYSTALS: calcW('EXP', phase, 'Crystals', info.RARITY),
-      $MORA: calcW('MORA', phase, 'Mora', info.RARITY),
-      $RESIN: 0,
-      $TIME: 0,
+      FARM:{
+        TROPHY: [info.TROPHY, calcW('TROPHY', phase, info.TROPHY, info.RARITY)],
+        ELITE: [info.ELITE, calcW('ELITE', phase, info.ELITE, info.RARITY)],
+        COMMON: [info.COMMON, calcW('COMMON', phase, info.COMMON, info.RARITY)],
+        ORE: ['Ore', calcW('ORE', phase, 'Ore', info.RARITY)],
+        MORA: ['Mora', calcW('MORA', phase, 'Mora', info.RARITY)],
+      }
     }
   })
 
@@ -145,45 +164,60 @@ function calculate(){
 
   function calcA(category, [phase, target], item){
     let error = [phase, target].some(i => {return i < 0 || i > 7});
-    if(target > phase && !error){
-      let p = phase? DB.DB_Calculate.ASCENSION[category][phase]: 0;
-      let t = DB.DB_Calculate.ASCENSION[category][target];
-      const value = vsub(t, p);
-      rollup(category, item, value); return value;
-    }
+    if(error || phase >= target) return;
+    let p = phase? DB.DB_Calculate.ASCENSION[category][phase]: 0;
+    let t = DB.DB_Calculate.ASCENSION[category][target];
+    const value = vsub(t, p);
+    rollup(category, item, value); return value;
   }
 
   function calcT(category, talent, item){
     let error = talent.some(t => {return t.some(i => {return i < 0 || i > 10;})});
-    if((talent[0][1] || talent[1][1] || talent[2][1]) && !error){
-      let v = [0,0,0];
-      for(let i = 0; i < 3; i++){
-        if(talent[i][1] > talent[i][0]){
-          let c = talent[i][0] > 1? DB.DB_Calculate.TALENT[category][talent[i][0]]: 0;
-          let t = talent[i][1] > 1? DB.DB_Calculate.TALENT[category][talent[i][1]]: 0;
-          v[i] = vsub(t, c);
-        }  
-      }
-      const value = vadd(v[0],v[1],v[2]);
-      rollup(category, item, value); return value;
+    if(error || (!talent[0][1] && !talent[1][1] && !talent[2][1])) return;
+    let v = [0,0,0];
+    for(let i = 0; i < 3; i++){
+      if(talent[i][0] < talent[i][1]){
+        let c = talent[i][0] > 1? DB.DB_Calculate.TALENT[category][talent[i][0]]: 0;
+        let t = talent[i][1] > 1? DB.DB_Calculate.TALENT[category][talent[i][1]]: 0;
+        v[i] = vsub(t, c);
+      }  
     }
+    const value = vadd(v[0],v[1],v[2]);
+    rollup(category, item, value); return value;
   }
 
   function calcW(category, [phase, target], item, rarity){
-    if(target > phase){
-      let p = phase? DB.DB_Calculate[rarity+'WEAPON'][category][phase]: 0;
-      let t = DB.DB_Calculate[rarity+'WEAPON'][category][target];
-      const value = vsub(t, p);
-      category = category === 'ASCENSION'? 'WEAPON': category;
-      rollup(category, item, value); return value;
-    }
+    let error = [phase, target].some(i => {return i < 0 || i > 7});
+    if(error || phase >= target) return;
+    let p = phase? DB.DB_Calculate[rarity+'WEAPON'][category][phase]: 0;
+    let t = DB.DB_Calculate[rarity+'WEAPON'][category][target];
+    const value = vsub(t, p);
+    rollup(category, item, value); return value;
   }
 
   function rollup(category, item, value){
     let flag = Object.values(value).some(v => {
       return v !== 0;
     });
-    if(flag) pivot[category][item] = item in pivot[category]? vadd(pivot[category][item], value): value;
+    let name = translate(category);
+    if(flag) pivot[name][item] = item in pivot[name]? vadd(pivot[name][item], value): value;
+  }
+  
+  function translate(category){
+    let dict = {
+      'BOOK': 'BOOKS',
+      'TROPHY': 'TROPHIES',
+      'EXP': 'RESOURCES',
+      'MORA': 'RESOURCES',
+      'ORE': 'RESOURCES',
+      'GEM': 'GEMS',
+      'WEEKLY': 'WEEKLYS',
+      'ELITE': 'ELITE',
+      'BOSS': 'BOSSES',
+      'COMMON': 'COMMON',
+      'LOCAL': 'LOCALS',
+    }
+    return dict[category];
   }
 }
 
@@ -201,18 +235,4 @@ function vsub(a,b){
     r[i] = a[i] - (b[i] || 0);
     return r;
   }, {});
-}
-
-/*INVENTORY*/
-function recalculate(category, item){
-  let counter = 0, total = 0;
-  Object.entries(userInv[category][item]).reverse().forEach(([rank, value]) => {
-    if(value !== '' && rank !== 'ROW' && rank !== '0'){
-      total += value/(3**counter); counter++;
-    }
-  });
-  if(counter > 1){
-    document.getElementById('I_'+item).textContent = Math.floor(total).toLocaleString('en-us')
-    userInv[category][item][0] = total;
-  }
 }
