@@ -225,7 +225,7 @@ body{
   font-size: 1.5rem;
 }
 
-.page .tots, .page .home-total{
+.page .tots{
   grid-row: span 2;
 }
 

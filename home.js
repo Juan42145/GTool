@@ -54,23 +54,23 @@ function makeRow(TBL, category, iData, ii, isPage){
   let calc = getInventory(tc, ti, materials);
   Object.entries(materials).reverse().forEach(([rank, value], mi) => {
     let index = mi+3;
-    if(value){
-      const CARD = create(ROW, 'div', {'class':'home-item r_'+rank})
+    if(!value) return
+    
+    const CARD = create(ROW, 'div', {'class':'home-item r_'+rank})
 
-      if(isPage) CARD.style = 'grid-column: '+index;
+    if(isPage) CARD.style = 'grid-column: '+index;
 
-      const IMG = create(CARD, 'img', {'class':'home-image','src':getImage(tc,ti,rank)})
-      IMG.onerror = ()=>this.classList.add('hide');
+    const IMG = create(CARD, 'img', {'class':'home-image','src':getImage(tc,ti,rank)})
+    IMG.onerror = ()=>this.classList.add('hide');
 
-      const INV = create(CARD, 'div', {'class':'c-inv p'})
-      INV.textContent = calc[rank].toLocaleString('en-us');
-      const NEED = create(CARD, 'div', {'class':'c-need p'})
-      NEED.textContent = '/' + value.toLocaleString('en-us');
+    const INV = create(CARD, 'div', {'class':'c-inv p'})
+    INV.textContent = calc[rank].toLocaleString('en-us');
+    const NEED = create(CARD, 'div', {'class':'c-need p'})
+    NEED.textContent = '/' + value.toLocaleString('en-us');
 
 
-      if(calc[rank] >= value) CARD.classList.add('completed');
-      else CARD.classList.remove('completed');
-    }
+    if(calc[rank] >= value) CARD.classList.add('completed');
+    else CARD.classList.remove('completed');
   });
 
   let complete = ROW.querySelectorAll('.home-item').length <= ROW.querySelectorAll('.completed').length;
@@ -79,6 +79,7 @@ function makeRow(TBL, category, iData, ii, isPage){
 
   if(TBL.dataset.total === 'true'){
     const TOTAL = create(ROW, 'div', {'class':'home-total'})
+    if(isPage) TOTAL.classList.add('tots')
 
     const INV = create(TOTAL, 'p', {'class':'c-inv'})
     INV.textContent = (Math.floor(calc[0]*100)/100).toLocaleString('en-us');;
@@ -108,7 +109,7 @@ function getInventory(category, item, materials){
   let totals = {}, agg = 0, flag = 0;
   calc[0] = 0;
   Object.entries(materials).forEach(([rank, value], mi) => {
-    calc[0] += calc[rank]/(3**(len - mi)); totals[rank] = calc[0];
+    calc[0] += +calc[rank]/(3**(len - mi)); totals[rank] = calc[0];
     if(value !== 0) flag = rank;
     if(mi < len && value < inv[rank]){
       calc[rank] = +value; inv[+rank+1] += Math.floor(inv[rank] - value)/3;
@@ -167,14 +168,13 @@ function makePage(cData, isTotal){
   let [category, items] = cData;
 
   document.getElementById('home').classList.add('hide');
-  const PAGE = document.getElementById('page'); PAGE.classList.remove('hide');
+  let PAGE = document.getElementById('page'); PAGE.classList.remove('hide');
 
   if(category ==='RESOURCES') isTotal = true;
   if(category ==='COMMON') PAGE.classList.add('page-dets')
   else PAGE.classList.remove('page-dets')
-  
-  //ALTERNATIVE
-  const CLOSE = PAGE.firstElementChild; PAGE.innerHTML = ''; PAGE.append(CLOSE);
+
+  PAGE = document.getElementById('page-container'); PAGE.innerHTML = '';
   const TBL = create(PAGE, 'div', {'class':'home-tbl tbl-inv','data-total':isTotal})
   
   Object.entries(items).sort(sortOrder(category)).forEach((iData, ii) => {

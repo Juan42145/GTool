@@ -10,7 +10,8 @@ function compare(){
   let isOwned = document.getElementById('owned').checked;
   let rowi = document.getElementById('row').value.toUpperCase();
   let coli = document.getElementById('col').value.toUpperCase();
-  let rows = getRows(translate(rowi)); cols = getCols(translate(coli));
+  let rows = getHeaders(translate(rowi), true);
+  let cols = getHeaders(translate(coli), false);
 
   if(isShown){
     let nRows = rows.length; nCols = cols.length;
@@ -37,11 +38,18 @@ function translate(category){
   else return category;
 }
 
-function getRows(category){
+function getHeaders(category, isRow){
   let array = 0, rank = 0, isText = false, span = 3, cum = 3, prev = 3;
   let isSet = category == 'LOCALS' || category == 'BOOKS' || category == 'WEEKLYS';
+  if(!isRow) isLine = false;
 
-  if(category == '...') return;
+  if(category == '...'){
+    if(isRow) return;
+    else{ isLine = true; isText= true; array = [undefined];}
+  }
+  else if(category == 'RARITY'){// COL ONLY
+    isLine = true; isText= true; array = [4,5];
+  }
   else if(category == 'MODEL'){
     isText = true; array = Object.keys(DB.DB_Master[category]);
   }
@@ -59,9 +67,11 @@ function getRows(category){
 
   if(category == 'LOCALS') span = {};
 
-  const ROW = document.getElementById('rows');
+  let HEAD;
+  if(isRow) HEAD = document.getElementById('rows');
+  else HEAD = document.getElementById('cols');
   array.forEach(item => {
-    const CARD = create(ROW, 'div', {'class':'row header'})
+    const CARD = create(HEAD, 'div', {'class':(isRow?'row':'col')+' header'})
 
     if(isText) CARD.textContent = item;
     else{
@@ -86,23 +96,24 @@ function getRows(category){
       if(category == 'LOCALS' && !span[item]) return;
       if(category == 'BOOKS' && Object.keys(DB.DB_Master['BOOKS']).length/3 <= i) return;
 
-      const CARD = create(ROW, 'div', {'class':'row-group header'})
+      const CARD = create(HEAD, 'div', {'class':(isRow?'row':'col')+'-group header'})
 
-      if(category == 'LOCALS') CARD.style = 'grid-row: span '+span[item];
-      else CARD.style = 'grid-row: span '+span;
+      let cStyle = isRow? 'grid-row': 'grid-column'
+      if(category == 'LOCALS') CARD.style = cStyle+': span '+span[item];
+      else CARD.style = cStyle+': span '+span;
 
       const IMG = create(CARD, 'img', {'class':'image','src':getImage(group[category], item, 0)})
       IMG.onerror = ()=>this.classList.add('hide');
     });
-    document.getElementById('compare').classList.add('rowG')
+    document.getElementById('compare').classList.add('head-group')
   }
-  else document.getElementById('compare').classList.remove('rowG')
+  else document.getElementById('compare').classList.remove('head-group')
 
-  isShown = true;
+  if(isRow) isShown = true;
   return array;
 }
 
-function getCols(category){
+/*function getCols(category){
   let array = 0, rank = 0, isText = false, span = 3, cum = 3, prev = 3;
   let isSet = category == 'LOCALS' || category == 'BOOKS' || category == 'WEEKLYS';
   isLine = false;
@@ -170,7 +181,7 @@ function getCols(category){
   else document.getElementById('compare').classList.remove('colG')
 
   return array;
-}
+}*/
 
 function getChar(array, lookR, lookC, rHeaders, cHeaders, check){
   let data = DB.DB_Characters;

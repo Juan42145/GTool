@@ -88,7 +88,8 @@ function recalculate(category, item){
     }
   });
   if(counter > 1){
-    document.getElementById('I_'+item).textContent = Math.floor(total).toLocaleString('en-us')
+    let totalInv = document.getElementById('I_'+item)
+    if(totalInv) totalInv.textContent = Math.floor(total).toLocaleString('en-us')
     userInv[category][item][0] = total;
   }
 }
@@ -122,7 +123,7 @@ function calculate(){
     const talent =[[+state.NORMAL, +state.TNORMAL],
       [+state.SKILL, +state.TSKILL],[+state.BURST, +state.TBURST]];
     calculator.CHARACTERS[char] = {
-      ASCENSION: ascension, TALENT: talent,
+      ELEMENT: info.ELEMENT,
       AFARM: {
         GEM: [info.ELEMENT, calcA('GEM', ascension, info.ELEMENT)],
         BOSS: [info.BOSS, calcA('BOSS', ascension, info.BOSS)],
@@ -147,7 +148,6 @@ function calculate(){
     const phase = [+state.PHASE, +state.TARGET];
     calculator.WEAPONS[wpn] = {
       RARITY: info.RARITY,
-      PHASE: phase,
       FARM:{
         TROPHY: [info.TROPHY, calcW('TROPHY', phase, info.TROPHY, info.RARITY)],
         ELITE: [info.ELITE, calcW('ELITE', phase, info.ELITE, info.RARITY)],
