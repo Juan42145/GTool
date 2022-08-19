@@ -28,6 +28,22 @@ function create(parent, element, attr){
   return E;
 }
 
+//Queries
+function makeQuery(params){
+  return '?' + (new URLSearchParams(params)).toString();
+}
+
+function parseQuery(){
+  var query = window.location.search.substring(1);
+  var vars = query.split('&');
+  var pairs = {};
+  for (var i = 0; i < vars.length; i++) {
+    var pair = vars[i].split('=');
+    pairs[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1])
+  }
+  return pairs
+}
+
 //Focus Input
 function focusText(e){
   e.target.setSelectionRange(e.target.value.length, e.target.value.length);
