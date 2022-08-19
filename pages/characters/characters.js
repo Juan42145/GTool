@@ -2,6 +2,7 @@ const DB = sessionStorage.get('DB').DB_Characters;
 let userChar = sessionStorage.get('user').Characters;
 let owned = false, flip = false; sorting = ()=>{};
 
+makeNav('CHARACTERS')
 /*--CHARACTERS--*/
 function characters(){
   document.getElementById('characters').innerHTML = '';

@@ -3,6 +3,7 @@ let userWpn = sessionStorage.get('user').Weapons;
 let userInv = sessionStorage.get('user').Inventory;
 let calc;
 
+makeNav('FARMING')
 function farm(){
   if(sessionStorage.get('calc')) calculate(); calc = sessionStorage.get('calculator');
   makeChar(); makeWpn();
@@ -24,6 +25,8 @@ function makeChar(){
     IMG.onerror = ()=>this.classList.add('hide');
 
     const NAME = create(CHAR, 'div', {'class':'farm-name'}); NAME.textContent = name;
+
+    CHAR.addEventListener('click', (e)=>{makePageC(name, attrs)}, false);
 
     let char = userChar[name]
     makeInputs(ASCN, name, 'CHARACTERS', 'AFARM', [char.PHASE, char.TARGET]);
@@ -167,7 +170,7 @@ function makePageC(name, attrs){
   let PAGE = document.getElementById('page'); PAGE.classList.remove('hide');
   
   PAGE = document.getElementById('page-container'); PAGE.innerHTML = '';
-  const TBL = create(PAGE, 'div', {'class':'tbl'})
+  const TBL = create(PAGE, 'div', {'class':'home-tbl'})
 
   Object.entries(attrs.AFARM).forEach(([category, iData], ii) => {
     let isTotal = getTotal(category);

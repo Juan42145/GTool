@@ -4,6 +4,7 @@ let filters = ['Sword','Claymore','Bow','Polearm','Catalyst'];
 let filter = 0, second = 0, count = 0; owned = false, flip = false;
 let sorting = ()=>{};
 
+makeNav('WEAPONS')
 /*--WEAPONS--*/
 document.addEventListener('DOMContentLoaded', () => {
   let menu = document.getElementsByClassName('options')[0];

@@ -2,6 +2,7 @@ const DB = sessionStorage.get('DB').DB_Master;
 let userInv = sessionStorage.get('user').Inventory;
 const REGION = Object.keys(DB.ELEMENT); const D = (new Date()).getDay();
 
+makeNav('HOME')
 /*HOME*/
 function home(){
   if(sessionStorage.get('calc')) calculate();
@@ -40,7 +41,7 @@ function makeRow(TBL, category, iData, ii, isPage){
   const NAME = create(ROW, 'div', {'class':'home-name'}); NAME.textContent = item;
 
   if(isPage && TBL.dataset.total === 'true') {
-    ROW.style = 'grid-row: '+(2*ii+1); NAME.classList.add('tots')
+    ROW.style = 'grid-row: '+(2*ii+1); NAME.style = 'grid-row: '+(2*ii+1)+'/span 2'
   }
   else ROW.style = 'grid-row: '+(ii+1);
 
@@ -79,7 +80,7 @@ function makeRow(TBL, category, iData, ii, isPage){
 
   if(TBL.dataset.total === 'true'){
     const TOTAL = create(ROW, 'div', {'class':'home-total'})
-    if(isPage) TOTAL.classList.add('tots')
+    if(isPage) TOTAL.style = 'grid-row: '+(2*ii+1)+'/span 2'
 
     const INV = create(TOTAL, 'p', {'class':'c-inv'})
     INV.textContent = (Math.floor(calc[0]*100)/100).toLocaleString('en-us');;

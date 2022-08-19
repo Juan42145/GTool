@@ -44,6 +44,36 @@ function getImage(category, item, rank){
 }
 
 /*--NAVBAR--*/
+function makeNav(active){
+  const pages = {
+    HOME: '/pages/home/home.html',
+    INVENTORY: '/pages/inventory/inventory.html',
+    FARMING: '/pages/farming/farming.html',
+    CHARACTERS: '/pages/characters/characters.html',
+    WEAPONS: '/pages/weapons/weapons.html',
+    DOMAINS: '',
+    COMPARE: '/pages/compare/compare.html',
+    DATA: '',
+  }
+
+  const NAV = document.getElementById('nav')
+
+  const index = create(NAV,'a',{'href':'index.html','class':'homebtn'})
+  index.innerHTML = '&curren;';
+  const close = create(NAV,'a',{'href':'javascript:void(0)','class':'closebtn'})
+  close.innerHTML = '&times;';
+  close.onclick = ()=>closeNav();
+
+  Object.entries(pages).forEach(([page, link]) => {
+    let a;
+    if(page == active)
+      a = create(NAV,'a',{'href':'javascript:void(0)','class':'active'});
+    else
+      a = create(NAV,'a',{'href':link});
+    a.textContent = page;
+  });
+}
+
 function openNav(){
   const NAV = document.getElementById('nav');
   NAV.style.width = '100%'; NAV.style.left = '0';

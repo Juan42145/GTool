@@ -65,7 +65,7 @@ body{
 .home-tbl {
   display: grid;
   column-gap: 0.1rem;
-  row-gap: 0.2rem;
+  /*row-gap: 0.2rem;*/
   grid-template-columns: 1fr max-content;
   grid-auto-columns: minmax(5rem, max-content);
   place-items: stretch;
@@ -74,6 +74,7 @@ body{
 
 .home-row {
   display: contents;
+  border-bottom: 0.2rem solid var(--home_grid);
 }
 
 .home-row > * {
@@ -223,10 +224,6 @@ body{
 
 .page .home-name, .page .home-total{
   font-size: 1.5rem;
-}
-
-.page .tots{
-  grid-row: span 2;
 }
 
 .page .home-total{
