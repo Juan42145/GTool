@@ -78,7 +78,7 @@ input::-ms-reveal, input::-ms-clear {
   visibility: hidden !important;
 }
 
-/*NAVBAR*/
+/*--NAVBAR--*/
 nav {
   --nav_bg: var(--clr_lightnavy);
   --nav_tx: var(--clr_gold);
@@ -124,7 +124,7 @@ nav a {
   font-weight: bold;
 }
 
-nav .closebtn {
+.nav-closebtn {
   position: absolute;
   font-size: 4rem;
   top: 1rem;
@@ -141,7 +141,7 @@ nav .closebtn {
   text-align: center;
 }
 
-nav .homebtn {
+.nav-homebtn {
   --size: 8rem;
   --border: 1rem;
 
@@ -161,17 +161,17 @@ nav .homebtn {
   text-align: center;
 }
 
-nav a:hover:not(.closebtn, .active){
+nav a:hover:not(.nav-closebtn, .nav-active){
   background-color: var(--nav_hover_bg);
   color: var(--nav_hover_tx);
 }
 
-nav a:active, nav .active{
+nav a:active, .nav-active{
   background-color: var(--nav_active_bg) !important;
   color: var(--nav_active_tx) !important;
 }
 
-nav .closebtn:hover{
+.nav-closebtn:hover{
   background-color: var(--nav_hover_close_bg);
   color: var(--nav_hover_close_tx);
   line-height: var(--size);
@@ -179,7 +179,7 @@ nav .closebtn:hover{
   box-shadow: 0 0 1.5rem var(--nav_hover_close_tx);
 }
 
-/*HEADER*/
+/*--HEADER--*/
 header {
   --head_bg: var(--clr_darknavy);
   --head_menu_bg: var(--clr_white);
@@ -207,7 +207,7 @@ header {
   -webkit-user-select: none;
 }
 
-.h-menu {
+.head-menu {
   --size: 4rem;
   --border: 0.2rem;
 
@@ -224,14 +224,14 @@ header {
   font-weight: bold;
 }
 
-.h-menu:hover {
+.head-menu:hover {
   color: var(--head_menu_hover_tx);
   background-color: var(--head_menu_hover_bg);
   border-color: var(--head_menu_hover_border);
   outline-color: var(--head_menu_hover_bg);
 }
 
-.h-button {
+.head-button {
   --size: 3.5rem;
   --border: 0.2rem;
 
@@ -243,7 +243,7 @@ header {
   background-color: var(--head_input_bg);
 }
 
-.h-icon{
+.head-icon{
   box-sizing: content-box;
   height: calc(1/5*var(--size));
   width: calc(1/5*var(--size));
@@ -256,7 +256,7 @@ header {
   background-color: var(--head_logo_bg);
 }
 
-.h-input {
+.head-input {
   font-size: 1.6rem;
   padding-left: calc(4/5*var(--size));
   height: 100%;
@@ -269,8 +269,12 @@ header {
   text-align: center;
 }
 
-/*ALERT*/
+/*--INSERT--*/
+#insert{
+  display: contents;
+}
 
+/*--ALERT--*/
 .alert{
   position: absolute;
   place-self: center;
@@ -286,7 +290,7 @@ header {
 }
 
 
-/*TOOLTIP*/
+/*--TOOLTIP--*/
 #tt {
   position: absolute;
   display: block;
@@ -298,7 +302,7 @@ header {
   color: var(--clr_white);
 }
 
-/*BACKGROUNDS*/
+/*--BACKGROUNDS--*/
 .r_1{
   background: url('https://static.wikia.nocookie.net/gensin-impact/images/6/69/Rarity_1_background.png') top left no-repeat;
   background-size: contain;

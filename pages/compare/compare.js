@@ -2,7 +2,6 @@ const DB = sessionStorage.get('DB');
 let userChar = sessionStorage.get('user').Characters;
 let isShown = false; isLine = false;
 
-makeNav('COMPARE')
 function compare(){
   document.getElementById('cols').innerHTML = '';
   document.getElementById('rows').innerHTML = '';

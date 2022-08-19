@@ -4,35 +4,26 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
-  <title>Farming - GTool</title>
+  <title>Farming</title>
   <base target="_self">
   <link rel="stylesheet" href="/main/style.css">
   <link rel="stylesheet" href="farming.css">
+  <link rel="stylesheet" href="page.css">
+  <script src="/main/server.js"></script>
+  <script src="/main/main.js"></script>
+  <script src="farming.js"></script>
+  <script src="page.js"></script>
 </head>
 <body onload="farm()">
-
-  <nav id="nav"></nav>
-
-  <header>
-    <button class="h-menu" onclick="openNav()">&equiv;</button>
-    <div class="h-button">
-      <div class="h-icon"></div>
-      <input class="h-input" type="button" value="Save" onclick="save()">
-    </div>
-  </header>
+  <nav id="nav"></nav><script>makeNav("FARMING")</script>
+  <header id="head"></header><script>makeHeader(save)</script>
 
   <div id="farm" class="farm">
     <div id="Characters"></div>
     <div id="Weapons"></div>
   </div>
 
-  <div id="page" class="page hide">
-    <a href="javascript:void(0)" class="close" onclick="closePage()">&times;</a>
-    <div id="page-container"></div>
-  </div>
+  <div id="insert"></div><script>insert('page.xml')</script>
   
 </body>
-<script src="/main/server.js"></script>
-<script src="/main/main.js"></script>
-<script src="farming.js"></script>
 </html>

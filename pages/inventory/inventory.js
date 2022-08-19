@@ -1,6 +1,5 @@
 let userInv = sessionStorage.get('user').Inventory;
 
-makeNav('INVENTORY')
 /*INVENTORY*/
 function inventory(){
   Object.entries(userInv).forEach(([category, items]) => {
@@ -46,6 +45,6 @@ function inventory(){
   });
 }
 
-function saveInventory(){
+function save(){
   store('Inventory', userInv); setInv();
 }

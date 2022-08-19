@@ -4,22 +4,19 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
-  <title>Characters - GTool</title>
+  <title>Characters</title>
   <base target="_self">
   <link rel="stylesheet" href="/main/style.css">
   <link rel="stylesheet" href="characters.css">
+  <link rel="stylesheet" href="page.css">
+  <script src="/main/server.js"></script>
+  <script src="/main/main.js"></script>
+  <script src="characters.js"></script>
+  <script src="page.js"></script>
 </head>
 <body onload="characters()">
-
-  <nav id="nav"></nav>
-
-  <header>
-    <button class="h-menu" onclick="openNav()">&equiv;</button>
-    <div class="h-button">
-      <div class="h-icon"></div>
-      <input class="h-input" type="button" value="Save" onclick="saveCharacters()">
-    </div>
-  </header>
+  <nav id="nav"></nav><script>makeNav("CHARACTERS")</script>
+  <header id="head"></header><script>makeHeader(save)</script>
 
   <div id="char-menu">
 
@@ -49,95 +46,7 @@
 
   </div>
 
-  <div id="char" class="hide">
-    <a href="javascript:void(0)" class="close" onclick="closeChar()">&times;</a>
-    <img id="char-img" src="" onerror="this.src = 'https://paimon.moe/images/paimon_hello.png'">
-    <div class="data">
-
-      <div class="contact">
-        <div>
-          <div id="NAME"></div>
-          <img id="ELEMENT">
-          <div class="edit">
-            <div id="CONSTELLATION"></div>
-            <div id="modify" class="hide">
-              <button onclick="minus()">-</button>
-              <button onclick="plus()">+</button>
-            </div>
-          </div>
-          <button id="edit" onclick="editIn()">
-            <svg id="pencil" viewBox="0 0 24 24"><path d="M20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18,2.9 17.35,2.9 16.96,3.29L15.12,5.12L18.87,8.87M3,17.25V21H6.75L17.81,9.93L14.06,6.18L3,17.25Z"></path></svg>
-            <svg id="disk" class="hide" viewBox="0 0 24 24"><path d="M15,9H5V5H15M12,19A3,3 0 0,1 9,16A3,3 0 0,1 12,13A3,3 0 0,1 15,16A3,3 0 0,1 12,19M17,3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V7L17,3Z"></path></svg>
-          </button>
-        </div>
-        <div>
-          <div id="RARITY"></div>
-          <div id="WEAPON"></div>
-        </div>
-      </div>
-
-      <div class="ascension mats">
-        <div class="mat-title">Ascension Materials</div>
-        <div class="mat-img"><img id="BOSS"></div>
-        <div class="mat-img"><img id="LOCAL"></div>
-      </div>
-
-      <div class="common mats">
-        <div class="mat-title">Common Materials</div>
-        <div class="mat-img"><img id="COMMON"></div>
-      </div>
-
-      <div class="talent mats">
-        <div class="mat-title">Talent Materials</div>
-        <div class="mat-img"><img id="BOOK"></div>
-        <div class="mat-img"><img id="WEEKLY BOSS"></div>
-        <div class="mat-img"><img id="WEEKLY"></div>
-      </div>
-
-      <div class="inputs">
-        <div class="farm">
-          <input type="checkbox" id="FARM" onchange="update(this)">
-          Farm
-        </div>
-        <div class="phase">
-          <div class="input-text">Phase</div>
-          <input type="text" pattern="\d*" id="PHASE" onchange="update(this)" onclick="focusText(event)">
-          <input type="text" pattern="\d*" id="TARGET" onchange="update(this)" onclick="focusText(event)">
-        </div>
-        <div class="normal">
-          <div class="input-text">Normal</div>
-          <input type="text" pattern="\d*" id="NORMAL" onchange="update(this)" onclick="focusText(event)">
-          <input type="text" pattern="\d*" id="TNORMAL" onchange="update(this)" onclick="focusText(event)">
-        </div>
-        <div class="skill">
-          <div class="input-text">Skill</div>
-          <input type="text" pattern="\d*" id="SKILL" onchange="update(this)" onclick="focusText(event)">
-          <input type="text" pattern="\d*" id="TSKILL" onchange="update(this)" onclick="focusText(event)">
-        </div>
-        <div class="burst">
-          <div class="input-text">Burst</div>
-          <input type="text" pattern="\d*" id="BURST" onchange="update(this)" onclick="focusText(event)">
-          <input type="text" pattern="\d*" id="TBURST" onchange="update(this)" onclick="focusText(event)">
-        </div>
-      </div>
-
-      <div class="stats">
-        <div>HP</div>
-        <div>ATK</div>
-        <div>DEF</div>
-        <div id="STAT"></div>
-
-        <div id="HP"></div>
-        <div id="ATK"></div>
-        <div id="DEF"></div>
-        <div id="VALUE"></div>
-      </div>
-      
-    </div>
-  </div>
+  <div id="insert"></div><script>insert('page.xml')</script>
 
 </body>
-<script src="/main/server.js"></script>
-<script src="/main/main.js"></script>
-<script src="characters.js"></script>
 </html>

@@ -8,18 +8,15 @@
   <base target="_self">
   <link rel="stylesheet" href="/main/style.css">
   <link rel="stylesheet" href="home.css">
+  <link rel="stylesheet" href="page.css">
+  <script src="/main/server.js"></script>
+  <script src="/main/main.js"></script>
+  <script src="home.js"></script>
+  <script src="page.js"></script>
 </head>
 <body onload="home()">
-
-  <nav id="nav"></nav>
-
-  <header>
-    <button class="h-menu" onclick="openNav()">&equiv;</button>
-    <div class="h-button">
-      <div class="h-icon"></div>
-      <input class="h-input" type="button" value="Save" onclick="save()">
-    </div>
-  </header>
+  <nav id="nav"></nav><script>makeNav("HOME")</script>
+  <header id="head"></header><script>makeHeader(save)</script>
 
   <div class="filter">
     <input type="checkbox" id="filter" onchange="update(this)">
@@ -37,13 +34,7 @@
     <div id="LOCALS" class="home-sec hide"></div>
   </div>
 
-  <div id="page" class="page hide">
-    <a href="javascript:void(0)" class="close" onclick="closePage()">&times;</a>
-    <div id="page-container">
-  </div>
+  <div id="insert"></div><script>insert('page.xml')</script>
   
 </body>
-<script src="/main/server.js"></script>
-<script src="/main/main.js"></script>
-<script src="home.js"></script>
 </html>

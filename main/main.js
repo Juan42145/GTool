@@ -28,20 +28,10 @@ function create(parent, element, attr){
   return E;
 }
 
-//Queries
-function makeQuery(params){
-  return '?' + (new URLSearchParams(params)).toString();
-}
-
-function parseQuery(){
-  var query = window.location.search.substring(1);
-  var vars = query.split('&');
-  var pairs = {};
-  for (var i = 0; i < vars.length; i++) {
-    var pair = vars[i].split('=');
-    pairs[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1])
-  }
-  return pairs
+//Insert
+function insert(url){
+  const INSERT = document.getElementById('insert')
+  fetch(url).then(res=>res.text()).then(data=>{INSERT.innerHTML=data})
 }
 
 //Focus Input
@@ -74,18 +64,16 @@ function makeNav(active){
 
   const NAV = document.getElementById('nav')
 
-  const index = create(NAV,'a',{'href':'index.html','class':'homebtn'})
+  const index = create(NAV,'a',{'href':'index.html','class':'nav-homebtn'})
   index.innerHTML = '&curren;';
-  const close = create(NAV,'a',{'href':'javascript:void(0)','class':'closebtn'})
+  const close = create(NAV,'a',{'href':'javascript:void(0)','class':'nav-closebtn'})
   close.innerHTML = '&times;';
   close.onclick = ()=>closeNav();
 
   Object.entries(pages).forEach(([page, link]) => {
-    let a;
-    if(page == active)
-      a = create(NAV,'a',{'href':'javascript:void(0)','class':'active'});
-    else
-      a = create(NAV,'a',{'href':link});
+    let a, f = page == active;
+    if(f) a = create(NAV,'a',{'href':'javascript:void(0)','class':'nav-active'});
+    else a = create(NAV,'a',{'href':link});
     a.textContent = page;
   });
 }
@@ -98,6 +86,21 @@ function openNav(){
 function closeNav(){
   const NAV = document.getElementById('nav');
   NAV.style.width = '0'; NAV.style.left = '-1rem';
+}
+
+/*--HEADER--*/
+function makeHeader(click){
+  const HEADER = document.getElementById('head')
+
+  const menu = create(HEADER,'button',{'class':'head-menu'})
+  menu.onclick = ()=>openNav(); menu.innerHTML = '&equiv;';
+
+  if(!click) return
+  const button = create(HEADER,'div',{'class':'head-button'})
+  const icon = create(button,'div',{'class':'head-icon'})
+  const input = create(button,'input',
+  {'class':'head-input','type':'button','value':'Save'})
+  input.onclick = ()=>click();
 }
 
 /*--TOOLTIP--*/
