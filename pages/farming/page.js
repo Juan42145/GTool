@@ -3,49 +3,48 @@ function makePageC(name, attrs){
   let PAGE = document.getElementById('page'); PAGE.classList.remove('hide');
   
   PAGE = document.getElementById('page-container'); PAGE.innerHTML = '';
-  const TBL = create(PAGE, 'div', {'class':'home-tbl'})
-
-  Object.entries(attrs.AFARM).forEach(([category, iData], ii) => {
-    let isTotal = getTotal(category);
-    if(category ==='EXP' || category ==='Mora') isTotal = true;
-
-    makeRow(TBL, category, iData, ii, isTotal);
-    makeInv(TBL, category, iData, ii, isTotal);
-  })  
+  
+  makeTBL(PAGE, attrs.AFARM, 'A')
+  makeTBL(PAGE, attrs.TFARM, 'T')
 }
 
-function makeRow(TBL, category, iData, ii, isTotal){
-  let [item, materials] = iData;
+function makePageW(name, attrs){
+  document.getElementById('farm').classList.add('hide')
+  let PAGE = document.getElementById('page'); PAGE.classList.remove('hide');
+  
+  PAGE = document.getElementById('page-container'); PAGE.innerHTML = '';
+  
+  makeTBL(PAGE, attrs.FARM, 'W')
+}
 
-  let ROW = document.getElementById('r_'+item)
+function makeTBL(PAGE, source, uid){
+  const TBL = create(PAGE, 'div', {'class':'farm-tbl'})
+  Object.entries(source).forEach(([category, iData]) => {
+    let [item, materials] = iData;
+    if(!materials) return;
+    let flag = Object.values(materials).some(v => {
+      return v !== 0;
+    });
+    if(!flag) return
+    CONT = create(TBL, 'div', {'class':'farm-cont',})
+    makeData(CONT, category, item, materials, uid);
+    makeInv(CONT, category, item);
+  })
+}
+
+function makeData(CONT, category, item, materials, uid){
+  let ROW = document.getElementById('r_'+uid+item)
   if(ROW) ROW.innerHTML = '';
-  else ROW = create(TBL, 'div', {'class':'home-row', 'id':'r_'+item})
+  else ROW = create(CONT, 'div', {'class':'farm-datarow', 'id':'r_'+uid+item})
 
-  const NAME = create(ROW, 'div', {'class':'home-name'}); NAME.textContent = item;
-
-  //THINK ABOUT DOUBLE SINGLE MIX OR ALL MIX
-  /*
-  if(isTotal) {
-    ROW.style = 'grid-row: '+(2*ii+1); NAME.classList.add('tots')
-  }
-  else ROW.style = 'grid-row: '+(ii+1);*/
-  ROW.style = 'grid-row: '+(ii+1);
-
-  //if(category === 'RESOURCES') ROW.classList.add('long');
-
-  /*
-  if(category === 'BOOKS' || category === 'TROPHIES' || category === 'WEEKLYS')
-    setData(category, item, NAME, isPage);
-  */
-
-  let tc = translate(category), ti = decode(category, item);
-  let calc = getInventory(tc, ti, materials); //GET INVENTORY
+  let tc = translate(category), ti = decode(tc, item);
+  let calc = getInventory(tc, ti, materials);
   Object.entries(materials).reverse().forEach(([rank, value], mi) => {
-    let index = mi+3;
     if(!value) return;
 
     const CARD = create(ROW, 'div', {'class':'home-item r_'+rank})
-    CARD.style = 'grid-column: '+index;
+    CARD.style = 'grid-row: 1; grid-column: '+ (+mi+1);
+    if(category === 'MORA') CARD.classList.add('long');
 
     const IMG = create(CARD, 'img', {'class':'home-image','src':getImage(tc,ti,rank)})
     IMG.onerror = ()=>this.classList.add('hide');
@@ -60,27 +59,9 @@ function makeRow(TBL, category, iData, ii, isTotal){
     
   });
 
-  let complete = ROW.querySelectorAll('.home-item').length <= ROW.querySelectorAll('.completed').length;
-  if(complete) {NAME.classList.add('completed'); ROW.classList.add('completed')}
-  else {NAME.classList.remove('completed'); ROW.classList.remove('completed');}
-
-  if(isTotal){
-    const TOTAL = create(ROW, 'div', {'class':'home-total'})
-    //if(isPage) TOTAL.classList.add('tots')
-
-    const INV = create(TOTAL, 'p', {'class':'c-inv'})
-    INV.textContent = (Math.floor(calc[0]*100)/100).toLocaleString('en-us');;
-    const NEED = create(TOTAL, 'p', {'class':'c-need'})
-    NEED.textContent = (Math.floor(calc['total']*100)/100).toLocaleString('en-us');;
-
-    /*
-    if(category == 'BOOKS' || category == 'TROPHIES')
-      setData(category, item, TOTAL, isPage);
-    */
-
-    if(complete) TOTAL.classList.add('completed');
-    else TOTAL.classList.remove('completed');
-  }
+  //let complete = ROW.querySelectorAll('.home-item').length <= ROW.querySelectorAll('.completed').length;
+  //if(complete) {NAME.classList.add('completed'); ROW.classList.add('completed')}
+  //else {NAME.classList.remove('completed'); ROW.classList.remove('completed');}
 }
 
 function getInventory(category, item, materials){
@@ -105,31 +86,16 @@ function getInventory(category, item, materials){
   return calc;
 }
 
-function makeInv(TBL, category, iData, ii, isTotal){
+function makeInv(CONT, category, item){
   let cName = category;
-  let [item, materials] = iData;
   category = translate(category), item = decode(category, item)
   materials = userInv[category][item];
-  let rowi = getComputedStyle(document.getElementById('page')).getPropertyValue('--rowi')
-  let coli = getComputedStyle(document.getElementById('page')).getPropertyValue('--coli')
 
-  const ROW = create(TBL, 'div', {'class':'home-row home-inv'})
-
-  /*
-  if(isTotal) ROW.style = 'grid-row: '+(2*ii + +rowi);
-  else ROW.style = 'grid-row: '+(ii+1);
-  */
-
-  let index = +coli+1;
+  let index = 1;
   Object.entries(materials).reverse().forEach(([rank, value]) => {
-    if(value === '' || rank === 'ROW') return
-
-    const CARD = create(ROW, 'div', {'class':'home-item r_'+rank})
-
-    /*
-    if(isTotal) CARD.style = 'grid-column: '+index;
-    else CARD.style = 'grid-column: 5';
-    */CARD.style = 'grid-column: 5';
+    if(value === '' || rank === 'ROW' || rank === '0') return
+    const CARD = create(CONT, 'div', {'class':'home-item r_'+rank})
+    CARD.style = 'grid-row: 2; grid-column: ' +index;
     index++;
 
     const IMG = create(CARD, 'img', {'class':'home-image','src':getImage(category, item, rank)})
@@ -143,8 +109,14 @@ function makeInv(TBL, category, iData, ii, isTotal){
       userInv[category][item][rank] = +INP.value; store('Inventory', userInv);
       caching('cacheI', category + '_' + rank + '_' + materials['ROW'], INP.value);
 
-      recalculate(category, item); makeRow(TBL, cName, iData, ii, isTotal);
+      recalculate(category, item); makeData(TBL, cName, iData, ii, isTotal);
     }, false);
     INP.addEventListener('click', (e)=>{focusText(e)})
   });
+}
+
+function closePage(){
+  document.getElementById('farm').classList.remove('hide')
+  document.getElementById('page').classList.add('hide')
+  farm();
 }

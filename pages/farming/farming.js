@@ -53,6 +53,8 @@ function makeWpn(){
 
     const NAME = create(WPN, 'div', {'class':'farm-name'}); NAME.textContent = name;
 
+    WPN.addEventListener('click', (e)=>{makePageW(name, attrs)}, false);
+
     let wpn = userWpn[name]
     makeInputs(WD, name, 'WEAPONS', 'FARM', [wpn.PHASE, wpn.TARGET]);
     makeFarm(WD, name, 'WEAPONS', 'FARM');
