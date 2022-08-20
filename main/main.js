@@ -64,7 +64,7 @@ function makeNav(active){
 
   const NAV = document.getElementById('nav')
 
-  const index = create(NAV,'a',{'href':'index.html','class':'nav-homebtn'})
+  const index = create(NAV,'a',{'href':'/index.html','class':'nav-homebtn'})
   index.innerHTML = '&curren;';
   const close = create(NAV,'a',{'href':'javascript:void(0)','class':'nav-closebtn'})
   close.innerHTML = '&times;';

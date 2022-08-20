@@ -73,7 +73,7 @@ function userData(){
 
 function receiveUser(user){
   sessionStorage.set('user', processInventory(process(user, true)));
-  window.open('/pages/home/home.html','_self')
+  window.open('pages/home/home.html','_self')
 }
 
 /*FORM*/
