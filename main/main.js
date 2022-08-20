@@ -52,19 +52,19 @@ function getImage(category, item, rank){
 /*--NAVBAR--*/
 function makeNav(active){
   const pages = {
-    HOME: '/pages/home/home.html',
-    INVENTORY: '/pages/inventory/inventory.html',
-    FARMING: '/pages/farming/farming.html',
-    CHARACTERS: '/pages/characters/characters.html',
-    WEAPONS: '/pages/weapons/weapons.html',
+    HOME: '../home/home.html',
+    INVENTORY: '../inventory/inventory.html',
+    FARMING: '../farming/farming.html',
+    CHARACTERS: '../characters/characters.html',
+    WEAPONS: '../weapons/weapons.html',
     DOMAINS: '',
-    COMPARE: '/pages/compare/compare.html',
+    COMPARE: '../compare/compare.html',
     DATA: '',
   }
 
   const NAV = document.getElementById('nav')
 
-  const index = create(NAV,'a',{'href':'/index.html','class':'nav-homebtn'})
+  const index = create(NAV,'a',{'href':'../../index.html','class':'nav-homebtn'})
   index.innerHTML = '&curren;';
   const close = create(NAV,'a',{'href':'javascript:void(0)','class':'nav-closebtn'})
   close.innerHTML = '&times;';
