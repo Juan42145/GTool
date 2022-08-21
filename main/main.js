@@ -144,19 +144,19 @@ function recalculate(category, item){
 }
 
 /*--CALC DATA--*/
-function calculate(){
-  let pivot = {
-    'BOOKS':{},
-    'TROPHIES':{},
-    'RESOURCES':{},
-    'GEMS':{},
-    'WEEKLYS':{},
-    'ELITE':{},
-    'BOSSES':{},
-    'COMMON':{},
-    'LOCALS':{}
-  };
+let calcPivot = {
+  'BOOKS':{},
+  'TROPHIES':{},
+  'RESOURCES':{},
+  'GEMS':{},
+  'WEEKLYS':{},
+  'ELITE':{},
+  'BOSSES':{},
+  'COMMON':{},
+  'LOCALS':{}
+};
 
+function calculate(){
   let calculator = {
     'CHARACTERS': {},
     'WEAPONS': {},
@@ -173,20 +173,8 @@ function calculate(){
       [+state.SKILL, +state.TSKILL],[+state.BURST, +state.TBURST]];
     calculator.CHARACTERS[char] = {
       ELEMENT: info.ELEMENT,
-      AFARM: {
-        GEM: [info.ELEMENT, calcA('GEM', ascension, info.ELEMENT)],
-        BOSS: [info.BOSS, calcA('BOSS', ascension, info.BOSS)],
-        LOCAL: [info.LOCAL, calcA('LOCAL', ascension, info.LOCAL)],
-        COMMON: [info.COMMON, calcA('COMMON', ascension, info.COMMON)],
-        EXP: ['EXP', calcA('EXP', ascension, 'EXP')],
-        MORA: ['Mora', calcA('MORA', ascension, 'Mora')],
-      },
-      TFARM: {
-        BOOK: [info.BOOK, calcT('BOOK', talent, info.BOOK)],
-        COMMON: [info.COMMON, calcT('COMMON', talent, info.COMMON)],
-        WEEKLY: [info['WEEKLY BOSS'] + ' ' +info.WEEKLY, calcT('WEEKLY', talent, info['WEEKLY BOSS'] + ' ' +info.WEEKLY)],
-        MORA: ['Mora', calcT('MORA', talent, 'Mora')],
-      }
+      AFARM: calcCharA(info, ascension, true),
+      TFARM: calcCharT(info, talent, true)
     }
   })
 
@@ -197,77 +185,105 @@ function calculate(){
     const phase = [+state.PHASE, +state.TARGET];
     calculator.WEAPONS[wpn] = {
       RARITY: info.RARITY,
-      FARM:{
-        TROPHY: [info.TROPHY, calcW('TROPHY', phase, info.TROPHY, info.RARITY)],
-        ELITE: [info.ELITE, calcW('ELITE', phase, info.ELITE, info.RARITY)],
-        COMMON: [info.COMMON, calcW('COMMON', phase, info.COMMON, info.RARITY)],
-        ORE: ['Ore', calcW('ORE', phase, 'Ore', info.RARITY)],
-        MORA: ['Mora', calcW('MORA', phase, 'Mora', info.RARITY)],
-      }
+      FARM: calcWpn(info, phase, true)
     }
   })
 
-  sessionStorage.set('pivot', pivot);
+  sessionStorage.set('pivot', calcPivot);
   sessionStorage.set('calculator', calculator);
   sessionStorage.set('calc', false);
+}
 
-  function calcA(category, [phase, target], item){
-    let error = [phase, target].some(i => {return i < 0 || i > 7});
-    if(error || phase >= target) return;
-    let p = phase? DB.DB_Calculate.ASCENSION[category][phase]: 0;
-    let t = DB.DB_Calculate.ASCENSION[category][target];
-    const value = vsub(t, p);
-    rollup(category, item, value); return value;
+function calcCharA(info, ascension, roll){
+  return {
+    GEM: [info.ELEMENT, calcA('GEM', ascension, info.ELEMENT, roll)],
+    BOSS: [info.BOSS, calcA('BOSS', ascension, info.BOSS, roll)],
+    LOCAL: [info.LOCAL, calcA('LOCAL', ascension, info.LOCAL, roll)],
+    COMMON: [info.COMMON, calcA('COMMON', ascension, info.COMMON, roll)],
+    EXP: ['EXP', calcA('EXP', ascension, 'EXP', roll)],
+    MORA: ['Mora', calcA('MORA', ascension, 'Mora', roll)],
   }
+}
+function calcCharT(info, talent, roll){
+  let wb = info['WEEKLY BOSS'] + ' ' +info.WEEKLY;
+  return {
+    BOOK: [info.BOOK, calcT('BOOK', talent, info.BOOK, roll)],
+    COMMON: [info.COMMON, calcT('COMMON', talent, info.COMMON, roll)],
+    WEEKLY: [wb, calcT('WEEKLY', talent, wb, roll)],
+    MORA: ['Mora', calcT('MORA', talent, 'Mora', roll)],
+  }
+}
 
-  function calcT(category, talent, item){
-    let error = talent.some(t => {return t.some(i => {return i < 0 || i > 10;})});
-    if(error || (!talent[0][1] && !talent[1][1] && !talent[2][1])) return;
-    let v = [0,0,0];
-    for(let i = 0; i < 3; i++){
-      if(talent[i][0] < talent[i][1]){
-        let c = talent[i][0] > 1? DB.DB_Calculate.TALENT[category][talent[i][0]]: 0;
-        let t = talent[i][1] > 1? DB.DB_Calculate.TALENT[category][talent[i][1]]: 0;
-        v[i] = vsub(t, c);
-      }  
-    }
-    const value = vadd(v[0],v[1],v[2]);
-    rollup(category, item, value); return value;
+function calcWpn(info, phase, roll){
+  return {
+    TROPHY: [info.TROPHY, calcW('TROPHY', phase, info.TROPHY, info.RARITY, roll)],
+    ELITE: [info.ELITE, calcW('ELITE', phase, info.ELITE, info.RARITY, roll)],
+    COMMON: [info.COMMON, calcW('COMMON', phase, info.COMMON, info.RARITY, roll)],
+    ORE: ['Ore', calcW('ORE', phase, 'Ore', info.RARITY, roll)],
+    MORA: ['Mora', calcW('MORA', phase, 'Mora', info.RARITY, roll)],
   }
+}
 
-  function calcW(category, [phase, target], item, rarity){
-    let error = [phase, target].some(i => {return i < 0 || i > 7});
-    if(error || phase >= target) return;
-    let p = phase? DB.DB_Calculate[rarity+'WEAPON'][category][phase]: 0;
-    let t = DB.DB_Calculate[rarity+'WEAPON'][category][target];
-    const value = vsub(t, p);
-    rollup(category, item, value); return value;
-  }
+function calcA(category, [phase, target], item, roll){
+  let error = [phase, target].some(i => {return i < 0 || i > 7});
+  if(error || phase >= target) return;
+  let p = phase? DB.DB_Calculate.ASCENSION[category][phase]: 0;
+  let t = DB.DB_Calculate.ASCENSION[category][target];
+  const value = vsub(t, p);
+  if(roll) rollup(category, item, value);
+  return value;
+}
 
-  function rollup(category, item, value){
-    let flag = Object.values(value).some(v => {
-      return v !== 0;
-    });
-    let name = translate(category);
-    if(flag) pivot[name][item] = item in pivot[name]? vadd(pivot[name][item], value): value;
+function calcT(category, talent, item, roll){
+  let error = talent.some(t => {return t.some(i => {return i < 0 || i > 10;})});
+  if(error || (!talent[0][1] && !talent[1][1] && !talent[2][1])) return;
+  let v = [0,0,0];
+  for(let i = 0; i < 3; i++){
+    if(talent[i][0] < talent[i][1]){
+      let c = talent[i][0] > 1? DB.DB_Calculate.TALENT[category][talent[i][0]]: 0;
+      let t = talent[i][1] > 1? DB.DB_Calculate.TALENT[category][talent[i][1]]: 0;
+      v[i] = vsub(t, c);
+    }  
   }
-  
-  function translate(category){
-    let dict = {
-      'BOOK': 'BOOKS',
-      'TROPHY': 'TROPHIES',
-      'EXP': 'RESOURCES',
-      'MORA': 'RESOURCES',
-      'ORE': 'RESOURCES',
-      'GEM': 'GEMS',
-      'WEEKLY': 'WEEKLYS',
-      'ELITE': 'ELITE',
-      'BOSS': 'BOSSES',
-      'COMMON': 'COMMON',
-      'LOCAL': 'LOCALS',
-    }
-    return dict[category];
+  const value = vadd(v[0],v[1],v[2]);
+  if(roll) rollup(category, item, value);
+  return value;
+}
+
+function calcW(category, [phase, target], item, rarity, roll){
+  let error = [phase, target].some(i => {return i < 0 || i > 7});
+  if(error || phase >= target) return;
+  let p = phase? DB.DB_Calculate[rarity+'WEAPON'][category][phase]: 0;
+  let t = DB.DB_Calculate[rarity+'WEAPON'][category][target];
+  const value = vsub(t, p);
+  if(roll) rollup(category, item, value);
+  return value;
+}
+
+function rollup(category, item, value){
+  let flag = Object.values(value).some(v => {
+    return v !== 0;
+  });
+  let name = getName(category);
+  if(flag) calcPivot[name][item] = item in calcPivot[name]?
+    vadd(calcPivot[name][item], value): value;
+}
+
+function getName(category){
+  let dict = {
+    'BOOK': 'BOOKS',
+    'TROPHY': 'TROPHIES',
+    'EXP': 'RESOURCES',
+    'MORA': 'RESOURCES',
+    'ORE': 'RESOURCES',
+    'GEM': 'GEMS',
+    'WEEKLY': 'WEEKLYS',
+    'ELITE': 'ELITE',
+    'BOSS': 'BOSSES',
+    'COMMON': 'COMMON',
+    'LOCAL': 'LOCALS',
   }
+  return dict[category];
 }
 
 function vadd(...objs){

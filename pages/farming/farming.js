@@ -25,7 +25,7 @@ function makeChar(){
 
     const NAME = create(CHAR, 'div', {'class':'farm-name'}); NAME.textContent = name;
 
-    CHAR.addEventListener('click', (e)=>{makePageC(name, attrs)}, false);
+    CHAR.addEventListener('click', (e)=>{makePage(name, attrs, true)}, false);
 
     let char = userChar[name]
     makeInputs(ASCN, name, 'CHARACTERS', 'AFARM', [char.PHASE, char.TARGET]);
@@ -53,7 +53,7 @@ function makeWpn(){
 
     const NAME = create(WPN, 'div', {'class':'farm-name'}); NAME.textContent = name;
 
-    WPN.addEventListener('click', (e)=>{makePageW(name, attrs)}, false);
+    WPN.addEventListener('click', (e)=>{makePage(name, attrs, false)}, false);
 
     let wpn = userWpn[name]
     makeInputs(WD, name, 'WEAPONS', 'FARM', [wpn.PHASE, wpn.TARGET]);
