@@ -1,5 +1,5 @@
 function showInfo(char){
-  let [name, state] = char; const info = DB[name];
+  let [name, state] = char; const info = LDB[name];
   document.getElementById('char-menu').classList.add('hide')
   document.getElementById('char').classList.remove('hide')
 

@@ -1,4 +1,4 @@
-const DB = sessionStorage.get('DB').DB_Characters;
+const LDB = sessionStorage.get('DB').DB_Characters;
 let userChar = sessionStorage.get('user').Characters;
 let owned = false, flip = false; sorting = ()=>{};
 
@@ -33,7 +33,7 @@ function sortAscension(a,b){
 }
 
 function sortRarity(a,b){
-  return DB[b[0]].RARITY - DB[a[0]].RARITY;
+  return LDB[b[0]].RARITY - LDB[a[0]].RARITY;
 }
 
 function sortConstellation(a,b){
@@ -45,7 +45,7 @@ function setFlip(btn){
 }
 
 function makeCard(char){
-  let [name, state] = char; const info = DB[name];
+  let [name, state] = char; const info = LDB[name];
 
   const CARD = create(document.getElementById('characters'), 'div',
     {'class':'card c_'+info.RARITY});

@@ -1,9 +1,10 @@
-const DB = sessionStorage.get('DB').DB_Master;
+const LDB = sessionStorage.get('DB').DB_Master;
 let userInv = sessionStorage.get('user').Inventory;
-const REGION = Object.keys(DB.ELEMENT); const D = (new Date()).getDay();
+const REGION = Object.keys(LDB.ELEMENT); const D = (new Date()).getDay();
 
 /*HOME*/
 function home(){
+  console.log(sessionStorage.get('calc'))
   if(sessionStorage.get('calc')) calculate();
 
   Object.entries(sessionStorage.get('pivot')).forEach(cData => {
@@ -126,7 +127,7 @@ function getInventory(category, item, materials){
 }
 
 function setData(category, item, COMP, isPage){
-  let ti = decode(category, item), index = Object.keys(DB[category]).indexOf(ti);
+  let ti = decode(category, item), index = Object.keys(LDB[category]).indexOf(ti);
   COMP.classList.add('home-color');
   if(category === 'WEEKLY'){
     COMP.dataset.color = REGION[Math.floor(index/6) + 1];

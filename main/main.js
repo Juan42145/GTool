@@ -155,6 +155,7 @@ let calcPivot = {
   'COMMON':{},
   'LOCALS':{}
 };
+const DB = sessionStorage.get('DB');
 
 function calculate(){
   let calculator = {
@@ -162,7 +163,7 @@ function calculate(){
     'WEAPONS': {},
   };
 
-  const DB = sessionStorage.get('DB'); const user = sessionStorage.get('user');
+  const user = sessionStorage.get('user');
 
   Object.keys(user.Characters).forEach(char => {
     if(!user.Characters[char].FARM) return;

@@ -1,5 +1,5 @@
 function showInfo(wpn){
-  let [name, state] = wpn; const info = DB[name];
+  let [name, state] = wpn; const info = LDB[name];
   document.getElementById('weapon-menu').classList.add('hide')
   document.getElementById('wpn').classList.remove('hide')
 

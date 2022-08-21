@@ -1,4 +1,4 @@
-const DB = sessionStorage.get('DB').DB_Weapons;
+const LDB = sessionStorage.get('DB').DB_Weapons;
 let userWpn = sessionStorage.get('user').Weapons;
 let filters = ['Sword','Claymore','Bow','Polearm','Catalyst'];
 let filter = 0, second = 0, count = 0; owned = false, flip = false;
@@ -18,13 +18,13 @@ function makeWeapons(){
   let array = Object.entries(userWpn).sort(sorting); if(flip) array.reverse();
   array.forEach(wpn => {
     if(owned && filter !== 0){
-      if(wpn[1].OWNED && DB[wpn[0]].TYPE === filters[filter-1]) makeRow(wpn)
+      if(wpn[1].OWNED && LDB[wpn[0]].TYPE === filters[filter-1]) makeRow(wpn)
     }
     else if(owned){
       if(wpn[1].OWNED) makeRow(wpn);
     }
     else if(filter !== 0){
-      if(DB[wpn[0]].TYPE === filters[filter-1]) makeRow(wpn);
+      if(LDB[wpn[0]].TYPE === filters[filter-1]) makeRow(wpn);
     }
     else{
       makeRow(wpn);
@@ -60,11 +60,11 @@ function sortTable(value){
 }
 
 function sortF(a,b){
-  return b[1].FARM - a[1].FARM || b[1].PHASE - a[1].PHASE || b[1].OWNED - a[1].OWNED  || DB[b[0]].RARITY - DB[a[0]].RARITY;
+  return b[1].FARM - a[1].FARM || b[1].PHASE - a[1].PHASE || b[1].OWNED - a[1].OWNED  || LDB[b[0]].RARITY - LDB[a[0]].RARITY;
 }
 
 function sortR(a,b){
-  return b[1].REFINEMENT - a[1].REFINEMENT || DB[b[0]].RARITY - DB[a[0]].RARITY;
+  return b[1].REFINEMENT - a[1].REFINEMENT || LDB[b[0]].RARITY - LDB[a[0]].RARITY;
 }
 
 function sortName(a,b){
@@ -72,38 +72,38 @@ function sortName(a,b){
 }
 
 function sortPhase(a,b){
-  return b[1].PHASE - a[1].PHASE || b[1].OWNED - a[1].OWNED  || DB[b[0]].RARITY - DB[a[0]].RARITY;
+  return b[1].PHASE - a[1].PHASE || b[1].OWNED - a[1].OWNED  || LDB[b[0]].RARITY - LDB[a[0]].RARITY;
 }
 
 function sortATK(a,b){
-  return DB[b[0]].ATK - DB[a[0]].ATK
+  return LDB[b[0]].ATK - LDB[a[0]].ATK
 }
 
 function sortStat(a,b){
-  return DB[a[0]].STAT.localeCompare(DB[b[0]].STAT) || DB[b[0]].VALUE.localeCompare(DB[a[0]].VALUE);
+  return LDB[a[0]].STAT.localeCompare(LDB[b[0]].STAT) || LDB[b[0]].VALUE.localeCompare(LDB[a[0]].VALUE);
 }
 
 function sortA(a,b){
   let k = Object.keys(sessionStorage.get('DB').DB_Master.TROPHIES)
-  return k.indexOf(DB[a[0]].TROPHY) - k.indexOf(DB[b[0]].TROPHY)
+  return k.indexOf(LDB[a[0]].TROPHY) - k.indexOf(LDB[b[0]].TROPHY)
 }
 
 function sortE(a,b){
   let k = Object.keys(sessionStorage.get('DB').DB_Master.ENEMIES)
-  return k.indexOf(DB[a[0]].ELITE) - k.indexOf(DB[b[0]].ELITE)
+  return k.indexOf(LDB[a[0]].ELITE) - k.indexOf(LDB[b[0]].ELITE)
 }
 
 function sortC(a,b){
   let k = Object.keys(sessionStorage.get('DB').DB_Master.ENEMIES)
-  return k.indexOf(DB[a[0]].COMMON) - k.indexOf(DB[b[0]].COMMON)
+  return k.indexOf(LDB[a[0]].COMMON) - k.indexOf(LDB[b[0]].COMMON)
 }
 
 function sortRR(a,b){
-  return DB[b[0]].RARITY - DB[a[0]].RARITY;
+  return LDB[b[0]].RARITY - LDB[a[0]].RARITY;
 }
 
 function makeRow(wpn){
-  let [name, state] = wpn; const info = DB[name];
+  let [name, state] = wpn; const info = LDB[name];
 
   const ROW = create(document.getElementById('weapons'), 'tr', {'class':'w_'+info.RARITY})
   ROW.addEventListener('click', (e)=>{

@@ -1,4 +1,4 @@
-let DB = sessionStorage.get('DB');
+let LDB = sessionStorage.get('DB');
 let gc, ga, gb;
 
 function makePage(name, attrs, isChar){
@@ -118,14 +118,14 @@ function makeInv(CONT, category, item){
 }
 
 function levelChar(PAGE, name){
-  const state = userChar[name]; const info = DB.DB_Characters[name];
+  const state = userChar[name]; const info = LDB.DB_Characters[name];
   let start = +state.PHASE, end = (start+1) <= +state.TARGET? start+1: +state.TARGET;
   let calc = calcCharA(info, [start,end], false)
   makeLevel(PAGE, calc)
 }
 
 function levelTln(PAGE, name){
-  const state = userChar[name]; const info = DB.DB_Characters[name];
+  const state = userChar[name]; const info = LDB.DB_Characters[name];
   let start, end, calc;
   start = state.NORMAL? +state.NORMAL: 1;
   end = (start+1) <= +state.TNORMAL? start+1: +state.TNORMAL;
@@ -142,7 +142,7 @@ function levelTln(PAGE, name){
 }
 
 function levelWpn(PAGE, name){
-  const state = userWpn[name]; const info = DB.DB_Weapons[name];
+  const state = userWpn[name]; const info = LDB.DB_Weapons[name];
   let start = +state.PHASE, end = (start+1) <= +state.TARGET? start+1: +state.TARGET;
   let calc = calcWpn(info, [start,end], false)
   makeLevel(PAGE, calc)
