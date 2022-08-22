@@ -1,12 +1,15 @@
 let LDB = sessionStorage.get('DB');
-let gc, ga, gb;
+let gn, gb;
 
-function makePage(name, attrs, isChar){
+function makePage(name, isChar){
   document.getElementById('farm').classList.add('hide')
   let PAGE = document.getElementById('page'); PAGE.classList.remove('hide');
+
+  if(sessionStorage.get('calc')) calculate(); calc = sessionStorage.get('calculator');
+  attrs = isChar? calc.CHARACTERS[name]: calc.WEAPONS[name]
   PAGE.dataset.color = isChar? attrs.ELEMENT: attrs.RARITY;
   PAGE = document.getElementById('page-container'); PAGE.innerHTML = '';
-  gc = name, ga = attrs, gb = isChar;
+  gn = name, gb = isChar;
   if(isChar){
     makeTBL(PAGE, attrs.AFARM, true)
     levelChar(PAGE, name)
@@ -31,18 +34,18 @@ function makeTBL(PAGE, source, isInv){
     if(!flag) return
     content = true;
     CONT = create(TBL, 'div', {'class':'farm-cont',})
-    let c = makeData(CONT, category, item, materials);
+    let c = makeData(CONT, category, item, materials, isInv);
     complete &&= c;
     if(isInv) makeInv(CONT, category, item);
   })
   return complete && content
 }
 
-function makeData(CONT, category, item, materials){
+function makeData(CONT, category, item, materials, isInv){
   const ROW = create(CONT, 'div', {'class':'farm-datarow'})
 
   let tc = translate(category), ti = decode(tc, item);
-  let calc = getInventory(tc, ti, materials);
+  let calc = isInv? getInventory(tc, ti, materials): userInv[tc][ti];
   Object.entries(materials).reverse().forEach(([rank, value], mi) => {
     if(!value) return;
 
@@ -111,7 +114,7 @@ function makeInv(CONT, category, item){
       userInv[category][item][rank] = +INP.value; store('Inventory', userInv);
       caching('cacheI', category + '_' + rank + '_' + materials['ROW'], INP.value);
 
-      recalculate(category, item); makePage(gc,ga,gc);
+      recalculate(category, item); makePage(gn,gb);
     }, false);
     INP.addEventListener('click', (e)=>{focusText(e)})
   });
@@ -121,7 +124,7 @@ function levelChar(PAGE, name){
   const state = userChar[name]; const info = LDB.DB_Characters[name];
   let start = +state.PHASE, end = (start+1) <= +state.TARGET? start+1: +state.TARGET;
   let calc = calcCharA(info, [start,end], false)
-  makeLevel(PAGE, calc)
+  makeLevel(PAGE, calc, 'PHASE')
 }
 
 function levelTln(PAGE, name){
@@ -130,37 +133,57 @@ function levelTln(PAGE, name){
   start = state.NORMAL? +state.NORMAL: 1;
   end = (start+1) <= +state.TNORMAL? start+1: +state.TNORMAL;
   calc = calcCharT(info, [[start,end],[0,0],[0,0]], false);
-  makeLevel(PAGE, calc)
+  makeLevel(PAGE, calc, 'NORMAL')
   start = state.SKILL? +state.SKILL: 1;
   end = (start+1) <= +state.TSKILL? start+1: +state.TSKILL;
   calc = calcCharT(info, [[0,0],[start,end],[0,0]], false);
-  makeLevel(PAGE, calc)
+  makeLevel(PAGE, calc, 'SKILL')
   start = state.BURST? +state.BURST: 1;
   end = (start+1) <= +state.TBURST? start+1: +state.TBURST;
   calc = calcCharT(info, [[0,0],[0,0],[start,end]], false);
-  makeLevel(PAGE, calc)
+  makeLevel(PAGE, calc, 'BURST')
 }
 
 function levelWpn(PAGE, name){
   const state = userWpn[name]; const info = LDB.DB_Weapons[name];
   let start = +state.PHASE, end = (start+1) <= +state.TARGET? start+1: +state.TARGET;
   let calc = calcWpn(info, [start,end], false)
-  makeLevel(PAGE, calc)
+  makeLevel(PAGE, calc, 'PHASE')
 }
 
-function makeLevel(PAGE, calc){
+function makeLevel(PAGE, calc, attr){
   let isComplete = makeTBL(PAGE, calc, false)
   if(!isComplete) return
   const BTN = create(PAGE, 'button', {'class':'farm-lvlbtn'})
-  BTN.textContent = 'Upgrade'
-  BTN.addEventListener('click', ()=>{
-    consume(calc)
-    toast('ze click')
-  })
+  BTN.textContent = 'Level Up '+attr;
+  BTN.addEventListener('click', ()=>{consume(calc, attr)})
 }
 
-function consume(calc){
-  console.log(calc)
+function consume(calc, attr){
+  Object.entries(calc).forEach(([category, [item, materials]]) => {
+    category = translate(category), item = decode(category, item)
+    let inv = userInv[category][item];
+    Object.entries(materials).forEach(([rank, value]) => {
+      if(value) inv[rank] -= value
+    })
+  })
+  if(gb) incrementC(attr)
+  else incrementW(attr)
+  toasty('Leveled Up '+attr)
+  makePage(gn,gb);
+}
+
+function incrementC(attr){
+  if(attr !== 'PHASE' && !userChar[gn][attr]) userChar[gn][attr] = 1;
+  userChar[gn][attr]++;
+  sessionStorage.set('calc', true); store('Characters', userChar);
+  caching('cacheC', userChar[gn]['ROW'], userChar[gn]);
+}
+
+function incrementW(attr){
+  userWpn[gn][attr]++;
+  sessionStorage.set('calc', true); store('Weapons', userWpn);
+  caching('cacheW', userWpn[gn]['ROW'], userWpn[gn]);
 }
 
 function closePage(){
