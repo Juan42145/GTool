@@ -289,6 +289,19 @@ header {
   color: var(--clr_white);
 }
 
+.alerty{
+  position: absolute;
+  place-self: start center;
+  text-align: center;
+  width: 40rem;
+  height: 10rem;
+  line-height: 10rem;
+  border-radius: 1rem;
+  font-size: 2rem;
+  border: 0.1rem solid var(--clr_gold);
+  background-color: var(--clr_black);
+  color: var(--clr_white);
+}
 
 /*--TOOLTIP--*/
 #tt {

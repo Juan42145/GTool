@@ -24,7 +24,7 @@ function setter(string, query){
   let store = JSON.stringify(sessionStorage.get('cache'+string[0]));
   console.log(store);
   if(store == 'null'){
-    toast(`No ${string} to Save`); return;
+    toasty(`No ${string} to Save`); return;
   }
   toast('Saving '+string); server(query+'&cord='+store);
 }
@@ -71,4 +71,10 @@ function toast(message){
   const TOAST = document.createElement('div'); document.body.append(TOAST);
   TOAST.classList = 'alert'; TOAST.textContent = message;
   setTimeout(()=>TOAST.remove(),1500)
+}
+
+function toasty(message){
+  const TOAST = document.createElement('div'); document.body.append(TOAST);
+  TOAST.classList = 'alert alerty'; TOAST.textContent = message;
+  setTimeout(()=>TOAST.remove(),1000)
 }
