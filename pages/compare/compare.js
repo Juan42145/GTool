@@ -105,10 +105,13 @@ function getHeaders(category, isRow){
       const IMG = create(CARD, 'img', {'class':'image','src':getImage(group[category], item, 0)})
       IMG.onerror = ()=>this.classList.add('hide');
     });
+    HEAD.classList.add('group')
     document.getElementById('compare').classList.add(isRow?'rowG':'colG')
   }
-  else document.getElementById('compare').classList.remove(isRow?'rowG':'colG')
-
+  else{
+    HEAD.classList.remove('group')
+    document.getElementById('compare').classList.remove(isRow?'rowG':'colG')
+  }
 
   if(isRow) isShown = true;
   return array;

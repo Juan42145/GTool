@@ -39,6 +39,11 @@
 
   display: grid;
   place-items: center;
+  position: sticky;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  background-color: var(--table_grid);
 }
 
 .compare input[type=checkbox]{
@@ -73,18 +78,34 @@
 
 .row{
   grid-column: 2;
+  position: sticky;
+  left: 0;
 }
 
 .col{
   grid-row: 2;
+  position: sticky;
+  top: 0;
+}
+
+.group .row{
+  left: 5rem;
+}
+
+.group .col{
+  top: 5rem;
 }
 
 .row-group{
   grid-column: 1;
+  position: sticky;
+  left: 0;
 }
 
 .col-group{
   grid-row: 1;
+  position: sticky;
+  top: 0;
 }
 
 .header{
