@@ -81,10 +81,11 @@ function login(){
   const P = document.getElementById('password'); getAuth(P.value);
 }
 
-function receiveAuth(isCorrect){
+function receiveAuth(auth){
   const P = document.getElementById('password'); P.value = '';
-  if(isCorrect){
-    P.blur(); P.placeholder = 'Loading'; userData();
+  if(auth.AUTH){
+    P.blur(); P.placeholder = 'Loading'; sessionStorage.set('code', auth.USER);
+    userData();
   } else{
     P.placeholder = 'Naur';
   }

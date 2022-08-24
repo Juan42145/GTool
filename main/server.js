@@ -12,7 +12,7 @@ function getDB(){
 }
 
 function getUser(){
-  server('getUser=handleUser');
+  server('getUser=handleUser&user='+sessionStorage.get('code'));
 }
 
 function getAuth(p){
@@ -30,15 +30,15 @@ function setter(string, query){
 }
 
 function setInv(){
-  setter('Inventory','setInv=handleInv');
+  setter('Inventory','setInv=handleInv&user='+sessionStorage.get('code'));
 }
 
 function setChar(){
-  setter('Characters','setChar=handleChar');
+  setter('Characters','setChar=handleChar&user='+sessionStorage.get('code'));
 }
 
 function setWpn(){
-  setter('Weapons','setWpn=handleWpn');
+  setter('Weapons','setWpn=handleWpn&user='+sessionStorage.get('code'));
 }
 
 /*--HANDLERS--*/
@@ -50,8 +50,8 @@ function handleDB(data){
   console.log(data); receiveDB(data);
 }
 
-function handleAuth(isCorrect){
-  console.log(isCorrect); receiveAuth(isCorrect);
+function handleAuth(auth){
+  console.log(auth); receiveAuth(auth);
 }
 
 function handleInv(){
