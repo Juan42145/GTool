@@ -14,19 +14,21 @@ function compare(){
   let cols = getHeaders(translate(coli), false);
 
   if(isShown){
-    let nRows = rows.length; nCols = cols.length;
+    let nRows = rows.length, nCols = cols.length;
     const TABLE = document.getElementById('table');
     let cells = new Array(nRows);
-    for(let r = 0; r < nRows; r++){
+    for(let r = 0; r <= nRows; r++){
       cells[r] = new Array(nCols);
-      for(let c = 0; c < nCols; c++){
+      for(let c = 0; c <= nCols; c++){
         const DIV = create(TABLE, 'div', {'class':'cell'})
         DIV.style = `grid-column: ${c+3}; grid-row: ${r+3};`
         if(isLine) DIV.classList.add('line');
         cells[r][c] = DIV;
       }
     }
-    getChar(cells, rowi, coli, rows, cols, isOwned);
+    let totals = [new Array(nRows).fill(0), new Array(nCols).fill(0)]
+    getChar(cells, rowi, coli, rows, cols, isOwned, totals);
+    makeTotals(cells, nRows, nCols, totals);
   }
 }
 
@@ -113,11 +115,13 @@ function getHeaders(category, isRow){
     document.getElementById('compare').classList.remove(isRow?'rowG':'colG')
   }
 
+  const CARD = create(HEAD, 'div', {'class':(isRow?'row':'col')+' header htotal'})
+
   if(isRow) isShown = true;
   return array;
 }
 
-function getChar(array, lookR, lookC, rHeaders, cHeaders, check){
+function getChar(array, lookR, lookC, rHeaders, cHeaders, check, totals){
   let data = LDB.DB_Characters;
   Object.entries(data).forEach(([name, info]) => {
     if(check) if(!userChar[name].OWNED) return;
@@ -125,10 +129,27 @@ function getChar(array, lookR, lookC, rHeaders, cHeaders, check){
 
     if(rowi === -1 || coli === -1) return;
     const CARD = create(array[rowi][coli], 'div', {'class':'card'})
+    totals[0][rowi]++; totals[1][coli]++;
     
     let link = name === 'Traveler'? 'traveler_geo': name.toLowerCase().replaceAll(' ','_');
     const IMG = create(CARD, 'img', {'class':'char-image c_'+info.RARITY,
       'src':'https://paimon.moe/images/characters/'+link+'.png'})
     IMG.onerror = ()=>this.classList.add('hide');
   });
+}
+
+function makeTotals(array, nRows, nCols, totals){
+  for(let r = 0; r < nRows; r++){
+    const CARD = create(array[r][nCols], 'div')
+    array[r][nCols].classList = 'total'
+    const TX = create(CARD, 'div'); TX.textContent = totals[0][r];
+  }
+  for(let c = 0; c < nCols; c++){
+    const CARD = create(array[nRows][c], 'div')
+    array[nRows][c].classList = 'total'
+    const TX = create(CARD, 'div'); TX.textContent = totals[1][c];
+  }
+  const CARD = create(array[nRows][nCols], 'div')
+  array[nRows][nCols].classList = 'total tsum'
+  const TX = create(CARD, 'div'); TX.textContent = totals[0].reduce((a,b)=>(a+b));
 }
