@@ -60,12 +60,12 @@ function makeCard(char){
   }
 
   const ICON = create(CARD, 'img', {'class':'icon','src':getImage('ELEMENT', info.ELEMENT, 0)})
-  ICON.onerror = ()=>this.classList.add('hide');
+  setError(ICON)
 
   let link = name === 'Traveler'? 'traveler_geo': name.toLowerCase().replaceAll(' ','_');
   const IMG = create(CARD, 'img',
     {'class':'image','src': 'https://paimon.moe/images/characters/'+link+'.png'})
-  IMG.onerror = ()=>this.classList.add('hide');
+  setError(IMG)
 
   const NAME = create(CARD, 'p', {'class':'name'}); NAME.textContent = name;
 }

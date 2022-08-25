@@ -21,7 +21,7 @@ function makeChar(){
 
     let link = name === 'Traveler'? 'traveler_geo': name.toLowerCase().replaceAll(' ','_');
     const IMG = create(CHAR, 'img', {'class':'image','src':'https://paimon.moe/images/characters/'+link+'.png'})
-    IMG.onerror = ()=>this.classList.add('hide');
+    setError(IMG)
 
     const NAME = create(CHAR, 'div', {'class':'farm-name'}); NAME.textContent = name;
 
@@ -49,7 +49,7 @@ function makeWpn(){
 
     let link = name.toLowerCase().replaceAll(' ','_').replaceAll('"','').replaceAll("'", '');
     const IMG = create(WPN, 'img', {'class':'image','src':'https://paimon.moe/images/weapons/'+link+'.png'})
-    IMG.onerror = ()=>this.classList.add('hide');
+    setError(IMG)
 
     const NAME = create(WPN, 'div', {'class':'farm-name'}); NAME.textContent = name;
 
@@ -103,7 +103,7 @@ function makeFarm(COMP, name, section, id){
       const CARD = create(DIV, 'div', {'class':'item r_'+rank})
   
       const IMG = create(CARD, 'img', {'class':'image','src':getImage(category, item, rank)})
-      IMG.onerror = ()=>this.classList.add('hide');
+      setError(IMG)
   
       const NEED = create(CARD, 'p', {'class':'need'}); NEED.textContent = value;
     });

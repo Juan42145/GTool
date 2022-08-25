@@ -41,12 +41,20 @@ function focusText(e){
 
 /*--IMAGES--*/
 function getImage(category, item, rank){
-  if(item === '') return 'https://paimon.moe/images/paimon_faq.png';
+  if(item === '') return getError();
 
   let link = sessionStorage.get('DB').DB_Master[category][item][rank];
-  if(link.includes('*')) link = 'paimon.moe/images/paimon_faq.png'
+  if(link.includes('*')) return getError();
   
   return 'https://' + link;
+}
+
+function getError(){
+  return 'https://paimon.moe/images/paimon_faq.png';
+}
+
+function setError(COMP){
+  COMP.onerror = ()=>COMP.src = getError();
 }
 
 /*--NAVBAR--*/
@@ -132,9 +140,8 @@ var tooltip = function(){
 function recalculate(category, item){
   let counter = 0, total = 0;
   Object.entries(userInv[category][item]).reverse().forEach(([rank, value]) => {
-    if(value !== '' && rank !== 'ROW' && rank !== '0'){
-      total += value/(3**counter); counter++;
-    }
+    if(value === '*' || rank === 'ROW' || rank === '0') return
+    total += value/(3**counter); counter++;
   });
   if(counter > 1){
     let totalInv = document.getElementById('I_'+item)

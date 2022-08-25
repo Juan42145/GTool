@@ -20,26 +20,27 @@ function inventory(){
         if(rank === '0'){
           const TOTAL = create(ROW, 'div', {'class':'inv-total','id':'I_'+item})
           TOTAL.textContent = Math.floor(value).toLocaleString('en-us');
+          return
         }
-        else if(value !== '' && rank !== 'ROW'){
-          const CARD = create(ROW, 'div', {'class':'inv-item r_'+rank})
+        if(value === '*' || rank === 'ROW') return;
+        
+        const CARD = create(ROW, 'div', {'class':'inv-item r_'+rank})
 
-          const IMG = create(CARD, 'img', {'class':'inv-image','src':getImage(category, item, rank)})
-          IMG.onerror = ()=>this.classList.add('hide');
+        const IMG = create(CARD, 'img', {'class':'inv-image','src':getImage(category, item, rank)})
+        setError(IMG)
+        
+        const INP = create(CARD, 'input', {
+          'type':'text','pattern':'\\d*','value': value, 'data-column':rank})
+        INP.addEventListener('change', ()=>{
+          //INP.value = parseInt(this.value.replace(/\D/g,''),10).toLocaleString();
+          if(this.value == '') INP.value = 0;
           
-          const INP = create(CARD, 'input', {
-            'type':'text','pattern':'\\d*','value': value, 'data-column':rank})
-          INP.addEventListener('change', ()=>{
-            //INP.value = parseInt(this.value.replace(/\D/g,''),10).toLocaleString();
-            if(this.value == '') INP.value = 0;
-            
-            userInv[category][item][rank] = INP.value; store('Inventory', userInv);
-            caching('cacheI', category + '_' + rank + '_' + materials['ROW'], INP.value);
-            
-            recalculate(category, item);
-          }, false);
-          INP.addEventListener('click', (e)=>{focusText(e)})
-        }
+          userInv[category][item][rank] = INP.value; store('Inventory', userInv);
+          caching('cacheI', category + '_' + rank + '_' + materials['ROW'], INP.value);
+          
+          recalculate(category, item);
+        }, false);
+        INP.addEventListener('click', (e)=>{focusText(e)})
       });
     });
   });

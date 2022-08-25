@@ -78,7 +78,7 @@ function getHeaders(category, isRow){
     if(isText) CARD.textContent = item;
     else{
       const IMG = create(CARD, 'img', {'class':'image','src':getImage(category, item, rank)})
-      IMG.onerror = ()=>this.classList.add('hide');
+      setError(IMG)
       CARD.addEventListener('mouseover', ()=>tooltip.show(item))
       CARD.addEventListener('mouseout', ()=>tooltip.hide())
     }
@@ -105,7 +105,7 @@ function getHeaders(category, isRow){
       else CARD.style = cStyle+': span '+span;
 
       const IMG = create(CARD, 'img', {'class':'image','src':getImage(group[category], item, 0)})
-      IMG.onerror = ()=>this.classList.add('hide');
+      setError(IMG)
     });
     HEAD.classList.add('group')
     document.getElementById('compare').classList.add(isRow?'rowG':'colG')
@@ -134,7 +134,7 @@ function getChar(array, lookR, lookC, rHeaders, cHeaders, check, totals){
     let link = name === 'Traveler'? 'traveler_geo': name.toLowerCase().replaceAll(' ','_');
     const IMG = create(CARD, 'img', {'class':'char-image c_'+info.RARITY,
       'src':'https://paimon.moe/images/characters/'+link+'.png'})
-    IMG.onerror = ()=>this.classList.add('hide');
+    setError(IMG)
   });
 }
 

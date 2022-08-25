@@ -127,7 +127,7 @@ function makeRow(wpn){
   
   let link = name.toLowerCase().replaceAll(' ','_').replaceAll('"','').replaceAll("'", '');
   const IMG = create(CELL, 'img', {'src': 'https://paimon.moe/images/weapons/'+link+'.png'})
-  IMG.onerror = ()=>this.classList.add('hide');
+  setError(IMG)
 
   if(state.OWNED){
     const TAG = create(CELL, 'p', {'class':'tag'});
@@ -158,17 +158,17 @@ function makeRow(wpn){
   CELL = create(ROW, 'td', {'class':'r_2'});
   
   const TROPHY = create(CELL, 'img', {'src':getImage('TROPHIES', info.TROPHY, 2)});
-  TROPHY.onerror = ()=>this.classList.add('hide');
+  setError(TROPHY)
 
   CELL = create(ROW, 'td', {'class':'r_2'});
   
   const ELITE = create(CELL, 'img', {'src':getImage('ENEMIES', info.ELITE, 2)});
-  ELITE.onerror = ()=>this.classList.add('hide');
+  setError(ELITE)
 
   CELL = create(ROW, 'td', {'class':'r_1'});
 
   const COMMON = create(CELL, 'img', {'src':getImage('ENEMIES', info.COMMON, 1)});
-  COMMON.onerror = ()=>this.classList.add('hide');
+  setError(COMMON)
 }
 
 function save(){

@@ -90,32 +90,28 @@ function makeInv(TBL, category, iData, ii, complete){
 
   let index = +coli+1;
   Object.entries(materials).reverse().forEach(([rank, value]) => {
-    if(rank === '0'){
-      /*const TOTAL = create(ROW, 'div', {'class':'home-total home-inv','id':'I_'+item})
-      TOTAL.textContent = Math.floor(value).toLocaleString('en-us');*/
-    }
-    else if(value !== '' && rank !== 'ROW'){
-      const CARD = create(ROW, 'div', {'class':'home-item r_'+rank})
+    if(value === '*' || rank === 'ROW' || rank === '0') return;
 
-      if(TBL.dataset.total === 'true') CARD.style = 'grid-column: '+index;
-      else CARD.style = 'grid-column: 5';
-      index++;
+    const CARD = create(ROW, 'div', {'class':'home-item r_'+rank})
 
-      const IMG = create(CARD, 'img', {'class':'home-image','src':getImage(category, item, rank)})
-      IMG.onerror = ()=>this.classList.add('hide');
+    if(TBL.dataset.total === 'true') CARD.style = 'grid-column: '+index;
+    else CARD.style = 'grid-column: 5';
+    index++;
+
+    const IMG = create(CARD, 'img', {'class':'home-image','src':getImage(category, item, rank)})
+    setError(IMG)
+    
+    const INP = create(CARD, 'input', {
+      'type':'text','pattern':'\\d*','value': value, 'data-column':rank})
+    INP.addEventListener('change', ()=>{
+      if(this.value == '') INP.value = 0;
       
-      const INP = create(CARD, 'input', {
-        'type':'text','pattern':'\\d*','value': value, 'data-column':rank})
-      INP.addEventListener('change', ()=>{
-        if(this.value == '') INP.value = 0;
-        
-        userInv[category][item][rank] = +INP.value; store('Inventory', userInv);
-        caching('cacheI', category + '_' + rank + '_' + materials['ROW'], INP.value);
+      userInv[category][item][rank] = +INP.value; store('Inventory', userInv);
+      caching('cacheI', category + '_' + rank + '_' + materials['ROW'], INP.value);
 
-        recalculate(category, item); makeRow(TBL, cName, iData, ii, true);
-      }, false);
-      INP.addEventListener('click', (e)=>{focusText(e)})
-    }
+      recalculate(category, item); makeRow(TBL, cName, iData, ii, true);
+    }, false);
+    INP.addEventListener('click', (e)=>{focusText(e)})
   });
 }
 
@@ -137,7 +133,7 @@ function makeDets(TBL, category, itemName, iData, ii){
     CARD.style = 'grid-column: '+index;
 
     const IMG = create(CARD, 'img', {'class':'home-image','src':getImage(category, item, rank)})
-    IMG.onerror = ()=>this.classList.add('hide');
+    setError(IMG)
 
     const NEED = create(CARD, 'p', {});
     NEED.textContent = value.toLocaleString('en-us');

@@ -62,7 +62,7 @@ function makeRow(TBL, category, iData, ii, isPage){
     if(isPage) CARD.style = 'grid-column: '+index;
 
     const IMG = create(CARD, 'img', {'class':'home-image','src':getImage(tc,ti,rank)})
-    IMG.onerror = ()=>this.classList.add('hide');
+    setError(IMG)
 
     const INV = create(CARD, 'div', {'class':'c-inv p'})
     INV.textContent = calc[rank].toLocaleString('en-us');

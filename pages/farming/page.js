@@ -54,7 +54,7 @@ function makeData(CONT, category, item, materials, isInv){
     if(category === 'MORA') CARD.classList.add('long');
 
     const IMG = create(CARD, 'img', {'class':'farm-image','src':getImage(tc,ti,rank)})
-    IMG.onerror = ()=>this.classList.add('hide');
+    setError(IMG)
 
     const INV = create(CARD, 'div', {'class':'c-inv p'})
     INV.textContent = calc[rank].toLocaleString('en-us');
@@ -98,13 +98,13 @@ function makeInv(CONT, category, item){
 
   let index = 1;
   Object.entries(materials).reverse().forEach(([rank, value]) => {
-    if(value === '' || rank === 'ROW' || rank === '0') return
+    if(value === '*' || rank === 'ROW' || rank === '0') return
     const CARD = create(CONT, 'div', {'class':'farm-item r_'+rank})
     CARD.style = 'grid-row: 2; grid-column: ' +index;
     index++;
 
     const IMG = create(CARD, 'img', {'class':'farm-image','src':getImage(category, item, rank)})
-    IMG.onerror = ()=>this.classList.add('hide');
+    setError(IMG)
     
     const INP = create(CARD, 'input', {
       'type':'text','pattern':'\\d*','value': value, 'data-column':rank})
