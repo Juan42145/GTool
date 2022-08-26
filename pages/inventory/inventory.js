@@ -32,8 +32,7 @@ function inventory(){
         const INP = create(CARD, 'input', {
           'type':'text','pattern':'\\d*','value': value, 'data-column':rank})
         INP.addEventListener('change', ()=>{
-          //INP.value = parseInt(this.value.replace(/\D/g,''),10).toLocaleString();
-          if(this.value == '') INP.value = 0;
+          if(INP.value == '') INP.value = 0;
           
           userInv[category][item][rank] = INP.value; store('Inventory', userInv);
           caching('cacheI', category + '_' + rank + '_' + materials['ROW'], INP.value);

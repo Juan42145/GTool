@@ -104,7 +104,7 @@ function makeInv(TBL, category, iData, ii, complete){
     const INP = create(CARD, 'input', {
       'type':'text','pattern':'\\d*','value': value, 'data-column':rank})
     INP.addEventListener('change', ()=>{
-      if(this.value == '') INP.value = 0;
+      if(INP.value == '') INP.value = 0;
       
       userInv[category][item][rank] = +INP.value; store('Inventory', userInv);
       caching('cacheI', category + '_' + rank + '_' + materials['ROW'], INP.value);
