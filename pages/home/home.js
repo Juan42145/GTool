@@ -129,7 +129,7 @@ function getInventory(category, item, materials){
 function setData(category, item, COMP, isPage){
   let ti = decode(category, item), index = Object.keys(LDB[category]).indexOf(ti);
   COMP.classList.add('home-color');
-  if(category === 'WEEKLY'){
+  if(category === 'WEEKLYS'){
     COMP.dataset.color = REGION[Math.floor(index/6) + 1];
   } else{
     COMP.dataset.color = REGION[Math.floor(index/3) + 1];
