@@ -62,7 +62,7 @@ function makeCard(char){
   const ICON = create(CARD, 'img', {'class':'icon','src':getImage('ELEMENT', info.ELEMENT, 0)})
   setError(ICON)
 
-  let link = name === 'Traveler'? 'traveler_geo': name.toLowerCase().replaceAll(' ','_');
+  let link = name === 'Traveler'? getTraveler(): name.toLowerCase().replaceAll(' ','_');
   const IMG = create(CARD, 'img',
     {'class':'image','src': 'https://paimon.moe/images/characters/'+link+'.png'})
   setError(IMG)

@@ -57,6 +57,10 @@ function setError(COMP){
   COMP.onerror = ()=>COMP.src = getError();
 }
 
+function getTraveler(){
+  return sessionStorage.get('code') === 'd'? 'traveler_anemo': 'traveler_geo'
+}
+
 /*--NAVBAR--*/
 function makeNav(active){
   const pages = {

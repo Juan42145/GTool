@@ -3,7 +3,7 @@ function showInfo(char){
   document.getElementById('char-menu').classList.add('hide')
   document.getElementById('char').classList.remove('hide')
 
-  let link = name === 'Traveler'? 'traveler_geo': name.toLowerCase().replaceAll(' ','_');
+  let link = name === 'Traveler'? getTraveler(): name.toLowerCase().replaceAll(' ','_');
   document.getElementById('char-img').src = 'https://paimon.moe/images/characters/full/'+link+'.png';
   document.getElementById('char').dataset.color = info.ELEMENT;
   

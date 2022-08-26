@@ -19,7 +19,7 @@ function makeChar(){
     const ASCN = create(ROW, 'div', {'class':'farm-ascn'})
     const TLNT = create(ROW, 'div', {'class':'farm-tlnt'})
 
-    let link = name === 'Traveler'? 'traveler_geo': name.toLowerCase().replaceAll(' ','_');
+    let link = name === 'Traveler'? getTraveler(): name.toLowerCase().replaceAll(' ','_');
     const IMG = create(CHAR, 'img', {'class':'image','src':'https://paimon.moe/images/characters/'+link+'.png'})
     setError(IMG)
 
