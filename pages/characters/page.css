@@ -47,6 +47,9 @@
   --light: rgba(200,200,200,0.75);
   --border: var(--clr_charcoal);
 
+  --max_bg: var(--clr_orange);
+  --max_tx: var(--clr_lightyellow);
+
   display: grid;
   grid-template-columns: max-content 1fr;
   grid-auto-rows: max-content;
@@ -91,6 +94,11 @@
   align-items: center;
   justify-content: center;
   background-color: var(--shade);
+}
+
+#CONSTELLATION.max{
+  background-color: var(--max_bg);
+  color: var(--max_tx);
 }
 
 .contact button{

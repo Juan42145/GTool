@@ -67,6 +67,8 @@ table{
   --table_head: var(--clr_pearl);
   --table_border: var(--clr_void);
   --tx_border: var(--clr_white);
+  --max_tx: var(--clr_orange);
+  --max_bg: var(--clr_lightyellow);
 
   --cellsize: 5rem;
 
@@ -97,7 +99,7 @@ th{
 }
 
 .tag{
-  --border: 0.4rem;
+  --spread: 0.4rem;
 
   display: flex;
   position: absolute;
@@ -107,8 +109,20 @@ th{
   font-size: 1.2rem;
   align-items: center;
   color: var(--table_tx);
-  text-shadow: 0 0 var(--border) var(--tx_border), 0 0 var(--border) var(--tx_border);;
+  text-shadow:
+    0 0 var(--spread) var(--tx_border),
+    0 0 var(--spread) var(--tx_border),
+    0 0 var(--spread) var(--tx_border);
   font-weight: bold;
+}
+
+.tag.max{
+  color: var(--max_tx);
+  text-shadow:
+  0 0 var(--spread) var(--max_bg),
+  0 0 var(--spread) var(--max_bg),
+  0 0 var(--spread) var(--max_bg),
+  0 0 var(--spread) var(--max_bg);
 }
 
 td{

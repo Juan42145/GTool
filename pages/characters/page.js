@@ -12,12 +12,16 @@ function showInfo(char){
   document.getElementById('WEAPON').textContent = info.WEAPON;
   document.getElementById('ELEMENT').src = getImage('ELEMENT', info.ELEMENT, 0);
   
+  let CONS = document.getElementById('CONSTELLATION')
   if(state.OWNED){
-    document.getElementById('CONSTELLATION').classList.remove('hide');
-    document.getElementById('CONSTELLATION').textContent = 'C'+state.CONSTELLATION;
+    CONS.classList.remove('hide');
+    CONS.textContent = 'C'+state.CONSTELLATION;
+    if(state.CONSTELLATION >= 6) CONS.classList.add('max')
+    else CONS.classList.remove('max')
   } else{
-    document.getElementById('CONSTELLATION').classList.add('hide');
-    document.getElementById('CONSTELLATION').textContent = '';
+    CONS.classList.add('hide');
+    CONS.textContent = '';
+    CONS.classList.remove('max')
   }
 
   document.getElementById('FARM').checked = state.FARM;
@@ -81,38 +85,39 @@ function editOut(){
 
 function plus(){
   let name = document.getElementById('NAME').textContent;
-  let cons = document.getElementById('CONSTELLATION').textContent;
-  let value;
-  if(cons === 'C6') return;
-  else if(cons === ''){
+  let CONS = document.getElementById('CONSTELLATION')
+  let constx = CONS.textContent, value;
+  if(constx === ''){
     userChar[name]['OWNED'] = true; value = 0;
   }
-  else if(cons !== '' && cons !== 'C6') {
-    value = +cons[1] + 1;
+  else{
+    value = +constx.substring(1) + 1;
   }
 
-  document.getElementById('CONSTELLATION').textContent = 'C' + value;
-  userChar[name]['CONSTELLATION'] = value;
+  if(value >= 6) CONS.classList.add('max')
+  else CONS.classList.remove('max')
 
+  CONS.textContent = 'C' + value; userChar[name]['CONSTELLATION'] = value;
   store('Characters', userChar);
   caching('cacheC', userChar[name]['ROW'], userChar[name]);
 }
 
 function minus(){
   let name = document.getElementById('NAME').textContent;
-  let cons = document.getElementById('CONSTELLATION').textContent;
-  let value, string;
-  if(cons === '') return;
-  else if(cons === 'C0'){
+  let CONS = document.getElementById('CONSTELLATION')
+  let constx = CONS.textContent, value, string;
+  if(constx === '') return;
+  else if(constx === 'C0'){
     value = ''; string = ''; userChar[name]['OWNED'] = false;
   }
-  else if(cons !== '' && cons !== 'C0') {
-    value = +cons[1] - 1; string = 'C' + value;
+  else if(constx !== '' && constx !== 'C0') {
+    value = +constx.substring(1) - 1; string = 'C' + value;
   }
 
-  document.getElementById('CONSTELLATION').textContent = string;
-  userChar[name]['CONSTELLATION'] = value;
+  if(value >= 6) CONS.classList.add('max')
+  else CONS.classList.remove('max')
 
+  CONS.textContent = string; userChar[name]['CONSTELLATION'] = value;
   store('Characters', userChar);
   caching('cacheC', userChar[name]['ROW'], userChar[name]);
 }

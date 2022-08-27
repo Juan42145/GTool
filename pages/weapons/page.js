@@ -1,5 +1,7 @@
+let info
+
 function showInfo(wpn){
-  let [name, state] = wpn; const info = LDB[name];
+  let [name, state] = wpn; info = LDB[name];
   document.getElementById('weapon-menu').classList.add('hide')
   document.getElementById('wpn').classList.remove('hide')
 
@@ -11,12 +13,17 @@ function showInfo(wpn){
   document.getElementById('RARITY').classList = 's'+info.RARITY;
   document.getElementById('TYPE').textContent = info.TYPE;
   
+  let REF = document.getElementById('REFINEMENT')
   if(state.OWNED){
-    document.getElementById('REFINEMENT').classList.remove('hide')
-    document.getElementById('REFINEMENT').textContent = 'R'+state.REFINEMENT;
+    REF.classList.remove('hide')
+    REF.textContent = 'R'+state.REFINEMENT;
+    let max = info.MAX? info.MAX: 5;
+    if(state.REFINEMENT >= max) REF.classList.add('max')
+    else REF.classList.remove('max')
   } else{
-    document.getElementById('REFINEMENT').classList.add('hide')
-    document.getElementById('REFINEMENT').textContent = '';
+    REF.classList.add('hide')
+    REF.textContent = '';
+    REF.classList.remove('max')
   }
 
   document.getElementById('FARM').checked = state.FARM
@@ -68,36 +75,42 @@ function editOut(){
 
 function plus(){
   let name = document.getElementById('NAME').textContent;
-  let ref = document.getElementById('REFINEMENT').textContent;
-  let value;
-  if(ref === 'R5') return;
-  else if(ref === ''){
+  let REF = document.getElementById('REFINEMENT');
+  let reftx = REF.textContent, value;
+  if(reftx === ''){
     userWpn[name]['OWNED'] = true; value = 1;
   }
-  else if(ref !== '' && ref !== 'R5') {
-    value = +ref[1] + 1;
+  else{
+    value = +reftx.substring(1) + 1;
   }
 
-  document.getElementById('REFINEMENT').textContent = 'R' + value;
-  userWpn[name]['REFINEMENT'] = value; store('Weapons', userWpn);
-  caching('cacheW', userWpn[name]['ROW'], userWpn[name]);
+  let max = info.MAX? info.MAX: 5;
+  if(value >= max) REF.classList.add('max')
+  else REF.classList.remove('max')
 
+  REF.textContent = 'R' + value; userWpn[name]['REFINEMENT'] = value;
+  store('Weapons', userWpn);
+  caching('cacheW', userWpn[name]['ROW'], userWpn[name]);
 }
 
 function minus(){
   let name = document.getElementById('NAME').textContent;
-  let ref = document.getElementById('REFINEMENT').textContent;
-  let value, string;
-  if(ref === '') return;
-  else if(ref === 'R1'){
+  let REF = document.getElementById('REFINEMENT');
+  let reftx = REF.textContent, value, string;
+  if(reftx === '') return;
+  else if(reftx === 'R1'){
     value = ''; string = ''; userWpn[name]['OWNED'] = false;
   }
-  else if(ref !== '' && ref !== 'C0') {
-    value = +ref[1] - 1; string = 'R' + value;
+  else if(reftx !== '' && reftx !== 'C0') {
+    value = +reftx.substring(1) - 1; string = 'R' + value;
   }
 
-  document.getElementById('REFINEMENT').textContent = string;
-  userWpn[name]['REFINEMENT'] = value; store('Weapons', userWpn);
+  let max = info.MAX? info.MAX: 5;
+  if(value >= max) REF.classList.add('max')
+  else REF.classList.remove('max')
+
+  REF.textContent = string; userWpn[name]['REFINEMENT'] = value;
+  store('Weapons', userWpn);
   caching('cacheW', userWpn[name]['ROW'],userWpn[name]);
 }
 

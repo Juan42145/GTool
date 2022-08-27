@@ -54,6 +54,7 @@ function makeCard(char){
   if(state.OWNED){
     const TAG = create(CARD, 'p', {'class':'tag'});
     TAG.textContent = 'C'+ +state.CONSTELLATION;
+    if(state.CONSTELLATION >= 6) TAG.classList.add('max')
   }
   else{
     CARD.classList.add('missing');

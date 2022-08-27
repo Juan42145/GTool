@@ -104,7 +104,7 @@ function sortRR(a,b){
 
 function makeRow(wpn){
   let [name, state] = wpn; const info = LDB[name];
-
+  
   const ROW = create(document.getElementById('weapons'), 'tr', {'class':'w_'+info.RARITY})
   ROW.addEventListener('click', (e)=>{
     if(e.target.classList == 'farm') return;
@@ -132,6 +132,8 @@ function makeRow(wpn){
   if(state.OWNED){
     const TAG = create(CELL, 'p', {'class':'tag'});
     TAG.textContent = 'R'+ +state.REFINEMENT;
+    let max = info.MAX? info.MAX: 5;
+    if(state.REFINEMENT >= max) TAG.classList.add('max')
   }
   else{
     ROW.classList.add('missing')

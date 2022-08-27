@@ -45,6 +45,9 @@
   --edit_tx: var(--clr_black);
   --light: rgba(200,200,200,0.75);
 
+  --max_bg: var(--clr_orange);
+  --max_tx: var(--clr_lightyellow);
+
   display: grid;
   flex: 1;
   grid-template-columns: max-content 1fr;
@@ -84,6 +87,11 @@
   align-items: center;
   justify-content: center;
   background-color: var(--shade);
+}
+
+#REFINEMENT.max{
+  background-color: var(--max_bg);
+  color: var(--max_tx);
 }
 
 .contact button{

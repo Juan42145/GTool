@@ -108,6 +108,7 @@ select{
   --card_tx: var(--clr_white);
   --card_icon_bg: rgba(26,26,26,0.75);
   --card_icon_tx: var(--clr_white);
+  --max: var(--clr_orange);
 
   display: grid;
   grid-template-columns: 9rem;
@@ -162,13 +163,18 @@ select{
   height: 2.5rem;
   width: 5rem;
   margin: -1rem;
-  padding: 0 1rem;
+  padding-right: 2.5rem;
   border-radius: 5rem;
   font-size: 1.2rem;
   align-items: center;
+  justify-content: end;
   color: var(--card_icon_tx);
   background-color: var(--card_icon_bg);
   font-weight: bold;
+}
+
+.tag.max{
+  color: var(--max);
 }
 
 @media screen and (min-width: 650px){
