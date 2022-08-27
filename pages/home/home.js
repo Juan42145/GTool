@@ -69,7 +69,6 @@ function makeRow(TBL, category, iData, ii, isPage){
     const NEED = create(CARD, 'div', {'class':'c-need p'})
     NEED.textContent = '/' + value.toLocaleString('en-us');
 
-
     if(calc[rank] >= value) CARD.classList.add('completed');
     else CARD.classList.remove('completed');
   });

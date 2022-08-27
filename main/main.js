@@ -155,23 +155,25 @@ function recalculate(category, item){
 }
 
 /*--CALC DATA--*/
-let calcPivot = {
-  'BOOKS':{},
-  'TROPHIES':{},
-  'RESOURCES':{},
-  'GEMS':{},
-  'WEEKLYS':{},
-  'ELITE':{},
-  'BOSSES':{},
-  'COMMON':{},
-  'LOCALS':{}
-};
+let calcPivot
 const DB = sessionStorage.get('DB');
 
 function calculate(){
   let calculator = {
     'CHARACTERS': {},
     'WEAPONS': {},
+  };
+
+  calcPivot = {
+    'BOOKS':{},
+    'TROPHIES':{},
+    'RESOURCES':{},
+    'GEMS':{},
+    'WEEKLYS':{},
+    'ELITE':{},
+    'BOSSES':{},
+    'COMMON':{},
+    'LOCALS':{}
   };
 
   const user = sessionStorage.get('user');
@@ -204,6 +206,7 @@ function calculate(){
   sessionStorage.set('pivot', calcPivot);
   sessionStorage.set('calculator', calculator);
   sessionStorage.set('calc', false);
+  console.log(calcPivot)
 }
 
 function calcCharA(info, ascension, roll){
@@ -225,7 +228,6 @@ function calcCharT(info, talent, roll){
     MORA: ['Mora', calcT('MORA', talent, 'Mora', roll)],
   }
 }
-
 function calcWpn(info, phase, roll){
   return {
     TROPHY: [info.TROPHY, calcW('TROPHY', phase, info.TROPHY, info.RARITY, roll)],

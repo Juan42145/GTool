@@ -48,9 +48,8 @@ function processInventory(user){
     Object.entries(items).forEach(([item, materials]) => {
       let counter = 0, total = 0;
       Object.entries(materials).reverse().forEach(([rank, value]) => {
-        if(value !== '' && rank !== 'ROW'){
-          total += value/(3**counter); counter++;
-        }
+        if(value === '*' || rank === 'ROW') return
+        total += value/(3**counter); counter++;
       });
       if(counter > 1) inv[category][item]['0'] = total;
     });
