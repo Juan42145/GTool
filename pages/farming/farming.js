@@ -19,8 +19,7 @@ function makeChar(){
     const ASCN = create(ROW, 'div', {'class':'farm-ascn'})
     const TLNT = create(ROW, 'div', {'class':'farm-tlnt'})
 
-    let link = name === 'Traveler'? getTraveler(): name.toLowerCase().replaceAll(' ','_');
-    const IMG = create(CHAR, 'img', {'class':'image','src':'https://paimon.moe/images/characters/'+link+'.png'})
+    const IMG = create(CHAR, 'img', {'class':'image','src':getCharacter(name)})
     setError(IMG)
 
     const NAME = create(CHAR, 'div', {'class':'farm-name'}); NAME.textContent = name;
@@ -47,8 +46,7 @@ function makeWpn(){
     const WPN = create(ROW, 'div', {'class':'farm-wpn'})
     const WD = create(ROW, 'div', {'class':'farm-wpndata'})
 
-    let link = name.toLowerCase().replaceAll(' ','_').replaceAll('"','').replaceAll("'", '');
-    const IMG = create(WPN, 'img', {'class':'image','src':'https://paimon.moe/images/weapons/'+link+'.png'})
+    const IMG = create(WPN, 'img', {'class':'image','src':getWeapon(name)})
     setError(IMG)
 
     const NAME = create(WPN, 'div', {'class':'farm-name'}); NAME.textContent = name;

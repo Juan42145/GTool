@@ -38,13 +38,13 @@
 .farm-char{
   grid-row: span 2;
   display: grid;
-  font-weight: bolder;
   place-content: center;
   place-items: center;
 }
 
 .farm-name{
   text-align: center;
+  font-weight: bolder;
   text-shadow: 0 0 0.7rem var(--shadow);
 }
 

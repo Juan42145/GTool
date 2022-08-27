@@ -5,8 +5,7 @@ function showInfo(wpn){
   document.getElementById('weapon-menu').classList.add('hide')
   document.getElementById('wpn').classList.remove('hide')
 
-  let link = name.toLowerCase().replaceAll(' ','_').replaceAll('"','').replaceAll("'", '');
-  document.getElementById('wpn-img').src = 'https://paimon.moe/images/weapons/'+link+'.png';
+  document.getElementById('wpn-img').src = getWeapon(name);
   document.getElementById('wpn').dataset.color = info.RARITY;
   
   document.getElementById('NAME').textContent = name;

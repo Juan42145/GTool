@@ -125,8 +125,7 @@ function makeRow(wpn){
 
   CELL = create(ROW, 'td', {'class':'img'})
   
-  let link = name.toLowerCase().replaceAll(' ','_').replaceAll('"','').replaceAll("'", '');
-  const IMG = create(CELL, 'img', {'src': 'https://paimon.moe/images/weapons/'+link+'.png'})
+  const IMG = create(CELL, 'img', {'src':getWeapon(name)})
   setError(IMG)
 
   if(state.OWNED){

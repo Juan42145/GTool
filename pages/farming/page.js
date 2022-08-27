@@ -10,12 +10,20 @@ function makePage(name, isChar){
   PAGE.dataset.color = isChar? attrs.ELEMENT: attrs.RARITY;
   PAGE = document.getElementById('page-container'); PAGE.innerHTML = '';
   gn = name, gb = isChar;
+
+  const DATA = create(PAGE, 'div', {'class':'page-data'})
+  const IMG = create(DATA, 'img', {'class':'page-image'})
+  setError(IMG)
+  const NAME = create(DATA, 'div', {'class':'page-name'}); NAME.textContent = name;
+
   if(isChar){
+    IMG.src = getCharacter(name)
     makeTBL(PAGE, attrs.AFARM, true)
     levelChar(PAGE, name)
     makeTBL(PAGE, attrs.TFARM, true)
     levelTln(PAGE, name)
   } else{
+    IMG.src = getWeapon(name)
     makeTBL(PAGE, attrs.FARM, true)
     levelWpn(PAGE, name)
   }

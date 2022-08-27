@@ -14,8 +14,11 @@
   --farm_up_tx: var(--clr_darkblue);
   --farm_up_border: var(--clr_gold);
 
+  --data_tx: var(--clr_white);
+  --shadow: var(--clr_void);
+
   padding: 0;
-  padding-top: 6rem;
+  
   display: grid;
   grid-template-rows: max-content;
   grid-auto-rows: max-content;
@@ -48,6 +51,27 @@
 
 #page-container{
   display: contents;
+}
+
+.page-data{
+  display: grid;
+  grid-template-columns: max-content max-content;
+  place-items: center start;
+  place-self: center;
+  gap: 1rem;
+  margin-right: 6rem;
+}
+
+.page-image{
+  max-width: 6rem;
+}
+
+.page-name{
+  font-size: 2rem;
+  text-align: center;
+  font-weight: bolder;
+  color: var(--data_tx);
+  text-shadow: 0 0 0.7rem var(--shadow);
 }
 
 .farm-tbl {

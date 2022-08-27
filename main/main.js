@@ -57,8 +57,16 @@ function setError(COMP){
   COMP.onerror = ()=>COMP.src = getError();
 }
 
-function getTraveler(){
-  return sessionStorage.get('code') === 'd'? 'traveler_anemo': 'traveler_geo'
+function getCharacter(name, full=false){
+  let t = sessionStorage.get('code') === 'd'? 'traveler_anemo': 'traveler_geo'
+  let link = name === 'Traveler'? t: name.toLowerCase().replaceAll(' ','_');
+  if(full) link = 'full/'+link;
+  return 'https://paimon.moe/images/characters/'+link+'.png'
+}
+
+function getWeapon(name){
+  let link = name.toLowerCase().replaceAll(' ','_').replaceAll('"','').replaceAll("'", '');
+  return 'https://paimon.moe/images/weapons/'+link+'.png'
 }
 
 /*--NAVBAR--*/

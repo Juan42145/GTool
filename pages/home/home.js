@@ -4,7 +4,6 @@ const REGION = Object.keys(LDB.ELEMENT); const D = (new Date()).getDay();
 
 /*HOME*/
 function home(){
-  console.log(sessionStorage.get('calc'))
   if(sessionStorage.get('calc')) calculate();
 
   Object.entries(sessionStorage.get('pivot')).forEach(cData => {

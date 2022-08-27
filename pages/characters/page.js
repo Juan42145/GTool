@@ -3,8 +3,7 @@ function showInfo(char){
   document.getElementById('char-menu').classList.add('hide')
   document.getElementById('char').classList.remove('hide')
 
-  let link = name === 'Traveler'? getTraveler(): name.toLowerCase().replaceAll(' ','_');
-  document.getElementById('char-img').src = 'https://paimon.moe/images/characters/full/'+link+'.png';
+  document.getElementById('char-img').src = getCharacter(name, true);
   document.getElementById('char').dataset.color = info.ELEMENT;
   
   document.getElementById('NAME').textContent = name;

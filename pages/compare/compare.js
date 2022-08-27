@@ -131,9 +131,8 @@ function getChar(array, lookR, lookC, rHeaders, cHeaders, check, totals){
     const CARD = create(array[rowi][coli], 'div', {'class':'card'})
     totals[0][rowi]++; totals[1][coli]++;
     
-    let link = name === 'Traveler'? getTraveler(): name.toLowerCase().replaceAll(' ','_');
     const IMG = create(CARD, 'img', {'class':'char-image c_'+info.RARITY,
-      'src':'https://paimon.moe/images/characters/'+link+'.png'})
+      'src':getCharacter(name)})
     setError(IMG)
   });
 }
