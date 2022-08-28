@@ -170,5 +170,5 @@ function save(){
   user.Weapons = userWpn;
   user.Inventory = userInv;
   sessionStorage.set('user', user);
-  setChar(); setWpn();
+  setChar(); setWpn(); setInv();
 }

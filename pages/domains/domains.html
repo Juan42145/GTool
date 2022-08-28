@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+  <title>Domains</title>
+  <base target="_self">
+  <link rel="stylesheet" href="../../main/style.css">
+  <link rel="stylesheet" href="domains.css">
+  <script src="../../main/server.js"></script>
+  <script src="../../main/main.js"></script>
+  <script src="domains.js"></script>
+</head>
+<body onload="domains()">
+  <nav id="nav"></nav><script>makeNav('DOMAINS')</script>
+  <header id="head"></header><script>makeHeader()</script>
+
+  <div id="domains">
+    <div class="main">
+      <input id="owned" type="checkbox" onchange="domains()">
+    </div>
+    <div id="container" class="domains">
+      <div id="c-cols" class="area"></div>
+      <div id="c-rows" class="area"></div>
+      <div id="c-table" class="area"></div>
+    </div>
+    <!--<div id="w-cols" class="area"></div>
+    <div id="w-rows" class="area"></div>
+    <div id="w-table" class="area"></div>-->
+  </div>
+  
+</body>
+</html>

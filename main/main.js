@@ -77,7 +77,7 @@ function makeNav(active){
     FARMING: '../farming/farming.html',
     CHARACTERS: '../characters/characters.html',
     WEAPONS: '../weapons/weapons.html',
-    DOMAINS: '',
+    DOMAINS: '../domains/domains.html',
     COMPARE: '../compare/compare.html',
     DATA: '',
   }

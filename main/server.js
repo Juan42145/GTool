@@ -22,7 +22,7 @@ function getAuth(p){
 /*--SETTERS--*/
 function setter(string, query){
   let store = JSON.stringify(sessionStorage.get('cache'+string[0]));
-  console.log(store);
+  console.log(string, store);
   if(store == 'null'){
     toasty(`No ${string} to Save`); return;
   }
