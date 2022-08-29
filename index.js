@@ -83,7 +83,7 @@ function login(){
 function receiveAuth(auth){
   const P = document.getElementById('password'); P.value = '';
   if(auth.AUTH){
-    P.blur(); P.placeholder = 'Loading'; sessionStorage.set('code', auth.USER);
+    P.blur(); P.placeholder = 'Wait Whore'; sessionStorage.set('code', auth.USER);
     userData();
   } else{
     P.placeholder = 'Naur';
