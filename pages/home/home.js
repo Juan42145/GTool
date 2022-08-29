@@ -103,9 +103,11 @@ function decode(category, item){
 }
  
 function getInventory(category, item, materials){
-  let inv = {...userInv[category][item]}, calc = {...inv};
-  let len = Object.keys(materials).length-1;
-  let totals = {}, agg = 0, flag = 0;
+  let inv = {}, len = Object.keys(materials).length-1;
+  Object.entries(userInv[category][item]).forEach(([rank,value]) => {
+    inv[rank] = +value;
+  })
+  let calc = {...inv}, totals = {}, agg = 0, flag = 0;
   calc[0] = 0;
   Object.entries(materials).forEach(([rank, value], mi) => {
     calc[0] += +calc[rank]/(3**(len - mi)); totals[rank] = calc[0];
