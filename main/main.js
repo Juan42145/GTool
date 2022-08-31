@@ -214,7 +214,6 @@ function calculate(){
   sessionStorage.set('pivot', calcPivot);
   sessionStorage.set('calculator', calculator);
   sessionStorage.set('calc', false);
-  console.log(calcPivot)
 }
 
 function calcCharA(info, ascension, roll){

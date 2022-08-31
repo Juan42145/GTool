@@ -170,11 +170,16 @@ function makeLevel(PAGE, calc, attr){
 function consume(calc, attr){
   Object.entries(calc).forEach(([category, [item, materials]]) => {
     category = translate(category), item = decode(category, item)
-    let inv = userInv[category][item];
     Object.entries(materials).forEach(([rank, value]) => {
-      if(value) inv[rank] -= value
+      if(!value) return
+      userInv[category][item][rank] -= value;
+      let inv = userInv[category][item], v = inv[rank];
+      caching('cacheI', category + '_' + rank + '_' + inv['ROW'], v);
     })
   })
+
+  store('Inventory', userInv);
+
   if(gb) incrementC(attr)
   else incrementW(attr)
   toasty('Leveled Up '+attr)
