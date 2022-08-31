@@ -15,19 +15,20 @@
 <body onload="domains()">
   <nav id="nav"></nav><script>makeNav('DOMAINS')</script>
   <header id="head"></header><script>makeHeader()</script>
+  
+  <div class="main">
+    <input id="owned" type="checkbox" onchange="domains()">
+  </div>
 
   <div id="domains">
-    <div class="main">
-      <input id="owned" type="checkbox" onchange="domains()">
-    </div>
-    <div id="container" class="domains">
-      <div id="c-cols" class="area"></div>
+    <div class="container">
       <div id="c-rows" class="area"></div>
       <div id="c-table" class="area"></div>
     </div>
-    <!--<div id="w-cols" class="area"></div>
-    <div id="w-rows" class="area"></div>
-    <div id="w-table" class="area"></div>-->
+    <div class="container">
+      <div id="w-rows" class="area"></div>
+      <div id="w-table" class="area"></div>
+    </div>
   </div>
   
 </body>
