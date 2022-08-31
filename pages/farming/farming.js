@@ -64,7 +64,7 @@ function makeInputs(COMP, name, section, id, values){
   let attrNames = values.length === 2? ['PHASE','TARGET']:['NORMAL','TNORMAL','SKILL','TSKILL','BURST','TBURST']
   values.forEach((value,i) => {
     const INP = create(DIV, 'input', {'type':'text','pattern':'\\d*','value': value})
-    INP.addEventListener('change', ()=>{
+    INP.addEventListener('blur',()=>{ if(INP.defaultValue === INP.value) return;
       if(section === 'CHARACTERS') updateC(name, attrNames[i], INP.value);
       if(section === 'WEAPONS') updateW(name, attrNames[i], INP.value);
       makeFarm(COMP, name, section, id);
