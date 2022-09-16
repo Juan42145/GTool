@@ -34,6 +34,13 @@ function insert(url){
   fetch(url).then(res=>res.text()).then(data=>{INSERT.innerHTML=data})
 }
 
+//Import
+function imp(){
+  const script = document.createElement('script'); document.head.append(script);
+  script.setAttribute('src', "../../main/static.js"); 
+}
+imp()
+
 //Focus Input
 function focusText(e){
   e.target.setSelectionRange(e.target.value.length, e.target.value.length);
@@ -77,9 +84,9 @@ function makeNav(active){
     FARMING: '../farming/farming.html',
     CHARACTERS: '../characters/characters.html',
     WEAPONS: '../weapons/weapons.html',
-    DOMAINS: '../domains/domains.html',
     COMPARE: '../compare/compare.html',
-    DATA: '',
+    DOMAINS: '../domains/domains.html',
+    //DATA: '',
   }
 
   const NAV = document.getElementById('nav')
@@ -248,8 +255,8 @@ function calcWpn(info, phase, roll){
 function calcA(category, [phase, target], item, roll){
   let error = [phase, target].some(i => {return i < 0 || i > 7});
   if(error || phase >= target) return;
-  let p = phase? DB.DB_Calculate.ASCENSION[category][phase]: 0;
-  let t = DB.DB_Calculate.ASCENSION[category][target];
+  let p = phase? SDB_Calculate.ASCENSION[category][phase]: 0;
+  let t = SDB_Calculate.ASCENSION[category][target];
   const value = vsub(t, p);
   if(roll) rollup(category, item, value);
   return value;
@@ -261,8 +268,8 @@ function calcT(category, talent, item, roll){
   let v = [0,0,0];
   for(let i = 0; i < 3; i++){
     if(talent[i][0] < talent[i][1]){
-      let c = talent[i][0] > 1? DB.DB_Calculate.TALENT[category][talent[i][0]]: 0;
-      let t = talent[i][1] > 1? DB.DB_Calculate.TALENT[category][talent[i][1]]: 0;
+      let c = talent[i][0] > 1? SDB_Calculate.TALENT[category][talent[i][0]]: 0;
+      let t = talent[i][1] > 1? SDB_Calculate.TALENT[category][talent[i][1]]: 0;
       v[i] = vsub(t, c);
     }  
   }
@@ -274,8 +281,8 @@ function calcT(category, talent, item, roll){
 function calcW(category, [phase, target], item, rarity, roll){
   let error = [phase, target].some(i => {return i < 0 || i > 7});
   if(error || phase >= target) return;
-  let p = phase? DB.DB_Calculate[rarity+'WEAPON'][category][phase]: 0;
-  let t = DB.DB_Calculate[rarity+'WEAPON'][category][target];
+  let p = phase? SDB_Calculate[rarity+'WEAPON'][category][phase]: 0;
+  let t = SDB_Calculate[rarity+'WEAPON'][category][target];
   const value = vsub(t, p);
   if(roll) rollup(category, item, value);
   return value;

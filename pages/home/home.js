@@ -72,6 +72,7 @@ function makeRow(TBL, category, iData, ii, isPage){
     else CARD.classList.remove('completed');
   });
 
+  if(isPage) NAME.textContent += calc['runs']
   let complete = ROW.querySelectorAll('.home-item').length <= ROW.querySelectorAll('.completed').length;
   if(complete) {NAME.classList.add('completed'); ROW.classList.add('completed')}
   else {NAME.classList.remove('completed'); ROW.classList.remove('completed');}
@@ -107,11 +108,11 @@ function getInventory(category, item, materials){
   Object.entries(userInv[category][item]).forEach(([rank,value]) => {
     inv[rank] = +value;
   })
-  let calc = {...inv}, totals = {}, agg = 0, flag = 0;
+  let calc = {...inv}, totals = {}, agg = 0, flag = 0, fagi;
   calc[0] = 0;
   Object.entries(materials).forEach(([rank, value], mi) => {
     calc[0] += +calc[rank]/(3**(len - mi)); totals[rank] = calc[0];
-    if(value !== 0) flag = rank;
+    if(value !== 0){flag = rank; fagi = mi;}
     if(mi < len && value < inv[rank]){
       calc[rank] = +value; inv[+rank+1] += Math.floor(inv[rank] - value)/3;
     } else{
@@ -119,11 +120,36 @@ function getInventory(category, item, materials){
     }
     agg += value/(3**(len - mi));
   });
+
   calc[flag] = Math.floor(inv[flag]); calc[0] = totals[flag]; calc['total'] = agg;
   if(item === 'EXP' || item === 'Ore'){
     calc[0] = Math.floor(inv[0]); calc[flag] = Math.floor(inv[0])
   }
+
+  let diff = calc['total'] - calc[0]; calc['runs'] = '';
+  let gate = category === 'BOOKS' ||category === 'TROPHIES' ||
+  category === 'WEEKLYS' || category === 'BOSSES' || category === 'GEMS';
+  if(diff > 0 && gate){
+    divs = SDB_Drops[category][flag]; diff *= 3**(len - fagi);
+    let runs = Math.ceil(diff/divs), t;
+    switch(category){
+      case 'WEEKLYS':
+        t = pluralize(runs,'week');
+        break;
+      case 'BOSSES':
+      case 'GEMS':
+        t = pluralize(Math.ceil(runs/4.5),'day');
+        break;
+      default:
+        t = pluralize(Math.ceil(runs/9),'day');
+    }
+    calc['runs'] = ` (${pluralize(runs,'run')} ~ ${t})`;
+  }
   return calc;
+}
+
+function pluralize(num, string){
+  return num > 1? num+' '+string + 's': num+' '+string;
 }
 
 function setData(category, item, COMP, isPage){

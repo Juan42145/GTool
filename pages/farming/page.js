@@ -162,8 +162,17 @@ function levelWpn(PAGE, name){
 function makeLevel(PAGE, calc, attr){
   let isComplete = makeTBL(PAGE, calc, false)
   if(!isComplete) return
+
+  let l;
+  if(gb){
+    l = (attr !== 'PHASE' && !userChar[gn][attr])? 1: +userChar[gn][attr];
+  } else {
+    l = +userWpn[gn][attr]++;;
+  }
+  let inc = ' (' + l + ' ⇒ ' + (l+1) + ')'
+
   const BTN = create(PAGE, 'button', {'class':'farm-lvlbtn'})
-  BTN.textContent = 'Level Up '+attr;
+  BTN.textContent = 'Level Up '+attr+inc;
   BTN.addEventListener('click', ()=>{consume(calc, attr)})
 }
 

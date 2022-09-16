@@ -37,7 +37,7 @@ function getHeaders(isChar){
   let array = 0, rank = 0;
   let id = isChar? 'c-': 'w-', name = isChar? 'BOOKS': 'TROPHIES';
 
-  array = Object.keys(LDB.DB_Master[name]);
+  array = Object.keys(LDB.DB_Master[name]).filter(setData);
   rank = Object.keys(LDB.DB_Master[name][array[0]])[0];
 
   let HEAD = document.getElementById(id+'rows');
@@ -49,12 +49,13 @@ function getHeaders(isChar){
     CARD.addEventListener('mouseout', ()=>tooltip.hide())
   });
 
-    Object.keys(LDB.DB_Master['REGION']).forEach((item, i) => {
-      if(Object.keys(LDB.DB_Master[name]).length/3 <= i) return;
-      const CARD = create(HEAD, 'div', {'class':'row-group header'})
-      const IMG = create(CARD, 'img', {'class':'image','src':getImage('REGION', item, 0)})
-      setError(IMG)
-    });
+  Object.keys(LDB.DB_Master['REGION']).forEach((item, i) => {
+    if(Object.keys(LDB.DB_Master[name]).length/3 <= i) return;
+    const CARD = create(HEAD, 'div', {'class':'row-group header'})
+    CARD.style = `grid-row: span ${D === 0? 3: 1};`
+    const IMG = create(CARD, 'img', {'class':'image','src':getImage('REGION', item, 0)})
+    setError(IMG)
+  });
 
   const CARD = create(HEAD, 'div', {'class':'row header htotal'})
   return array;
@@ -109,4 +110,9 @@ function makeTotals(array, nRows, nCols, totals){
   const CARD = create(array[nRows][nCols], 'div')
   array[nRows][nCols].classList = 'total tsum'
   const TX = create(CARD, 'div'); TX.textContent = totals[0].reduce((a,b)=>(a+b));
+}
+
+const D = (new Date()).getDay();
+function setData(value, index){
+  if(D === 0 || (D-1)%3 === index%3) return value
 }
