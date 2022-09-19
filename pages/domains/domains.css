@@ -36,11 +36,12 @@ input[type=checkbox]{
   gap: 0.1rem;
   width: max-content;
   height: max-content;
-  grid-auto-columns: min-content;
+  grid-auto-columns: min-content min-content 1fr min-content;
   grid-auto-rows: min-content;
   grid-auto-flow: dense;
 
   background-color: var(--table_grid);
+  width: 100%;
 }
 
 .area{
@@ -81,17 +82,12 @@ input[type=checkbox]{
 
 .cell{
   display: grid;
+  grid-template-columns: repeat(auto-fill, 5rem);
   grid-template-rows: min-content;
-  grid-auto-flow: column;
+  grid-auto-flow: row;
   background-color: var(--card_bg);
   place-items: center;
   place-content: center start;
-}
-
-#w-table .cell{
-  grid-template-columns: repeat(10, min-content);
-  grid-template-rows: min-content min-content;
-  grid-auto-flow: row;
 }
 
 .card{
