@@ -167,7 +167,7 @@ function makeLevel(PAGE, calc, attr){
   if(gb){
     l = (attr !== 'PHASE' && !userChar[gn][attr])? 1: +userChar[gn][attr];
   } else {
-    l = +userWpn[gn][attr]++;;
+    l = +userWpn[gn][attr];
   }
   let inc = ' (' + l + ' ⇒ ' + (l+1) + ')'
 
