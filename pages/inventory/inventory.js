@@ -16,6 +16,7 @@ function inventory(){
 
       const NAME = create(ROW, 'div', {'class':'inv-name'}); NAME.textContent = item;
       
+      recalculate(category, item);
       Object.entries(materials).reverse().forEach(([rank, value], mi) => {
         if(rank === '0'){
           const TOTAL = create(ROW, 'div', {'class':'inv-total','id':'I_'+item})
