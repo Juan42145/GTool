@@ -127,9 +127,9 @@ function getInventory(category, item, materials){
   }
 
   let diff = calc['total'] - calc[0]; calc['runs'] = '';
-  let gate = category === 'BOOKS' ||category === 'TROPHIES' ||
-  category === 'WEEKLYS' || category === 'BOSSES' || category === 'GEMS';
-  if(diff > 0 && gate){
+  let gateD = category === 'BOOKS' ||category === 'TROPHIES';
+  let gateM = category === 'WEEKLYS' || category === 'BOSSES' || category === 'GEMS';
+  if(diff > 0 && (gateD || gateM)){
     divs = SDB_Drops[category][flag]; diff *= 3**(len - fagi);
     let runs = Math.ceil(diff/divs), t;
     switch(category){
@@ -143,7 +143,12 @@ function getInventory(category, item, materials){
       default:
         t = pluralize(Math.ceil(runs/9),'day');
     }
-    calc['runs'] = ` (${pluralize(runs,'run')} ~ ${t})`;
+    calc['runs'] = `\n(${pluralize(runs,'run')} ~ ${t})`;
+  }
+  if(gateD){
+    index = Object.keys(LDB[category]).indexOf(item);
+    let w = ['Mo/Th','Tu/Fr','We/Sa'];
+    calc['runs'] += ` [${w[index%3]}]`;
   }
   return calc;
 }
