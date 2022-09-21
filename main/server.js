@@ -67,16 +67,24 @@ function handleWpn(){
 }
 
 /*--ALERT--*/
+let bigTimer, lilTimer;
+
 function toast(message){
-  const TOAST = create(document.body, 'div', {'id':'alert','class':'alert'});
+  let TOAST = document.getElementById('alert');
+  if(!TOAST) TOAST = create(document.body, 'div', {'id':'alert','class':'alert'});
   const MSG = create(TOAST, 'div', {'class':'alert__msg'});
   MSG.textContent = message;
-  setTimeout(()=>TOAST.remove(),1500)
+  clearTimeout(bigTimer);
+  bigTimer = setTimeout(()=>TOAST.remove(),1500)
+  setTimeout(()=>MSG.remove(),1500)
 }
 
 function toasty(message){
-  const TOAST = create(document.body, 'div', {'id':'alerty','class':'alert alerty'});
+  let TOAST = document.getElementById('alerty');
+  if(!TOAST) TOAST = create(document.body, 'div', {'id':'alerty','class':'alert alerty'});
   const MSG = create(TOAST, 'div', {'class':'alert__msg'});
   MSG.textContent = message;
-  setTimeout(()=>TOAST.remove(),1000)
+  clearTimeout(lilTimer);
+  lilTimer = setTimeout(()=>TOAST.remove(),1000)
+  setTimeout(()=>MSG.remove(),1000)
 }
