@@ -1,12 +1,12 @@
 .compare{
-  --table_grid: var(--clr_darkgray);
-  --select_bg: var(--clr_pearl);
-  --select_tx: var(--clr_navy);
-  --head_bg: var(--clr_black);
-  --head_tx: var(--clr_white);
-  --card_bg: var(--clr_void);
-  --total_bg: var(--clr_gray);
-  --total_tx: var(--clr_black);
+  --table_grid: var(--clr-darkgray);
+  --select_bg: var(--clr-pearl);
+  --select_tx: var(--clr-navy);
+  --head_bg: var(--clr-black);
+  --head_tx: var(--clr-white);
+  --card_bg: var(--clr-void);
+  --total_bg: var(--clr-gray);
+  --total_tx: var(--clr-black);
 
   --size: 5rem;
 

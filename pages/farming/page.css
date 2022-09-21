@@ -1,21 +1,21 @@
 .page {
   --btn_bg: rgba(26,26,26,0.75);
-  --btn_tx: var(--clr_white);
-  --input_tx: var(--clr_void);
-  --input_bg: var(--clr_white);
-  --inp_focus_bg: var(--clr_void);
-  --inp_focus_tx: var(--clr_white);
+  --btn_tx: var(--clr-white);
+  --input_tx: var(--clr-void);
+  --input_bg: var(--clr-white);
+  --inp_focus_bg: var(--clr-void);
+  --inp_focus_tx: var(--clr-white);
 
-  --farm_bg: var(--clr_black);
-  --farm_cont_bg: var(--clr_navy);
-  --farm_card_bg: var(--clr_pearl);
-  --farm_card_tx: var(--clr_darkgray);
-  --farm_up_bg: var(--clr_pearl);
-  --farm_up_tx: var(--clr_darkblue);
-  --farm_up_border: var(--clr_gold);
+  --farm_bg: var(--clr-black);
+  --farm_cont_bg: var(--clr-navy);
+  --farm_card_bg: var(--clr-pearl);
+  --farm_card_tx: var(--clr-darkgray);
+  --farm_up_bg: var(--clr-pearl);
+  --farm_up_tx: var(--clr-darkblue);
+  --farm_up_border: var(--clr-gold);
 
-  --data_tx: var(--clr_white);
-  --shadow: var(--clr_void);
+  --data_tx: var(--clr-white);
+  --shadow: var(--clr-void);
 
   padding: 0;
   

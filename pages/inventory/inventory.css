@@ -1,13 +1,13 @@
 .inv {
-  --inv_bg: var(--clr_charcoal);
-  --inv_tx: var(--clr_void);
-  --inv_title_tx: var(--clr_pearl);
-  --inv_grid: var(--clr_void);
-  --inv_even: var(--clr_porcelain);
-  --inv_odd: var(--clr_lightgray);
-  --inv_input_tx: var(--clr_black);
-  --inv_focus_bg: var(--clr_void);
-  --inv_focus_tx: var(--clr_white);
+  --inv_bg: var(--clr-charcoal);
+  --inv_tx: var(--clr-void);
+  --inv_title_tx: var(--clr-pearl);
+  --inv_grid: var(--clr-void);
+  --inv_even: var(--clr-porcelain);
+  --inv_odd: var(--clr-lightgray);
+  --inv_input_tx: var(--clr-black);
+  --inv_focus_bg: var(--clr-void);
+  --inv_focus_tx: var(--clr-white);
 
   display: grid;
   gap: 0.5rem;

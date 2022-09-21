@@ -1,13 +1,13 @@
 .farm {
-  --farm_tx: var(--clr_white);
-  --shadow: var(--clr_void);
+  --farm_tx: var(--clr-white);
+  --shadow: var(--clr-void);
   --shade: rgba(26,26,26,0.75);
   --input: rgba(26,26,26,0.3);
-  --input_tx: var(--clr_pearl);
-  --farm_border: var(--clr_lightnavy);
-  --farm_card_tx: var(--clr_black);
-  --farm_card_bg: var(--clr_pearl);
-  --farm_card_border: var(--clr_darkgray);
+  --input_tx: var(--clr-pearl);
+  --farm_border: var(--clr-lightnavy);
+  --farm_card_tx: var(--clr-black);
+  --farm_card_bg: var(--clr-pearl);
+  --farm_card_border: var(--clr-darkgray);
 
   --w: 5rem;/*calc(100vw/8);*/
   --h: 6rem;/*calc(1.2*var(--w));*/

@@ -5,11 +5,11 @@
 }
 
 .options{
-  --options_banner: var(--clr_void);
-  --options_bg: var(--clr_lightnavy);
-  --options_tx: var(--clr_white);
-  --options_border: var(--clr_darkgray);
-  --options_active_bg: var(--clr_darkblue);
+  --options_banner: var(--clr-void);
+  --options_bg: var(--clr-lightnavy);
+  --options_tx: var(--clr-white);
+  --options_border: var(--clr-darkgray);
+  --options_active_bg: var(--clr-darkblue);
 
   --size: 4rem;
 
@@ -104,11 +104,11 @@ select{
 }
 
 .card{
-  --card_bg: var(--clr_navy);
-  --card_tx: var(--clr_white);
+  --card_bg: var(--clr-navy);
+  --card_tx: var(--clr-white);
   --card_icon_bg: rgba(26,26,26,0.75);
-  --card_icon_tx: var(--clr_white);
-  --max: var(--clr_orange);
+  --card_icon_tx: var(--clr-white);
+  --max: var(--clr-orange);
 
   display: grid;
   grid-template-columns: 9rem;

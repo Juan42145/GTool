@@ -1,27 +1,41 @@
 /*FORM*/
 form {
-  --form_bg: var(--clr_navy);
-  --form_tx: var(--clr_black);
-  --form_input: var(--clr_white);
-  --form_border: var(--clr_lightgray);
-  --form_outline: var(--clr_darkgray);
+  --form-bg: var(--clr-navy);
+  --form-tx: var(--clr-black);
+  --form-input: var(--clr-white);
+  --form-border: var(--clr-lightgray);
+  --form-outline: var(--clr-darkgray);
 
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: var(--form_bg);
+  background-color: var(--form-bg);
+}
+
+form label {
+  width: 90vw;
+  font-size: 5vw;
+  border-radius: 100vw;
+  color: var(--form-input);
+  background-color: var(--form-tx);
+  text-align: center;
 }
 
 form input {
-  width: 80vw;
+  --border: 1.25vw;
+  --spacing: 1.5vw;
+  --outline: 1vw;
+
+  width: 90vw;
   line-height: 20vw;
   font-size: 15vw;
   -webkit-border-radius: 30vw;
   border-radius: 100vw;
   outline: none;
-  border: 0.5rem solid var(--form_border);
-  box-shadow: 0 0 0 1rem var(--form_bg), 0 0 0 1.4rem var(--form_outline) ;
-  background-color: var(--form_input);
-  color: var(--form_tx);
+  border: var(--border) solid var(--form-border);
+  box-shadow: 0 0 0 var(--spacing) var(--form-bg),
+    0 0 0 calc(var(--spacing) + var(--outline)) var(--form-outline) ;
+  background-color: var(--form-input);
+  color: var(--form-tx);
   text-align: center;
 }

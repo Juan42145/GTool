@@ -1,13 +1,13 @@
 .page {
-  --page_bg: var(--clr_black);
+  --page_bg: var(--clr-black);
   --btn_bg: rgba(26,26,26,0.75);
-  --btn_tx: var(--clr_white);
-  --total_tx: var(--clr_void);
-  --total_bg: var(--clr_lightgray);
-  --input_tx: var(--clr_void);
-  --input_bg: var(--clr_white);
-  --inp_focus_bg: var(--clr_void);
-  --inp_focus_tx: var(--clr_white);
+  --btn_tx: var(--clr-white);
+  --total_tx: var(--clr-void);
+  --total_bg: var(--clr-lightgray);
+  --input_tx: var(--clr-void);
+  --input_bg: var(--clr-white);
+  --inp_focus_bg: var(--clr-void);
+  --inp_focus_tx: var(--clr-white);
 
   --rowi: 2;
   --coli: 2;

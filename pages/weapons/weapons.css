@@ -8,11 +8,11 @@
 }
 
 .options{
-  --banner_bg: var(--clr_black);
-  --options_bg: var(--clr_lightnavy);
-  --options_tx: var(--clr_white);
-  --options_border: var(--clr_darkgray);
-  --options_active_bg: var(--clr_darkblue);
+  --banner_bg: var(--clr-black);
+  --options_bg: var(--clr-lightnavy);
+  --options_tx: var(--clr-white);
+  --options_border: var(--clr-darkgray);
+  --options_active_bg: var(--clr-darkblue);
 
   position: absolute;
   display: grid;
@@ -62,13 +62,13 @@
 
 /*TABLE*/
 table{
-  --table_bg: var(--clr_void);
-  --table_tx: var(--clr_black);
-  --table_head: var(--clr_pearl);
-  --table_border: var(--clr_void);
-  --tx_border: var(--clr_white);
-  --max_tx: var(--clr_orange);
-  --max_bg: var(--clr_lightyellow);
+  --table_bg: var(--clr-void);
+  --table_tx: var(--clr-black);
+  --table_head: var(--clr-pearl);
+  --table_border: var(--clr-void);
+  --tx_border: var(--clr-white);
+  --max_tx: var(--clr-orange);
+  --max_bg: var(--clr-lightyellow);
 
   --cellsize: 5rem;
 

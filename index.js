@@ -63,6 +63,9 @@ function init(){
 }
 
 function receiveDB(DB){
+  const P = document.getElementById('password');
+  const L = document.getElementById('loading');
+  P.classList.remove('hide'); L.classList.add('hide')
   sessionStorage.set('DB', process(DB, false)); preloadImages();
 }
 

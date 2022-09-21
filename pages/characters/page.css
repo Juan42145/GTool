@@ -2,7 +2,7 @@
 
 #char {
   --char_btn_bg: rgba(26,26,26,0.75);
-  --char_btn_tx: var(--clr_white);
+  --char_btn_tx: var(--clr-white);
 
   display: flex;
   flex-direction: column;
@@ -39,16 +39,16 @@
 
 .data{
   --data_bg: var(--color);
-  --data_tx: var(--clr_white);
-  --shadow: var(--clr_void);
+  --data_tx: var(--clr-white);
+  --shadow: var(--clr-void);
   --shade: rgba(26,26,26,0.75);
   --input: rgba(26,26,26,0.2);
-  --edit_tx: var(--clr_black);
+  --edit_tx: var(--clr-black);
   --light: rgba(200,200,200,0.75);
-  --border: var(--clr_charcoal);
+  --border: var(--clr-charcoal);
 
-  --max_bg: var(--clr_orange);
-  --max_tx: var(--clr_lightyellow);
+  --max_bg: var(--clr-orange);
+  --max_tx: var(--clr-lightyellow);
 
   display: grid;
   grid-template-columns: max-content 1fr;

@@ -91,9 +91,9 @@ function makeNav(active){
 
   const NAV = document.getElementById('nav')
 
-  const index = create(NAV,'a',{'href':'../../index.html','class':'nav-homebtn'})
+  const index = create(NAV,'a',{'href':'../../index.html','class':'nav__btn nav__btn--home'})
   index.innerHTML = '&curren;';
-  const close = create(NAV,'a',{'href':'javascript:void(0)','class':'nav-closebtn'})
+  const close = create(NAV,'a',{'href':'javascript:void(0)','class':'nav__btn nav__btn--close'})
   close.innerHTML = '&times;';
   close.onclick = ()=>closeNav();
 
@@ -117,16 +117,16 @@ function closeNav(){
 
 /*--HEADER--*/
 function makeHeader(click){
-  const HEADER = document.getElementById('head')
+  const HEADER = document.getElementById('header')
 
-  const menu = create(HEADER,'button',{'class':'head-menu'})
+  const menu = create(HEADER,'button',{'class':'header__menu'})
   menu.onclick = ()=>openNav(); menu.innerHTML = '&equiv;';
 
   if(!click) return
-  const button = create(HEADER,'div',{'class':'head-button'})
-  const icon = create(button,'div',{'class':'head-icon'})
+  const button = create(HEADER,'div',{'class':'header__button'})
+  const icon = create(button,'div',{'class':'header__button--icon'})
   const input = create(button,'input',
-  {'class':'head-input','type':'button','value':'Save'})
+  {'class':'header__button--input','type':'button','value':'Save'})
   input.onclick = ()=>click();
 }
 

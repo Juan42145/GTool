@@ -68,13 +68,15 @@ function handleWpn(){
 
 /*--ALERT--*/
 function toast(message){
-  const TOAST = document.createElement('div'); document.body.append(TOAST);
-  TOAST.classList = 'alert'; TOAST.textContent = message;
+  const TOAST = create(document.body, 'div', {'id':'alert','class':'alert'});
+  const MSG = create(TOAST, 'div', {'class':'alert__msg'});
+  MSG.textContent = message;
   setTimeout(()=>TOAST.remove(),1500)
 }
 
 function toasty(message){
-  const TOAST = document.createElement('div'); document.body.append(TOAST);
-  TOAST.classList = 'alert alerty'; TOAST.textContent = message;
+  const TOAST = create(document.body, 'div', {'id':'alerty','class':'alert alerty'});
+  const MSG = create(TOAST, 'div', {'class':'alert__msg'});
+  MSG.textContent = message;
   setTimeout(()=>TOAST.remove(),1000)
 }

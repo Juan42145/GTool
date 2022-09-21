@@ -1,13 +1,13 @@
 body{
-  --home_bg: var(--clr_lightnavy);
-  --home_tx: var(--clr_lightnavy);
-  --home_title_bg: var(--clr_darkblue);
-  --home_title_tx: var(--clr_pearl);
-  --home_grid: var(--clr_navy);
-  --home_border: var(--clr_white);
-  --home_card_bg: var(--clr_pearl);
-  --home_card_tx: var(--clr_darkgray);
-  --home_color_tx: var(--clr_pearl);
+  --home_bg: var(--clr-lightnavy);
+  --home_tx: var(--clr-lightnavy);
+  --home_title_bg: var(--clr-darkblue);
+  --home_title_tx: var(--clr-pearl);
+  --home_grid: var(--clr-navy);
+  --home_border: var(--clr-white);
+  --home_card_bg: var(--clr-pearl);
+  --home_card_tx: var(--clr-darkgray);
+  --home_color_tx: var(--clr-pearl);
 
   --filter: contents;
 }
