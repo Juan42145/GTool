@@ -6,36 +6,40 @@ form {
   --form-border: var(--clr-lightgray);
   --form-outline: var(--clr-darkgray);
 
+  --border: 1.25vw;
+  --spacing: 1.5vw;
+  --outline: 1vw;
+
   display: flex;
   align-items: center;
   justify-content: center;
   background-color: var(--form-bg);
 }
 
-form label {
-  width: 90vw;
-  font-size: 5vw;
-  border-radius: 100vw;
-  color: var(--form-input);
-  background-color: var(--form-tx);
-  text-align: center;
-}
-
-form input {
-  --border: 1.25vw;
-  --spacing: 1.5vw;
-  --outline: 1vw;
-
+.content {
   width: 90vw;
   line-height: 20vw;
-  font-size: 15vw;
   -webkit-border-radius: 30vw;
   border-radius: 100vw;
   outline: none;
+
+  text-align: center;
+}
+
+form label {
+  font-size: 5vw;
+  border: var(--border) solid var(--form-outline);
+  box-shadow: 0 0 0 var(--spacing) var(--form-bg),
+    0 0 0 calc(var(--spacing) + var(--outline)) var(--form-border) ;
+  background-color: var(--form-tx);
+  color: var(--form-input);
+}
+
+form input {
+  font-size: 15vw;
   border: var(--border) solid var(--form-border);
   box-shadow: 0 0 0 var(--spacing) var(--form-bg),
     0 0 0 calc(var(--spacing) + var(--outline)) var(--form-outline) ;
   background-color: var(--form-input);
   color: var(--form-tx);
-  text-align: center;
 }
