@@ -10,15 +10,23 @@
   --inp_focus_tx: var(--clr-white);
 
   --rowi: 2;
-  --coli: 2;
+  --coli: 3;
 
-  padding: 3rem;
-  padding-top: 6rem;
+  --rem: 1rem;
+
+  --btn-sz: calc(4*var(--rem));
+  --btn-border: calc(1 *var(--rem));
+  --lrem: calc(1*var(--rem));
+
+  font-size: var(--rem);
+
+  padding: 3em;
+  padding-top: calc(var(--btn-sz) + 2*var(--btn-border));
   padding-left: 0;
   display: grid;
-  grid-template-rows: max-content;
-  grid-auto-rows: max-content;
-  grid-gap: 0.5rem;
+  gap: 3em;
+  grid-template-columns: auto;
+  grid-auto-columns: min-content;
   overflow-x: hidden;
   overflow-y: auto;
   place-items: start stretch;
@@ -26,18 +34,17 @@
   background-color: var(--page_bg);
 }
 
-.close{
-  --size: 4rem;
+.page__close{
+  font-size: 3em;
 
   position: absolute;
-  font-size: 3rem;
-  top: 1rem;
-  right: 1rem;
+  top: var(--btn-border);
+  right: var(--btn-border);
   padding: 0;
   margin: 0;
-  line-height: var(--size);
-  height: var(--size);
-  width: var(--size);
+  line-height: var(--btn-sz);
+  height: var(--btn-sz);
+  width: var(--btn-sz);
   border-radius: 50%;
   background-color: var(--btn_bg);
   color: var(--btn_tx);
@@ -45,36 +52,50 @@
   text-align: center;
 }
 
-#page-container{
+.page-container{
   display: contents;
 }
 
-.home-tbl.tbl-inv{
+.section__table--inv{
+  font-size: 1em;
+
   background-color: var(--page_bg);
-  margin-bottom: 2rem;
+  grid-auto-columns: minmax(1em, max-content);
 }
 
-.page .home-name, .page .home-total{
-  font-size: 1.5rem;
+.section__table--inv .row{
+  border: none;
+  border-bottom: calc(0.2*var(--rem)) solid var(--home_grid);
 }
 
-.page .home-total{
-  padding: 1rem;
+.page .row__name, .page .row__total{
+  font-size: 1.5em;
 }
 
-.page .home-total.home-inv{
-  min-width: 5rem;
-  grid-column: var(--coli);
-  grid-template-rows: auto;
-  background-color: var(--total_bg);
-  color: var(--total_tx);
+.page .row__name{
+  grid-auto-rows: min-content;
+  place-content: center;
+  padding: 0.2em;
+}
+
+.page .row__total{
+  padding: 0.6em;
+}
+
+.page .row__card{
+  font-size: var(--lrem);
+}
+
+.page--nt{
+  --lrem: calc(2*var(--rem)) !important;
 }
 
 .page input {
-  height: 1rem;
-  font-size: 0.8rem;
-  min-width: 5rem;
-  max-width: 5rem;
+  font-size: 0.8em;
+  
+  height: calc(1 *var(--lrem));
+  min-width: calc(5 *var(--lrem));
+  max-width: calc(5 *var(--lrem));
   border-radius: 0;
   outline: none;
   background-color: var(--input_bg);
@@ -87,59 +108,92 @@
   background-color: var(--inp_focus_bg);
 }
 
-.dets .home-total{
+.page__dets{
+  display: grid;
+  gap: 1.5em;
+}
+
+.page__dets .section{
+  grid-column: 1;
+}
+
+.row--dets .row__total{
   grid-template-rows: min-content;
-  padding: 0 2rem;
+  padding: 0 1.2em;
   place-content: center;
 }
 
-.dets .home-item{
+.row--dets .row__card{
+  --lrem: calc(1*var(--rem)) !important;
   grid-template-columns: 1fr;
 }
 
-.long .home-total{
+.row--long .row__total{
   place-content: center;
 }
 
-.long .home-total p{
+.row--long .row__total .p{
   width: 100%;
   text-align: end;
 }
 
-@media screen and (min-width: 600px) {
-  .page{
-    padding: 6rem;
-  }
-}
-
-@media screen and (min-width: 880px) {
-  .page:not(.page-dets){
-    --rowi: 1;
-    --coli: 8;
-
-    zoom: 1.2;
-  }
-  
-  .page{
-    gap: 1rem 5rem;
-  }
-
-  .page .home-sec{
-    grid-column: 2;
-  }
-
-  .home-tbl.tbl-inv{
-    grid-row: span 3;
-  }
-}
-
-@media screen and (min-width: 1020px) {
-  .page:not(.page-dets){
-    zoom: 1.3;
-  }
-
-  .page-dets{
+@media screen and (min-width: 767px) {
+  .p_BOOKS, .p_ELITE {
     --rowi: 1;
     --coli: 7;
+    --lrem: calc(1.7*var(--rem));
+  }
+
+  .p_TROPHIES, .p_GEMS {
+    --rowi: 1;
+    --coli: 8;
+    --lrem: calc(1.3*var(--rem));
+  }
+
+  .p_RESOURCES {
+    --rowi: 1;
+    --coli: 5;
+    --lrem: calc(1.5*var(--rem));
+  }
+
+  .p_COMMON {
+    --lrem: calc(1.5*var(--rem));
+  }
+
+  .page--nt .row{
+    font-size: 2em;
+  }
+
+  .page__dets{
+    grid-column: 2;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .page{
+    padding: calc(var(--btn-sz) + 2*var(--btn-border));
+    --lrem: calc(1.7*var(--rem));
+  }
+
+  .p_COMMON{
+    --rowi: 1;
+    --coli: 7;
+    --lrem: calc(1.2*var(--rem));
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  .page{
+    --lrem: calc(1.75*var(--rem));
+  }
+}
+
+@media screen and (min-width: 1400px) {
+  .page{
+    --lrem: calc(2*var(--rem));
+  }
+
+  .section__table--inv .row{
+    font-size: 2em;
   }
 }

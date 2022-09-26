@@ -1,7 +1,6 @@
 function page(cData, isTotal){
   gc = cData; gt = isTotal;
-  mediaQuery.addEventListener('change',handleMedia);
-  mediaQuery2.addEventListener('change',handleMedia);
+  pMQ.forEach(mq => {mq.addEventListener('change',handleMedia)})
   makePage(cData, isTotal);
 }
 
@@ -12,11 +11,12 @@ function makePage(cData, isTotal){
   let PAGE = document.getElementById('page'); PAGE.classList.remove('hide');
 
   if(category ==='RESOURCES') isTotal = true;
-  if(category ==='COMMON') PAGE.classList.add('page-dets')
-  else PAGE.classList.remove('page-dets')
+  PAGE.classList = 'page p_'+category
+  if(!isTotal) PAGE.classList.add('page--nt')
+  else PAGE.classList.remove('page--nt')
 
   PAGE = document.getElementById('page-container'); PAGE.innerHTML = '';
-  const TBL = create(PAGE, 'div', {'class':'home-tbl tbl-inv','data-total':isTotal})
+  const TBL = create(PAGE, 'div', {'class':'section__table section__table--inv','data-total':isTotal})
   
   Object.entries(items).sort(sortOrder(category)).forEach((iData, ii) => {
     let complete = makeRow(TBL, category, iData, ii, true);
@@ -33,12 +33,13 @@ function makePage(cData, isTotal){
       wMora[1][3] += wpn.FARM.MORA[1]? wpn.FARM.MORA[1][3]: 0;
     })
 
-    const SEC = create(PAGE, 'div', {'class':'home-sec'})
+    const DIV = create(PAGE, 'div', {'class':'page__dets'})
+    const SEC = create(DIV, 'div', {'class':'section'})
 
-    const TITLE = create(SEC, 'div', {'class': 'sec-title'})
+    const TITLE = create(SEC, 'div', {'class': 'section__title'})
     TITLE.textContent = 'Mora'
 
-    const DETS = create(SEC, 'div', {'class':'home-tbl morad','data-total':isTotal})
+    const DETS = create(SEC, 'div', {'class':'section__table','data-total':isTotal})
     makeDets(DETS, 'RESOURCES', 'Characters', cMora, 0);
     makeDets(DETS, 'RESOURCES', 'Talents', tMora, 1);
     makeDets(DETS, 'RESOURCES', 'Weapons', wMora, 2);
@@ -57,13 +58,14 @@ function makePage(cData, isTotal){
         rolling(common, 'Weapons', wpn.FARM.COMMON[0], wpn.FARM.COMMON[1])
     })
 
+    const DIV = create(PAGE, 'div', {'class':'page__dets'})
     Object.entries(common).forEach(([section, items]) => {
-      const SEC = create(PAGE, 'div', {'class':'home-sec'})
+      const SEC = create(DIV, 'div', {'class':'section'})
 
-      const TITLE = create(SEC, 'div', {'class':'sec-title'})
+      const TITLE = create(SEC, 'div', {'class':'section__title'})
       TITLE.textContent = section;
 
-      const DETS = create(SEC, 'div', {'class':'home-tbl','data-total':isTotal})
+      const DETS = create(SEC, 'div', {'class':'section__table','data-total':isTotal})
 
       Object.entries(items).forEach(([item, materials], ii) => {
         makeDets(DETS, 'ENEMIES', item, [item, materials], ii);
@@ -80,7 +82,7 @@ function makeInv(TBL, category, iData, ii, complete){
   let rowi = getComputedStyle(document.getElementById('page')).getPropertyValue('--rowi')
   let coli = getComputedStyle(document.getElementById('page')).getPropertyValue('--coli')
 
-  const ROW = create(TBL, 'div', {'class':'home-row home-inv'})
+  const ROW = create(TBL, 'div', {'class':'row home-inv'})
 
   if(TBL.dataset.total === 'true') ROW.style = 'grid-row: '+(2*ii + +rowi);
   else ROW.style = 'grid-row: '+(ii+1);
@@ -88,17 +90,17 @@ function makeInv(TBL, category, iData, ii, complete){
   if(complete) ROW.classList.add('completed');
   else ROW.classList.remove('completed');
 
-  let index = +coli+1;
+  let index = +coli;
   Object.entries(materials).reverse().forEach(([rank, value]) => {
     if(value === '*' || rank === 'ROW' || rank === '0') return;
 
-    const CARD = create(ROW, 'div', {'class':'home-item r_'+rank})
+    const CARD = create(ROW, 'div', {'class':'row__card r_'+rank})
 
     if(TBL.dataset.total === 'true') CARD.style = 'grid-column: '+index;
     else CARD.style = 'grid-column: 5';
     index++;
 
-    const IMG = create(CARD, 'img', {'class':'home-image','src':getImage(category, item, rank)})
+    const IMG = create(CARD, 'img', {'class':'row__card--img','src':getImage(category, item, rank)})
     setError(IMG)
     
     const INP = create(CARD, 'input', {
@@ -118,10 +120,10 @@ function makeInv(TBL, category, iData, ii, complete){
 function makeDets(TBL, category, itemName, iData, ii){
   let [item, materials] = iData;
   
-  const ROW = create(TBL, 'div', {'class':'home-row dets'})
+  const ROW = create(TBL, 'div', {'class':'row row--dets'})
   ROW.style = 'grid-row: '+(ii+1);
 
-  const NAME = create(ROW, 'div', {'class':'home-name'}); NAME.textContent = itemName;
+  const NAME = create(ROW, 'div', {'class':'row__name'}); NAME.textContent = itemName;
 
   let counter = total = 0;
   Object.entries(materials).reverse().forEach(([rank, value], mi) => {
@@ -129,19 +131,19 @@ function makeDets(TBL, category, itemName, iData, ii){
     total += value/(3**counter); counter++;
     if(!value) return;
 
-    const CARD = create(ROW, 'div', {'class':'home-item r_'+rank});
+    const CARD = create(ROW, 'div', {'class':'row__card r_'+rank});
     CARD.style = 'grid-column: '+index;
 
-    const IMG = create(CARD, 'img', {'class':'home-image','src':getImage(category, item, rank)})
+    const IMG = create(CARD, 'img', {'class':'row__card--img','src':getImage(category, item, rank)})
     setError(IMG)
 
-    const NEED = create(CARD, 'p', {});
+    const NEED = create(CARD, 'div', {'class':'p'});
     NEED.textContent = value.toLocaleString('en-us');
   });
   if(TBL.dataset.total === 'true'){
-    const TOTAL = create(ROW, 'div', {'class':'home-total'})
+    const TOTAL = create(ROW, 'div', {'class':'row__total'})
 
-    const NEED = create(TOTAL, 'p');
+    const NEED = create(TOTAL, 'div', {'class':'p'});
     NEED.textContent = Math.floor(total*100)/100;
   }
 }
@@ -154,21 +156,17 @@ function rolling(pivot, category, item, value){
 }
 
 function closePage(){
-  mediaQuery.removeEventListener('change',handleMedia)
-  mediaQuery2.removeEventListener('change',handleMedia)
+  pMQ.forEach(mq => {mq.removeEventListener('change',handleMedia)})
   document.getElementById('home').classList.remove('hide')
   document.getElementById('page').classList.add('hide')
   home();
 }
 
-function update(inp){
-  document.body.style.setProperty('--filter', inp.checked? 'none': 'contents')
-  resize();
-}
-
-const mediaQuery = window.matchMedia('(min-width: 880px)')
-const mediaQuery2 = window.matchMedia('(min-width: 1020px)')
+pQueries = [767, 1024]
+pMQ = []
+pQueries.forEach(q => {pMQ.push(window.matchMedia(`(min-width: ${q}px)`))})
 let gc, gt;
 function handleMedia(){
+  console.log('handle')
   makePage(gc, gt);
 }

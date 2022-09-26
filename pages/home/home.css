@@ -18,34 +18,58 @@ body{
   right: 2rem;
 }
 
-#filter{
+.filter__btn{
   -webkit-appearance: auto;
   width: 2rem;
   height: 2rem;
 }
 
 .home {
+  --rem: 1rem;
+
+  font-size: var(--rem);
+
+  --section-padd: calc(1*var(--rem));
+  --title-height: calc(2*var(--rem));
+
+  --temp: minmax(min-content, 2fr) minmax(min-content, 1fr);
+
   display: grid;
-  grid-gap: 0.5rem;
-  grid-auto-rows: 0.1rem;
-  overflow-x: hidden;
+  grid-column-gap: 0.5em;
+  grid-auto-rows: 0.1em;
+  overflow-x: auto;
   overflow-y: auto;
-  grid-template-columns: minmax(min-content, 2fr) minmax(min-content, 1fr);
+  grid-template-columns: var(--temp);
   place-items: start stretch;
   grid-auto-flow: dense;
 }
 
-.home-sec {
-  background-color: var(--home_bg);
-  padding-bottom: 1rem;
-  border-radius: 0.6rem;
+#var{
+  display: none;
+  padding: var(--section-padd);
+  height: var(--title-height);
 }
 
-.sec-title{
-  display: grid;
-  padding: 0.2rem 0.6rem;
-  height: 2rem;
+.section {
+  font-size: 1em;
+  min-width: min-content;
+
+  background-color: var(--home_bg);
+  padding-bottom: var(--section-padd);
+  border-radius: 0.6em;
+  grid-column: 1;
+}
+
+.section:not(.section--total){
+  grid-column: 2;
+}
+
+.section__title{
   font-size: 1.2em;
+
+  display: grid;
+  padding: 0.2em 0.5em;
+  height: var(--title-height);
   place-items: center start;
   border-top-left-radius: inherit;
   border-top-right-radius: inherit;
@@ -54,30 +78,29 @@ body{
   font-weight: bold;
 }
 
-.home .sec-total{
+.section--total{
   grid-column: 1;
 } 
 
-.home .home-sec:not(.sec-total){
-  grid-column: 2;
-}
+.section__table {
+  font-size: 1em;
 
-.home-tbl {
   display: grid;
-  column-gap: 0.1rem;
-  /*row-gap: 0.2rem;*/
+  column-gap: 0.1em;
   grid-template-columns: 1fr max-content;
-  grid-auto-columns: minmax(5rem, max-content);
+  grid-auto-columns: minmax(5em, max-content);
   place-items: stretch;
   background-color: var(--home_grid);
 }
 
-.home-row {
+.row {
+  font-size: 1em;
+
   display: contents;
-  border-bottom: 0.2rem solid var(--home_grid);
+  border-bottom: 0.2em solid var(--home_grid);
 }
 
-.home-row > * {
+.row > * {
   grid-row: inherit;
   display: grid;
   border-bottom: inherit;
@@ -85,33 +108,39 @@ body{
   text-align: center;
 }
 
-.home-row:last-child {
+.row:last-child {
   border: none;
 }
 
-.home-name{
+.row__name{
+  font-size: 1em;
+
   grid-column: 1;
-  padding: 0.2rem;
+  padding: 0.2em;
   background-color: var(--home_card_bg);
   color: var(--home_tx);
   font-weight: bold;
   white-space: pre-wrap;
 }
 
-.home-total{
+.row__total{
+  font-size: 1em;
+
   grid-column: 2;
-  padding: 0.2rem;
-  column-gap: 0.2rem;
+  padding: 0.2em;
+  column-gap: 0.2em;
   grid-template-columns: auto;
   grid-template-rows: 1fr 1fr;
   background-color: var(--home_card_bg);
   color: var(--home_card_tx);
 }
 
-.home-item {
-  width: 5rem;
+.row__card {
+  font-size: 1em;
+  width: 5em;
+  height: 6em;
   grid-template-columns: auto auto;
-  grid-template-rows: 5rem 1rem;
+  grid-template-rows: 5em 1em;
   background-color: transparent;
   place-items: center;
   color: var(--home_card_tx);
@@ -121,73 +150,80 @@ body{
   opacity: 0.4;
 }
 
-.home-row.completed{
+.row.completed{
   display: var(--filter);
 }
 
-.home-total p{
-  padding: 0;
-  justify-self: center !important;
-}
+.row__card--img {
+  font-size: 1em;
 
-.home-image {
   grid-column: span 2;
   display: block;
-  max-width: 4rem;
-  max-height: 4rem;
+  max-width: 4em;
+  max-height: 4em;
 }
 
-.home .p {
-  font-size: 0.9rem;
+.row__card .p{
+  font-size: 0.9em;
 }
 
-.c-inv {
+.row__card--inv {
   justify-self: end;
   font-weight: bolder;
 }
 
-.c-need {
+.row__card--need {
   justify-self: start;
 }
 
-.long .home-item{
-  grid-template-rows: 4rem 1rem 1rem;
+.row__total .p{  
+  justify-self: center !important;
+}
+
+.row--long .row__card{
+  grid-template-rows: 4em 1em 1em;
   grid-template-columns: 1fr;
 }
 
-.long .home-image{
+.row--long .row__card--img{
   grid-column: span 1;
 }
 
-.long .p{
-  height: 100%;
+.row--long .p{
   width: 100%;
   background-color: var(--home_card_bg);
 }
 
-.home-color:not(.completed){
+.cell-color:not(.completed){
   background-color: var(--color);
   color: var(--home_color_tx);
-  text-shadow: 0 0 0.7rem var(--home_grid);
+  text-shadow: 0 0 calc(0.7*var(--rem)) var(--home_grid);
 }
 
-@media screen and (min-width: 600px) {
+@media screen and (min-width: 767px) {
   .home{
-    grid-template-columns: minmax(min-content, 2fr) repeat(2,minmax(min-content, 1fr));
+    --temp: minmax(min-content,1.5fr) minmax(min-content,1.5fr) minmax(min-content,1fr);
   }
 
-  .home-name, .home-total{
-    padding: 1rem;
+  .row__name, .row__total{
+    padding: 1em;
   }
 
-  #RESOURCES, #LOCALS{
+  #ELITE, #COMMON{
+    grid-column: 2;
+  }
+
+  #RESOURCES, #WEEKLYS, #BOSSES, #LOCALS{
     grid-column: 3;
   }
 }
 
-@media screen and (min-width: 880px) {
+@media screen and (min-width: 1024px) {
   .home{
-    grid-template-columns: minmax(min-content, 2fr) minmax(min-content, 1.6fr) repeat(2,minmax(min-content, 1fr));
+    --rem: 1rem;
+
+    --temp: minmax(min-content, 2fr) minmax(min-content, 1.8fr) minmax(min-content, 1fr) minmax(min-content, 1fr);
+    padding: 0.5em;
   }
 
   #ELITE, #COMMON{
@@ -203,55 +239,37 @@ body{
   }
 }
 
-@media screen and (min-width: 1020px) {
+@media screen and (min-width: 1200px) {
   .home{
-    grid-template-columns: minmax(min-content, 2fr) minmax(min-content, 1.6fr) repeat(3,minmax(min-content, 0.8fr));
+    --temp: minmax(min-content, 2fr) minmax(min-content, 1.8fr) minmax(min-content, 1.8fr) minmax(min-content, 1fr) minmax(min-content, 1fr);
+    padding: 0.5em;
   }
 
-  #ELITE, #COMMON{
+  #COMMON{
     grid-column: 2;
   }
 
-  #BOSSES{
+  #ELITE{
     grid-column: 3;
   }
-  
-  #LOCALS{
+
+  #WEEKLYS, #BOSSES{
     grid-column: 4;
   }
 
-  #RESOURCES, #WEEKLYS{
+  #RESOURCES, #LOCALS{
     grid-column: 5;
   }
 }
 
-@media screen and (min-width: 1460px) {
-  html{
-    font-size: 70%;
-  }
-
+@media screen and (min-width: 1400px) {
   .home{
-    grid-template-columns: repeat(2,minmax(min-content, 2fr)) repeat(1,minmax(min-content, 1.6fr)) repeat(3,minmax(min-content, 0.8fr));
-    padding: 1rem;
+    --rem: 1.2rem
   }
+}
 
-  #GEMS, #ELITE{
-    grid-column: 2;
-  }
-
-  #COMMON{
-    grid-column: 3;
-  }
-
-  #BOSSES{
-    grid-column: 4;
-  }
-  
-  #LOCALS{
-    grid-column: 5;
-  }
-
-  #RESOURCES, #WEEKLYS{
-    grid-column: 6;
+@media screen and (min-width: 1530px) {
+  .home{
+    --rem: 1.3rem
   }
 }

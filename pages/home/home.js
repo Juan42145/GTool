@@ -14,13 +14,13 @@ function home(){
     const SEC = document.getElementById(category);
     SEC.classList.remove('hide'); SEC.innerHTML = '';
 
-    const TITLE = create(SEC, 'div', {'class': 'sec-title'});
+    const TITLE = create(SEC, 'div', {'class': 'section__title'});
     TITLE.textContent = category;
     
-    let isTotal = SEC.classList.contains('sec-total');
+    let isTotal = SEC.classList.contains('section--total');
     SEC.addEventListener('click', () => page(cData, isTotal), false);
 
-    const TBL = create(SEC, 'div', {'class':'home-tbl', 'data-total': isTotal})
+    const TBL = create(SEC, 'div', {'class':'section__table js-table', 'data-total': isTotal})
   
     Object.entries(items).sort(sortOrder(category)).forEach((iData, ii) => {
       makeRow(TBL, category, iData, ii, false);
@@ -35,9 +35,9 @@ function makeRow(TBL, category, iData, ii, isPage){
 
   let ROW = document.getElementById('r_'+item)
   if(ROW && isPage) ROW.innerHTML = '';
-  else ROW = create(TBL, 'div', {'class':'home-row'})
+  else ROW = create(TBL, 'div', {'class':'row'})
   
-  const NAME = create(ROW, 'div', {'class':'home-name'}); NAME.textContent = item;
+  const NAME = create(ROW, 'div', {'class':'row__name'}); NAME.textContent = item;
 
   if(isPage && TBL.dataset.total === 'true') {
     ROW.style = 'grid-row: '+(2*ii+1); NAME.style = 'grid-row: '+(2*ii+1)+'/span 2'
@@ -45,7 +45,7 @@ function makeRow(TBL, category, iData, ii, isPage){
   else ROW.style = 'grid-row: '+(ii+1);
 
   if(isPage) ROW.id = 'r_'+item;
-  if(category === 'RESOURCES') ROW.classList.add('long');
+  if(category === 'RESOURCES') ROW.classList.add('row--long');
 
   if(category === 'BOOKS' || category === 'TROPHIES' || category === 'WEEKLYS')
     setData(category, item, NAME, isPage);
@@ -56,34 +56,36 @@ function makeRow(TBL, category, iData, ii, isPage){
     let index = mi+3;
     if(!value) return
     
-    const CARD = create(ROW, 'div', {'class':'home-item r_'+rank})
+    const CARD = create(ROW, 'div', {'class':'row__card js-card r_'+rank})
 
     if(isPage) CARD.style = 'grid-column: '+index;
 
-    const IMG = create(CARD, 'img', {'class':'home-image','src':getImage(tc,ti,rank)})
+    const IMG = create(CARD, 'img', {'class':'row__card--img','src':getImage(tc,ti,rank)})
     setError(IMG)
 
-    const INV = create(CARD, 'div', {'class':'c-inv p'})
+    const INV = create(CARD, 'div', {'class':'p row__card--inv'})
     INV.textContent = calc[rank].toLocaleString('en-us');
-    const NEED = create(CARD, 'div', {'class':'c-need p'})
+    const NEED = create(CARD, 'div', {'class':'p row__card--need'})
     NEED.textContent = '/' + value.toLocaleString('en-us');
 
     if(calc[rank] >= value) CARD.classList.add('completed');
     else CARD.classList.remove('completed');
   });
 
-  if(isPage) NAME.textContent += calc['runs']
-  let complete = ROW.querySelectorAll('.home-item').length <= ROW.querySelectorAll('.completed').length;
+  if(isPage && calc['runs']){
+    const SPAN = create(NAME, 'span'); SPAN.textContent = calc['runs'];
+  }
+  let complete = ROW.querySelectorAll('.js-card').length <= ROW.querySelectorAll('.completed').length;
   if(complete) {NAME.classList.add('completed'); ROW.classList.add('completed')}
   else {NAME.classList.remove('completed'); ROW.classList.remove('completed');}
 
   if(TBL.dataset.total === 'true'){
-    const TOTAL = create(ROW, 'div', {'class':'home-total'})
+    const TOTAL = create(ROW, 'div', {'class':'row__total'})
     if(isPage) TOTAL.style = 'grid-row: '+(2*ii+1)+'/span 2'
 
-    const INV = create(TOTAL, 'p', {'class':'c-inv'})
+    const INV = create(TOTAL, 'div', {'class':'p row__card--inv'})
     INV.textContent = (Math.floor(calc[0]*100)/100).toLocaleString('en-us');;
-    const NEED = create(TOTAL, 'p', {'class':'c-need'})
+    const NEED = create(TOTAL, 'div', {'class':'p row__card--need'})
     NEED.textContent = (Math.floor(calc['total']*100)/100).toLocaleString('en-us');;
 
     if(category == 'BOOKS' || category == 'TROPHIES')
@@ -143,7 +145,7 @@ function getInventory(category, item, materials){
       default:
         t = pluralize(Math.ceil(runs/9),'day');
     }
-    calc['runs'] = `\n(${pluralize(runs,'run')} ~ ${t})`;
+    calc['runs'] = `(${pluralize(runs,'run')} ~ ${t})`;
   }
   if(gateD){
     index = Object.keys(LDB[category]).indexOf(item);
@@ -159,7 +161,7 @@ function pluralize(num, string){
 
 function setData(category, item, COMP, isPage){
   let ti = decode(category, item), index = Object.keys(LDB[category]).indexOf(ti);
-  COMP.classList.add('home-color');
+  COMP.classList.add('cell-color');
   if(category === 'WEEKLYS'){
     COMP.dataset.color = REGION[Math.floor(index/6) + 1];
   } else{
@@ -169,16 +171,39 @@ function setData(category, item, COMP, isPage){
   }
 }
 
-function resize(){
-  let r = parseInt(getComputedStyle(document.getElementById('home')).getPropertyValue('grid-auto-rows'))
-  let g = parseInt(getComputedStyle(document.getElementById('home')).getPropertyValue('grid-gap'))
+function update(inp){
+  document.body.style.setProperty('--filter', inp.checked? 'none': 'contents')
+  resize();
+}
 
-  containers = document.getElementsByClassName('home-sec');
+function resize(){
+  let r = parseFloat(getComputedStyle(document.getElementById('home')).getPropertyValue('grid-auto-rows'))
+  let g = parseFloat(getComputedStyle(document.getElementById('home')).getPropertyValue('grid-column-gap'))
+
+  let p = parseFloat(getComputedStyle(document.getElementById('var')).getPropertyValue('padding'))
+  let t = parseFloat(getComputedStyle(document.getElementById('var')).getPropertyValue('height'))
+
+  let m = []; o = t + p;
+
+  containers = document.querySelectorAll('.js-section:not(.hide)');
   for(x = 0; x < containers.length; x++){
-    let section = containers[x]; let cont = section.querySelector('.home-tbl')
-    let h = cont? cont.getBoundingClientRect().height+g: 0;
-    let calc = Math.ceil((30+h)/(r+g)); section.style.gridRowEnd = `span ${calc}`;
+    let section = containers[x]; let cont = section.querySelector('.js-table')
+    let h = cont.getBoundingClientRect().height;
+    let calc = Math.ceil((o+h+g)/(r)); section.style.gridRow = `span ${calc}`;
+    let i = getComputedStyle(section).getPropertyValue('grid-column-start')
+    m[i] = 1
   }
+
+  let c = getComputedStyle(document.getElementById('home')).getPropertyValue('--temp');
+
+  let template = c.split('minmax')
+  for(i = 1; i < template.length; i++){
+    if(m[i]) template[i] = 'minmax' + template[i];
+    else template[i] = '0 ';
+  }
+  let prop = template.join('')
+
+  document.getElementById('home').style.gridTemplateColumns = prop;
 }
 
 function sortOrder(category){
@@ -191,4 +216,10 @@ function sortOrder(category){
 
 function save(){
   store('Inventory', userInv); setInv();
+}
+
+hQueries = [767, 1024, 1200]
+hQueries.forEach(q => {window.matchMedia(`(min-width: ${q}px)`).addEventListener('change',resized)})
+function resized(){
+  resize();
 }

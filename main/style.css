@@ -100,12 +100,12 @@ nav {
   --nav_active-bg: var(--clr-pearl);
   --nav_active-tx: var(--clr-navy);
 
-  --lsize: 1rem;
+  --rem: 1rem;
 
-  --btn-sz: calc(8 *var(--lsize));
-  --btn-border: calc(1 *var(--lsize));
+  --btn-sz: calc(8 *var(--rem));
+  --btn-border: calc(1 *var(--rem));
 
-  font-size: var(--lsize);
+  font-size: var(--rem);
 
   width: 0;
   height: inherit;
@@ -198,9 +198,9 @@ header {
   --head_logo-bg: var(--clr-black);
   --head_logo-tx: var(--clr-yellow);
 
-  --lsize: 1rem;
+  --rem: 1rem;
 
-  font-size: var(--lsize);
+  font-size: var(--rem);
 
   grid-row: -1;
   display: grid;
@@ -215,8 +215,8 @@ header {
 }
 
 .header__menu {
-  --hdr-height: calc(4 *var(--lsize));
-  --border: calc(0.2 *var(--lsize));
+  --hdr-height: calc(4 *var(--rem));
+  --border: calc(0.2 *var(--rem));
   
   font-size: 2em;
 
@@ -240,8 +240,8 @@ header {
 }
 
 .header__button {
-  --hdr-height: calc(3.5 *var(--lsize));
-  --border: calc(0.2 *var(--lsize));
+  --hdr-height: calc(3.5 *var(--rem));
+  --border: calc(0.2 *var(--rem));
 
   font-size: 1em;
 
@@ -338,27 +338,27 @@ header {
 */
 .r_1 {
   background: url('https://static.wikia.nocookie.net/gensin-impact/images/6/69/Rarity_1_background.png') top left no-repeat;
-  background-size: contain;
+  background-size: cover;
 }
 
 .r_2 {
   background: url('https://static.wikia.nocookie.net/gensin-impact/images/d/d4/Rarity_2_background.png') top left no-repeat;
-  background-size: contain;
+  background-size: cover;
 }
 
 .r_3 {
   background: url('https://static.wikia.nocookie.net/gensin-impact/images/5/57/Rarity_3_background.png') top left no-repeat;
-  background-size: contain;
+  background-size: cover;
 }
 
 .r_4 {
   background: url('https://static.wikia.nocookie.net/gensin-impact/images/c/c9/Rarity_4_background.png') top left no-repeat;
-  background-size: contain;
+  background-size: cover;
 }
 
 .r_5 {
   background: url('https://static.wikia.nocookie.net/gensin-impact/images/e/ea/Rarity_5_background.png') top left no-repeat;
-  background-size: contain;
+  background-size: cover;
 }
 
 .s1:after {

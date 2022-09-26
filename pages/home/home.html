@@ -19,19 +19,20 @@
   <header id="header"></header><script>makeHeader(save)</script>
 
   <div class="filter">
-    <input type="checkbox" id="filter" onchange="update(this)">
+    <input type="checkbox" class="filter__btn" onchange="update(this)">
   </div>
 
   <div id='home' class="home">
-    <div id="BOOKS" class="home-sec sec-total hide"></div>
-    <div id="TROPHIES" class="home-sec sec-total hide"></div>
-    <div id="GEMS" class="home-sec sec-total hide"></div>
-    <div id="ELITE" class="home-sec sec-total hide"></div>
-    <div id="COMMON" class="home-sec sec-total hide"></div>
-    <div id="RESOURCES" class="home-sec hide"></div>
-    <div id="WEEKLYS" class="home-sec hide"></div>
-    <div id="BOSSES" class="home-sec hide"></div>
-    <div id="LOCALS" class="home-sec hide"></div>
+    <div id="var"></div>
+    <div id="BOOKS" class="section js-section section--total hide"></div>
+    <div id="TROPHIES" class="section js-section section--total hide"></div>
+    <div id="GEMS" class="section js-section section--total hide"></div>
+    <div id="ELITE" class="section js-section section--total hide"></div>
+    <div id="COMMON" class="section js-section section--total hide"></div>
+    <div id="RESOURCES" class="section js-section hide"></div>
+    <div id="WEEKLYS" class="section js-section hide"></div>
+    <div id="BOSSES" class="section js-section hide"></div>
+    <div id="LOCALS" class="section js-section hide"></div>
   </div>
 
   <div id="insert"></div><script>insert('page.xml')</script>

@@ -27,7 +27,7 @@ form {
 }
 
 form label {
-  font-size: 5vw;
+  font-size: 7vw;
   border: var(--border) solid var(--form-outline);
   box-shadow: 0 0 0 var(--spacing) var(--form-bg),
     0 0 0 calc(var(--spacing) + var(--outline)) var(--form-border) ;
