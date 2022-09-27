@@ -5,29 +5,29 @@ function inventory(){
   Object.entries(userInv).forEach(([category, items]) => {
     const SEC = document.getElementById(category);
 
-    const TITLE = create(SEC, 'div', {'class': 'sec-title'});
+    const TITLE = create(SEC, 'div', {'class': 'section__title'});
     TITLE.textContent = category;
 
-    const TBL = create(SEC, 'div', {'class':'inv-tbl'});
+    const TBL = create(SEC, 'div', {'class':'section__table'});
   
     Object.entries(items).forEach(([item, materials], ii) => {
-      const ROW = create(TBL, 'div', {'class':'inv-row'})
+      const ROW = create(TBL, 'div', {'class':'row'})
       ROW.style = 'grid-row: '+(ii+1);
 
-      const NAME = create(ROW, 'div', {'class':'inv-name'}); NAME.textContent = item;
+      const NAME = create(ROW, 'div', {'class':'row__name'}); NAME.textContent = item;
       
       recalculate(category, item);
       Object.entries(materials).reverse().forEach(([rank, value], mi) => {
         if(rank === '0'){
-          const TOTAL = create(ROW, 'div', {'class':'inv-total','id':'I_'+item})
+          const TOTAL = create(ROW, 'div', {'class':'row__total','id':'I_'+item})
           TOTAL.textContent = Math.floor(value).toLocaleString('en-us');
           return
         }
         if(value === '*' || rank === 'ROW') return;
         
-        const CARD = create(ROW, 'div', {'class':'inv-item r_'+rank})
+        const CARD = create(ROW, 'div', {'class':'row__card r_'+rank})
 
-        const IMG = create(CARD, 'img', {'class':'inv-image','src':getImage(category, item, rank)})
+        const IMG = create(CARD, 'img', {'class':'row__card--img','src':getImage(category, item, rank)})
         setError(IMG)
         
         const INP = create(CARD, 'input', {
