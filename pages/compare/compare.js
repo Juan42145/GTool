@@ -22,7 +22,7 @@ function compare(){
       for(let c = 0; c <= nCols; c++){
         const DIV = create(TABLE, 'div', {'class':'cell'})
         DIV.style = `grid-column: ${c+3}; grid-row: ${r+3};`
-        if(isLine) DIV.classList.add('line');
+        if(isLine) DIV.classList.add('cell--line');
         cells[r][c] = DIV;
       }
     }
@@ -73,11 +73,11 @@ function getHeaders(category, isRow){
   if(isRow) HEAD = document.getElementById('rows');
   else HEAD = document.getElementById('cols');
   array.forEach(item => {
-    const CARD = create(HEAD, 'div', {'class':(isRow?'row':'col')+' header'})
+    const CARD = create(HEAD, 'div', {'class':'header header--'+(isRow?'row':'col')})
 
     if(isText) CARD.textContent = item;
     else{
-      const IMG = create(CARD, 'img', {'class':'image','src':getImage(category, item, rank)})
+      const IMG = create(CARD, 'img', {'class':'header__image','src':getImage(category, item, rank)})
       setError(IMG)
       CARD.addEventListener('mouseover', ()=>tooltip.show(item))
       CARD.addEventListener('mouseout', ()=>tooltip.hide())
@@ -98,24 +98,24 @@ function getHeaders(category, isRow){
       if(category == 'LOCALS' && !span[item]) return;
       if(category == 'BOOKS' && Object.keys(LDB.DB_Master['BOOKS']).length/3 <= i) return;
 
-      const CARD = create(HEAD, 'div', {'class':(isRow?'row':'col')+'-group header'})
+      const CARD = create(HEAD, 'div', {'class':'header header--'+(isRow?'r':'c')+'group'})
 
       let cStyle = isRow? 'grid-row': 'grid-column'
       if(category == 'LOCALS') CARD.style = cStyle+': span '+span[item];
       else CARD.style = cStyle+': span '+span;
 
-      const IMG = create(CARD, 'img', {'class':'image','src':getImage(group[category], item, 0)})
+      const IMG = create(CARD, 'img', {'class':'header__image','src':getImage(group[category], item, 0)})
       setError(IMG)
     });
-    HEAD.classList.add('group')
-    document.getElementById('compare').classList.add(isRow?'rowG':'colG')
+    HEAD.classList.add('area--group')
+    document.getElementById('compare').classList.add(isRow?'compare--rowG':'compare--colG')
   }
   else{
-    HEAD.classList.remove('group')
-    document.getElementById('compare').classList.remove(isRow?'rowG':'colG')
+    HEAD.classList.remove('area--group')
+    document.getElementById('compare').classList.remove(isRow?'compare--rowG':'compare--colG')
   }
 
-  const CARD = create(HEAD, 'div', {'class':(isRow?'row':'col')+' header htotal'})
+  const CARD = create(HEAD, 'div', {'class':'header header--total header--'+(isRow?'row':'col')})
 
   if(isRow) isShown = true;
   return array;
@@ -131,7 +131,7 @@ function getChar(array, lookR, lookC, rHeaders, cHeaders, check, totals){
     const CARD = create(array[rowi][coli], 'div', {'class':'card'})
     totals[0][rowi]++; totals[1][coli]++;
     
-    const IMG = create(CARD, 'img', {'class':'char-image c_'+info.RARITY,
+    const IMG = create(CARD, 'img', {'class':'card__image c_'+info.RARITY,
       'src':getCharacter(name)})
     setError(IMG)
   });
@@ -149,6 +149,6 @@ function makeTotals(array, nRows, nCols, totals){
     const TX = create(CARD, 'div'); TX.textContent = totals[1][c];
   }
   const CARD = create(array[nRows][nCols], 'div')
-  array[nRows][nCols].classList = 'total tsum'
+  array[nRows][nCols].classList = 'total total--sum'
   const TX = create(CARD, 'div'); TX.textContent = totals[0].reduce((a,b)=>(a+b));
 }
