@@ -11,10 +11,10 @@ function makePage(name, isChar){
   PAGE = document.getElementById('page-container'); PAGE.innerHTML = '';
   gn = name, gb = isChar;
 
-  const DATA = create(PAGE, 'div', {'class':'page-data'})
-  const IMG = create(DATA, 'img', {'class':'page-image'})
+  const DATA = create(PAGE, 'div', {'class':'page__data'})
+  const IMG = create(DATA, 'img', {'class':'page__data--image'})
   setError(IMG)
-  const NAME = create(DATA, 'div', {'class':'page-name'}); NAME.textContent = name;
+  const NAME = create(DATA, 'div', {'class':'page__data--name'}); NAME.textContent = name;
 
   if(isChar){
     IMG.src = getCharacter(name)
@@ -30,8 +30,8 @@ function makePage(name, isChar){
 }
 
 function makeTBL(PAGE, source, isInv){
-  const TBL = create(PAGE, 'div', {'class':'farm-tbl'})
-  if(!isInv) TBL.classList.add('farm-level')
+  const TBL = create(PAGE, 'div', {'class':'tbl'})
+  if(!isInv) TBL.classList.add('tbl--level')
   let complete = true, content = false;
   Object.entries(source).forEach(([category, iData]) => {
     let [item, materials] = iData;
@@ -41,7 +41,7 @@ function makeTBL(PAGE, source, isInv){
     });
     if(!flag) return
     content = true;
-    CONT = create(TBL, 'div', {'class':'farm-cont',})
+    CONT = create(TBL, 'div', {'class':'tbl__cont',})
     let c = makeData(CONT, category, item, materials, isInv);
     complete &&= c;
     if(isInv) makeInv(CONT, category, item);
@@ -50,23 +50,21 @@ function makeTBL(PAGE, source, isInv){
 }
 
 function makeData(CONT, category, item, materials, isInv){
-  const ROW = create(CONT, 'div', {'class':'farm-datarow'})
-
   let tc = translate(category), ti = decode(tc, item);
   let calc = isInv? getInventory(tc, ti, materials): userInv[tc][ti];
   Object.entries(materials).reverse().forEach(([rank, value], mi) => {
     if(!value) return;
 
-    const CARD = create(ROW, 'div', {'class':'farm-item r_'+rank})
+    const CARD = create(CONT, 'div', {'class':'card js-card r_'+rank})
     CARD.style = 'grid-row: 1; grid-column: '+ (+mi+1);
-    if(category === 'MORA') CARD.classList.add('long');
+    if(category === 'MORA') CARD.classList.add('card--long');
 
-    const IMG = create(CARD, 'img', {'class':'farm-image','src':getImage(tc,ti,rank)})
+    const IMG = create(CARD, 'img', {'class':'card__image','src':getImage(tc,ti,rank)})
     setError(IMG)
 
-    const INV = create(CARD, 'div', {'class':'c-inv p'})
+    const INV = create(CARD, 'div', {'class':'card__inv p'})
     INV.textContent = calc[rank].toLocaleString('en-us');
-    const NEED = create(CARD, 'div', {'class':'c-need p'})
+    const NEED = create(CARD, 'div', {'class':'card__need p'})
     NEED.textContent = '/' + value.toLocaleString('en-us');
 
     if(calc[rank] >= value) CARD.classList.add('completed');
@@ -74,7 +72,7 @@ function makeData(CONT, category, item, materials, isInv){
     
   });
 
-  let complete = ROW.querySelectorAll('.farm-item').length <= ROW.querySelectorAll('.completed').length;
+  let complete = CONT.querySelectorAll('.js-card').length <= CONT.querySelectorAll('.completed').length;
   return complete;
 }
 
@@ -107,11 +105,11 @@ function makeInv(CONT, category, item){
   let index = 1;
   Object.entries(materials).reverse().forEach(([rank, value]) => {
     if(value === '*' || rank === 'ROW' || rank === '0') return
-    const CARD = create(CONT, 'div', {'class':'farm-item r_'+rank})
+    const CARD = create(CONT, 'div', {'class':'card r_'+rank})
     CARD.style = 'grid-row: 2; grid-column: ' +index;
     index++;
 
-    const IMG = create(CARD, 'img', {'class':'farm-image','src':getImage(category, item, rank)})
+    const IMG = create(CARD, 'img', {'class':'card__image','src':getImage(category, item, rank)})
     setError(IMG)
     
     const INP = create(CARD, 'input', {
@@ -136,20 +134,21 @@ function levelChar(PAGE, name){
 }
 
 function levelTln(PAGE, name){
+  const GT = create(PAGE, 'div', {'class':'group--tln'});
   const state = userChar[name]; const info = LDB.DB_Characters[name];
   let start, end, calc;
   start = state.NORMAL? +state.NORMAL: 1;
   end = (start+1) <= +state.TNORMAL? start+1: +state.TNORMAL;
   calc = calcCharT(info, [[start,end],[0,0],[0,0]], false);
-  makeLevel(PAGE, calc, 'NORMAL')
+  makeLevel(GT, calc, 'NORMAL')
   start = state.SKILL? +state.SKILL: 1;
   end = (start+1) <= +state.TSKILL? start+1: +state.TSKILL;
   calc = calcCharT(info, [[0,0],[start,end],[0,0]], false);
-  makeLevel(PAGE, calc, 'SKILL')
+  makeLevel(GT, calc, 'SKILL')
   start = state.BURST? +state.BURST: 1;
   end = (start+1) <= +state.TBURST? start+1: +state.TBURST;
   calc = calcCharT(info, [[0,0],[0,0],[start,end]], false);
-  makeLevel(PAGE, calc, 'BURST')
+  makeLevel(GT, calc, 'BURST')
 }
 
 function levelWpn(PAGE, name){
@@ -160,7 +159,8 @@ function levelWpn(PAGE, name){
 }
 
 function makeLevel(PAGE, calc, attr){
-  let isComplete = makeTBL(PAGE, calc, false)
+  const LVL = create(PAGE, 'div', {'class':'level'});
+  let isComplete = makeTBL(LVL, calc, false)
   if(!isComplete) return
 
   let l;
@@ -171,7 +171,7 @@ function makeLevel(PAGE, calc, attr){
   }
   let inc = ' (' + l + ' ⇒ ' + (l+1) + ')'
 
-  const BTN = create(PAGE, 'button', {'class':'farm-lvlbtn'})
+  const BTN = create(LVL, 'button', {'class':'lvlbtn'})
   BTN.textContent = 'Level Up '+attr+inc;
   BTN.addEventListener('click', ()=>{consume(calc, attr)})
 }

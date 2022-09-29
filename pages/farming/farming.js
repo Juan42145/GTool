@@ -13,16 +13,16 @@ function makeChar(){
   let characters = document.getElementById('Characters');
   Object.entries(calc.CHARACTERS).forEach(([name, attrs]) => {
     const ROW = create(characters, 'div', 
-      {'class':'farm-row','data-color':attrs.ELEMENT})
+      {'class':'row','data-color':attrs.ELEMENT})
 
-    const CHAR = create(ROW, 'div', {'class':'farm-char'})
-    const ASCN = create(ROW, 'div', {'class':'farm-ascn'})
-    const TLNT = create(ROW, 'div', {'class':'farm-tlnt'})
+    const CHAR = create(ROW, 'div', {'class':'row__id--chr'})
+    const ASCN = create(ROW, 'div', {'class':'row__asc'})
+    const TLNT = create(ROW, 'div', {'class':'row__tln'})
 
-    const IMG = create(CHAR, 'img', {'class':'image','src':getCharacter(name)})
+    const IMG = create(CHAR, 'img', {'class':'chr-image','src':getCharacter(name)})
     setError(IMG)
 
-    const NAME = create(CHAR, 'div', {'class':'farm-name'}); NAME.textContent = name;
+    const NAME = create(CHAR, 'div', {'class':'name'}); NAME.textContent = name;
 
     CHAR.addEventListener('click', (e)=>{makePage(name, true)}, false);
 
@@ -41,15 +41,15 @@ function makeWpn(){
   let weapons = document.getElementById('Weapons');
   Object.entries(calc.WEAPONS).forEach(([name, attrs]) => {
     const ROW = create(weapons, 'div', 
-      {'class':'farm-row weapons','data-color':attrs.RARITY})
+      {'class':'row','data-color':attrs.RARITY})
 
-    const WPN = create(ROW, 'div', {'class':'farm-wpn'})
-    const WD = create(ROW, 'div', {'class':'farm-wpndata'})
+    const WPN = create(ROW, 'div', {'class':'row__id--wpn'})
+    const WD = create(ROW, 'div', {'class':'row__wpn'})
 
-    const IMG = create(WPN, 'img', {'class':'image','src':getWeapon(name)})
+    const IMG = create(WPN, 'img', {'class':'wpn-image','src':getWeapon(name)})
     setError(IMG)
 
-    const NAME = create(WPN, 'div', {'class':'farm-name'}); NAME.textContent = name;
+    const NAME = create(WPN, 'div', {'class':'name'}); NAME.textContent = name;
 
     WPN.addEventListener('click', (e)=>{makePage(name, false)}, false);
 
@@ -60,7 +60,7 @@ function makeWpn(){
 }
 
 function makeInputs(COMP, name, section, id, values){
-  const DIV = create(COMP, 'div', {'class':'farm-inp'})
+  const DIV = create(COMP, 'div', {'class':'inp'})
   let attrNames = values.length === 2? ['PHASE','TARGET']:['NORMAL','TNORMAL','SKILL','TSKILL','BURST','TBURST']
   values.forEach((value,i) => {
     const INP = create(DIV, 'input', {'type':'text','pattern':'\\d*','value': value})
@@ -79,14 +79,14 @@ function makeFarm(COMP, name, section, id){
   let FARM = document.getElementById('f_'+id+name.replaceAll(' ','_'))
   if(FARM) FARM.innerHTML = '';
   else FARM = create(COMP, 'div',
-    {'class':'farm-farm','id':'f_'+id+name.replaceAll(' ','_')})
+    {'class':'farming','id':'f_'+id+name.replaceAll(' ','_')})
   
   Object.entries(calc[section][name][id]).forEach(([category, [item, materials]]) => {
     addTotal = getTotal(category);
     category = translate(category); item = decode(category, item);
     
-    const DIV = create(FARM, 'div', {'class':'container'})
-    if(addTotal) DIV.classList.add('ct')
+    const DIV = create(FARM, 'div', {'class':'farming__cont'})
+    if(addTotal) DIV.classList.add('farming__cont--total')
     
     if(!materials) return
     let counter = 0, total = 0;
@@ -100,16 +100,16 @@ function makeFarm(COMP, name, section, id){
   
       const CARD = create(DIV, 'div', {'class':'item r_'+rank})
   
-      const IMG = create(CARD, 'img', {'class':'image','src':getImage(category, item, rank)})
+      const IMG = create(CARD, 'img', {'class':'item__image','src':getImage(category, item, rank)})
       setError(IMG)
   
-      const NEED = create(CARD, 'p', {'class':'need'}); NEED.textContent = value;
+      const NEED = create(CARD, 'p', {'class':'item__need'}); NEED.textContent = value;
     });
     if(addTotal){
       const TOTAL = create(DIV, 'div', {'class':'total'})
       
-      const NEED = create(TOTAL, 'p', {'class':'need'});
-      NEED.textContent = Math.ceil(total*100)/100;
+      const TEXT = create(TOTAL, 'p');
+      TEXT.textContent = Math.ceil(total*100)/100;
     }
   });
 }
