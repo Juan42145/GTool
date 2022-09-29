@@ -59,6 +59,9 @@ function makeData(CONT, category, item, materials, isInv){
     CARD.style = 'grid-row: 1; grid-column: '+ (+mi+1);
     if(category === 'MORA') CARD.classList.add('card--long');
 
+    CARD.addEventListener('mouseover', ()=>tooltip.show(item))
+    CARD.addEventListener('mouseout', ()=>tooltip.hide())
+
     const IMG = create(CARD, 'img', {'class':'card__image','src':getImage(tc,ti,rank)})
     setError(IMG)
 
