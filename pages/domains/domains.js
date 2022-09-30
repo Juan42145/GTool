@@ -30,6 +30,10 @@ function makeTable(isChar){
   let totals = [new Array(nRows).fill(0), new Array(nCols).fill(0)]
   if(isChar) getChar(cells, rows, isOwned, totals);
   else getWpn(cells, rows, isOwned, totals);
+
+  TABLE.parentElement.style.setProperty('--maxChildren', Math.max(...totals[0]))
+
+
   makeTotals(cells, nRows, nCols, totals);
 }
 
@@ -42,8 +46,8 @@ function getHeaders(isChar){
 
   let HEAD = document.getElementById(id+'rows');
   array.forEach(item => {
-    const CARD = create(HEAD, 'div', {'class':'row header'})
-    const IMG = create(CARD, 'img', {'class':'image','src':getImage(name, item, rank)})
+    const CARD = create(HEAD, 'div', {'class':'header'})
+    const IMG = create(CARD, 'img', {'class':'header__image','src':getImage(name, item, rank)})
     setError(IMG)
     CARD.addEventListener('mouseover', ()=>tooltip.show(item))
     CARD.addEventListener('mouseout', ()=>tooltip.hide())
@@ -51,13 +55,13 @@ function getHeaders(isChar){
 
   Object.keys(LDB.DB_Master['REGION']).forEach((item, i) => {
     if(Object.keys(LDB.DB_Master[name]).length/3 <= i) return;
-    const CARD = create(HEAD, 'div', {'class':'row-group header'})
+    const CARD = create(HEAD, 'div', {'class':'header header--group'})
     CARD.style = `grid-row: span ${D === 0? 3: 1};`
-    const IMG = create(CARD, 'img', {'class':'image','src':getImage('REGION', item, 0)})
+    const IMG = create(CARD, 'img', {'class':'header__image','src':getImage('REGION', item, 0)})
     setError(IMG)
   });
 
-  const CARD = create(HEAD, 'div', {'class':'row header htotal'})
+  const CARD = create(HEAD, 'div', {'class':'header htotal'})
   return array;
 }
 
@@ -65,32 +69,33 @@ function getChar(array, rHeaders, check, totals){
   let data = LDB.DB_Characters;
   Object.entries(data).forEach(([name, info]) => {
     if(check) if(!userChar[name].OWNED) return;
-    let rowi = rHeaders.indexOf(info['BOOK']), coli = 0
+    let rowi = rHeaders.indexOf(info['BOOK'])
 
-    if(rowi === -1 || coli === -1) return;
-    const CARD = create(array[rowi][coli], 'div', {'class':'card'})
-    totals[0][rowi]++; totals[1][coli]++;
+    if(rowi === -1) return;
+    const CARD = create(array[rowi][0], 'div', {'class':'card'})
+    totals[0][rowi]++; totals[1][0]++;
     
-    const IMG = create(CARD, 'img', {'class':'icon c_'+info.RARITY,
+    const IMG = create(CARD, 'img', {'class':'card_image c_'+info.RARITY,
       'src':getCharacter(name)})
     setError(IMG)
   });
+  array
 }
 
 function getWpn(array, rHeaders, check, totals){
   let data = LDB.DB_Weapons;
   Object.entries(data).forEach(([name, info]) => {
-    if(check) if(!userWpn[name].OWNED) return;
-    let rowi = rHeaders.indexOf(info['TROPHY']), coli = 0
+    if(check) if(!userWpn[name].OWNED || LDB.DB_Weapons[name].RARITY == 3) return;
+    let rowi = rHeaders.indexOf(info['TROPHY'])
 
-    if(rowi === -1 || coli === -1) return;
-    const CARD = create(array[rowi][coli], 'div', {'class':'card'})
-    totals[0][rowi]++; totals[1][coli]++;
+    if(rowi === -1) return;
+    const CARD = create(array[rowi][0], 'div', {'class':'card'})
+    totals[0][rowi]++; totals[1][0]++;
 
     CARD.addEventListener('mouseover', ()=>tooltip.show(name))
     CARD.addEventListener('mouseout', ()=>tooltip.hide())
     
-    const IMG = create(CARD, 'img', {'class':'icon c_'+info.RARITY,
+    const IMG = create(CARD, 'img', {'class':'card_image c_'+info.RARITY,
       'src':getWeapon(name)})
     setError(IMG)
   });
@@ -107,9 +112,7 @@ function makeTotals(array, nRows, nCols, totals){
     array[nRows][c].classList = 'total'
     const TX = create(CARD, 'div'); TX.textContent = totals[1][c];
   }
-  const CARD = create(array[nRows][nCols], 'div')
-  array[nRows][nCols].classList = 'total tsum'
-  const TX = create(CARD, 'div'); TX.textContent = totals[0].reduce((a,b)=>(a+b));
+  array[nRows][nCols].classList = 'total--sum'
 }
 
 const D = (new Date()).getDay();
