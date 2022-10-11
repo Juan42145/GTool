@@ -93,7 +93,7 @@ function makeNav(active){
 
   const NAV = document.getElementById('nav')
 
-  const index = create(NAV,'a',{'href':'','class':'nav__btn nav__btn--home'})
+  const index = create(NAV,'a',{'href':'../../index.html','class':'nav__btn nav__btn--home'})
   index.innerHTML = '&curren;';
   index.onclick = ()=>myStorage.clear();
   const close = create(NAV,'a',{'href':'javascript:void(0)','class':'nav__btn nav__btn--close'})
