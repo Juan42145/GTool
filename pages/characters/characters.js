@@ -1,5 +1,5 @@
-const LDB = sessionStorage.get('DB').DB_Characters;
-let userChar = sessionStorage.get('user').Characters;
+const LDB = myStorage.get('DB').DB_Characters;
+let userChar = myStorage.get('user').Characters;
 let owned = false, flip = false; sorting = ()=>{};
 
 /*--CHARACTERS--*/

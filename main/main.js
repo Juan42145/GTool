@@ -6,16 +6,18 @@ Storage.prototype.get = function(key){
   return JSON.parse(this.getItem(key));
 }
 
+myStorage = localStorage;
+
 //Temporary Storage
 function store(id, value){
-  let user = sessionStorage.get('user'); user[id] = value;
-  sessionStorage.set('user', user);
+  let user = myStorage.get('user'); user[id] = value;
+  myStorage.set('user', user);
 }
 
 function caching(id, key, value){
-  let cache = sessionStorage.get(id); if(!cache) cache = {};
+  let cache = myStorage.get(id); if(!cache) cache = {};
   cache[key] = value; console.log(cache);
-  sessionStorage.set(id, cache);
+  myStorage.set(id, cache);
 }
 
 //Create Element
@@ -50,7 +52,7 @@ function focusText(e){
 function getImage(category, item, rank){
   if(item === '') return getError();
 
-  let link = sessionStorage.get('DB').DB_Master[category][item][rank];
+  let link = myStorage.get('DB').DB_Master[category][item][rank];
   if(link.includes('*')) return getError();
   
   return 'https://' + link;
@@ -65,7 +67,7 @@ function setError(COMP){
 }
 
 function getCharacter(name, full=false){
-  let t = sessionStorage.get('code') === 'd'? 'traveler_anemo': 'traveler_geo'
+  let t = myStorage.get('code') === 'd'? 'traveler_anemo': 'traveler_geo'
   let link = name === 'Traveler'? t: name.toLowerCase().replaceAll(' ','_');
   if(full) link = 'full/'+link;
   return 'https://paimon.moe/images/characters/'+link+'.png'
@@ -91,8 +93,9 @@ function makeNav(active){
 
   const NAV = document.getElementById('nav')
 
-  const index = create(NAV,'a',{'href':'../../index.html','class':'nav__btn nav__btn--home'})
+  const index = create(NAV,'a',{'href':'','class':'nav__btn nav__btn--home'})
   index.innerHTML = '&curren;';
+  index.onclick = ()=>myStorage.clear();
   const close = create(NAV,'a',{'href':'javascript:void(0)','class':'nav__btn nav__btn--close'})
   close.innerHTML = '&times;';
   close.onclick = ()=>closeNav();
@@ -171,7 +174,7 @@ function recalculate(category, item){
 
 /*--CALC DATA--*/
 let calcPivot
-const DB = sessionStorage.get('DB');
+const DB = myStorage.get('DB');
 
 function calculate(){
   let calculator = {
@@ -191,7 +194,7 @@ function calculate(){
     'LOCALS':{}
   };
 
-  const user = sessionStorage.get('user');
+  const user = myStorage.get('user');
 
   Object.keys(user.Characters).forEach(char => {
     if(!user.Characters[char].FARM) return;
@@ -218,9 +221,9 @@ function calculate(){
     }
   })
 
-  sessionStorage.set('pivot', calcPivot);
-  sessionStorage.set('calculator', calculator);
-  sessionStorage.set('calc', false);
+  myStorage.set('pivot', calcPivot);
+  myStorage.set('calculator', calculator);
+  myStorage.set('calc', false);
 }
 
 function calcCharA(info, ascension, roll){

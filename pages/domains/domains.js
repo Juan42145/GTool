@@ -1,6 +1,6 @@
-const LDB = sessionStorage.get('DB');
-let userChar = sessionStorage.get('user').Characters;
-let userWpn = sessionStorage.get('user').Weapons;
+const LDB = myStorage.get('DB');
+let userChar = myStorage.get('user').Characters;
+let userWpn = myStorage.get('user').Weapons;
 let isShown = false; isLine = false;
 
 function domains(){

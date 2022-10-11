@@ -59,14 +59,14 @@ function processInventory(user){
 
 /*INDEX*/
 function init(){
-  getDB(); sessionStorage.set('calc', true);
+  getDB(); myStorage.set('calc', true);
 }
 
 function receiveDB(DB){
   const P = document.getElementById('password');
   const L = document.getElementById('loading');
   P.classList.remove('hide'); L.classList.add('hide')
-  sessionStorage.set('DB', process(DB, false)); preloadImages();
+  myStorage.set('DB', process(DB, false)); preloadImages();
 }
 
 function userData(){
@@ -74,7 +74,7 @@ function userData(){
 }
 
 function receiveUser(user){
-  sessionStorage.set('user', processInventory(process(user, true)));
+  myStorage.set('user', processInventory(process(user, true)));
   window.open('pages/home/home.html','_self')
 }
 
@@ -86,7 +86,7 @@ function login(){
 function receiveAuth(auth){
   const P = document.getElementById('password'); P.value = '';
   if(auth.AUTH){
-    P.blur(); P.placeholder = 'Wait Whore'; sessionStorage.set('code', auth.USER);
+    P.blur(); P.placeholder = 'Wait Whore'; myStorage.set('code', auth.USER);
     userData();
   } else{
     P.placeholder = 'Naur';
@@ -95,7 +95,7 @@ function receiveAuth(auth){
 
 /*IMAGES*/
 function preloadImages(){
-  Object.entries(sessionStorage.get('DB').DB_Master).forEach(([category, items]) => {
+  Object.entries(myStorage.get('DB').DB_Master).forEach(([category, items]) => {
     Object.entries(items).forEach(([item, materials]) => {
       Object.entries(materials).forEach(([rank, link]) => {        
         if(link.includes('/') && !link.includes('*')){

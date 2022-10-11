@@ -1,4 +1,4 @@
-let userInv = sessionStorage.get('user').Inventory;
+let userInv = myStorage.get('user').Inventory;
 
 /*INVENTORY*/
 function inventory(){

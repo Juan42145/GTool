@@ -1,12 +1,12 @@
-const LDB = sessionStorage.get('DB').DB_Master;
-let userInv = sessionStorage.get('user').Inventory;
+const LDB = myStorage.get('DB').DB_Master;
+let userInv = myStorage.get('user').Inventory;
 const REGION = Object.keys(LDB.ELEMENT); const D = (new Date()).getDay();
 
 /*HOME*/
 function home(){
-  if(sessionStorage.get('calc')) calculate();
+  if(myStorage.get('calc')) calculate();
 
-  Object.entries(sessionStorage.get('pivot')).forEach(cData => {
+  Object.entries(myStorage.get('pivot')).forEach(cData => {
     let [category, items] = cData;
 
     if(Object.keys(items).length === 0) return;

@@ -12,7 +12,7 @@ function getDB(){
 }
 
 function getUser(){
-  server('getUser=handleUser&user='+sessionStorage.get('code'));
+  server('getUser=handleUser&user='+myStorage.get('code'));
 }
 
 function getAuth(p){
@@ -21,7 +21,7 @@ function getAuth(p){
 
 /*--SETTERS--*/
 function setter(string, query){
-  let store = JSON.stringify(sessionStorage.get('cache'+string[0]));
+  let store = JSON.stringify(myStorage.get('cache'+string[0]));
   console.log(string, store);
   if(store == 'null'){
     toasty(`No ${string} to Save`); return;
@@ -30,15 +30,15 @@ function setter(string, query){
 }
 
 function setInv(){
-  setter('Inventory','setInv=handleInv&user='+sessionStorage.get('code'));
+  setter('Inventory','setInv=handleInv&user='+myStorage.get('code'));
 }
 
 function setChar(){
-  setter('Characters','setChar=handleChar&user='+sessionStorage.get('code'));
+  setter('Characters','setChar=handleChar&user='+myStorage.get('code'));
 }
 
 function setWpn(){
-  setter('Weapons','setWpn=handleWpn&user='+sessionStorage.get('code'));
+  setter('Weapons','setWpn=handleWpn&user='+myStorage.get('code'));
 }
 
 /*--HANDLERS--*/
@@ -55,15 +55,15 @@ function handleAuth(auth){
 }
 
 function handleInv(){
-  toast('Saved Inventory'); sessionStorage.set('cacheI',null);
+  toast('Saved Inventory'); myStorage.set('cacheI',null);
 }
  
 function handleChar(){
-  toast('Saved Characters'); sessionStorage.set('cacheC',null);
+  toast('Saved Characters'); myStorage.set('cacheC',null);
 }
 
 function handleWpn(){
-  toast('Saved Weapons'); sessionStorage.set('cacheW',null);
+  toast('Saved Weapons'); myStorage.set('cacheW',null);
 }
 
 /*--ALERT--*/

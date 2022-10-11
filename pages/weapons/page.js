@@ -124,6 +124,6 @@ function update(e){
   if(e.id === 'FARM') userWpn[name][e.id] = e.checked;
   else userWpn[name][e.id] = e.value;
   
-  sessionStorage.set('calc', true); store('Weapons', userWpn);
+  myStorage.set('calc', true); store('Weapons', userWpn);
   caching('cacheW', userWpn[name]['ROW'],userWpn[name]);
 }

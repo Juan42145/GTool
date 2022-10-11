@@ -132,6 +132,6 @@ function update(e){
   if(e.id === 'FARM') userChar[name][e.id] = e.checked;
   else userChar[name][e.id] = e.value;
   
-  sessionStorage.set('calc', true); store('Characters', userChar);
+  myStorage.set('calc', true); store('Characters', userChar);
   caching('cacheC', userChar[name]['ROW'], userChar[name]);
 }

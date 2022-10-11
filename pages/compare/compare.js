@@ -1,5 +1,5 @@
-const LDB = sessionStorage.get('DB');
-let userChar = sessionStorage.get('user').Characters;
+const LDB = myStorage.get('DB');
+let userChar = myStorage.get('user').Characters;
 let isShown = false; isLine = false;
 
 function compare(){

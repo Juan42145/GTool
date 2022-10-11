@@ -1,5 +1,5 @@
-const LDB = sessionStorage.get('DB').DB_Weapons;
-let userWpn = sessionStorage.get('user').Weapons;
+const LDB = myStorage.get('DB').DB_Weapons;
+let userWpn = myStorage.get('user').Weapons;
 let filters = ['Sword','Claymore','Bow','Polearm','Catalyst'];
 let filter = 0, second = 0, count = 0; owned = false, flip = false;
 let sorting = ()=>{};
@@ -84,17 +84,17 @@ function sortStat(a,b){
 }
 
 function sortA(a,b){
-  let k = Object.keys(sessionStorage.get('DB').DB_Master.TROPHIES)
+  let k = Object.keys(myStorage.get('DB').DB_Master.TROPHIES)
   return k.indexOf(LDB[a[0]].TROPHY) - k.indexOf(LDB[b[0]].TROPHY)
 }
 
 function sortE(a,b){
-  let k = Object.keys(sessionStorage.get('DB').DB_Master.ENEMIES)
+  let k = Object.keys(myStorage.get('DB').DB_Master.ENEMIES)
   return k.indexOf(LDB[a[0]].ELITE) - k.indexOf(LDB[b[0]].ELITE)
 }
 
 function sortC(a,b){
-  let k = Object.keys(sessionStorage.get('DB').DB_Master.ENEMIES)
+  let k = Object.keys(myStorage.get('DB').DB_Master.ENEMIES)
   return k.indexOf(LDB[a[0]].COMMON) - k.indexOf(LDB[b[0]].COMMON)
 }
 
@@ -119,7 +119,7 @@ function makeRow(wpn){
   FARM.checked = state.FARM;
   FARM.addEventListener('change', ()=>{
     userWpn[name].FARM = FARM.checked;
-    sessionStorage.set('calc', true); store('Weapons', userWpn);
+    myStorage.set('calc', true); store('Weapons', userWpn);
     caching('cacheW', userWpn[name].ROW, userWpn[name]);
   }, false);
 

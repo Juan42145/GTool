@@ -25,11 +25,11 @@ function makePage(cData, isTotal){
 
   if(category === 'RESOURCES'){
     let cMora = ['Mora',{'3':0}], tMora = ['Mora',{'3':0}], wMora = ['Mora',{'3':0}];
-    Object.values(sessionStorage.get('calculator').CHARACTERS).forEach(char => {
+    Object.values(myStorage.get('calculator').CHARACTERS).forEach(char => {
       cMora[1][3] += char.AFARM.MORA[1]? char.AFARM.MORA[1][3]: 0;
       tMora[1][3] += char.TFARM.MORA[1]? char.TFARM.MORA[1][3]: 0;
     })
-    Object.values(sessionStorage.get('calculator').WEAPONS).forEach(wpn => {
+    Object.values(myStorage.get('calculator').WEAPONS).forEach(wpn => {
       wMora[1][3] += wpn.FARM.MORA[1]? wpn.FARM.MORA[1][3]: 0;
     })
 
@@ -47,13 +47,13 @@ function makePage(cData, isTotal){
 
   if(category === 'COMMON'){
     let common = {'Characters': {}, 'Talents': {}, 'Weapons': {}};
-    Object.values(sessionStorage.get('calculator').CHARACTERS).forEach(char => {
+    Object.values(myStorage.get('calculator').CHARACTERS).forEach(char => {
       if(char.AFARM.COMMON[1])
         rolling(common, 'Characters', char.AFARM.COMMON[0], char.AFARM.COMMON[1])
       if(char.TFARM.COMMON[1])
         rolling(common, 'Talents', char.TFARM.COMMON[0], char.TFARM.COMMON[1])
     })
-    Object.values(sessionStorage.get('calculator').WEAPONS).forEach(wpn => {
+    Object.values(myStorage.get('calculator').WEAPONS).forEach(wpn => {
       if(wpn.FARM.COMMON[1])
         rolling(common, 'Weapons', wpn.FARM.COMMON[0], wpn.FARM.COMMON[1])
     })

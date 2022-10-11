@@ -1,10 +1,10 @@
-let userChar = sessionStorage.get('user').Characters;
-let userWpn = sessionStorage.get('user').Weapons;
-let userInv = sessionStorage.get('user').Inventory;
+let userChar = myStorage.get('user').Characters;
+let userWpn = myStorage.get('user').Weapons;
+let userInv = myStorage.get('user').Inventory;
 let calc;
 
 function farm(){
-  if(sessionStorage.get('calc')) calculate(); calc = sessionStorage.get('calculator');
+  if(myStorage.get('calc')) calculate(); calc = myStorage.get('calculator');
   makeChar(); makeWpn();
 }
 
@@ -74,7 +74,7 @@ function makeInputs(COMP, name, section, id, values){
 }
 
 function makeFarm(COMP, name, section, id){
-  if(sessionStorage.get('calc')) calculate(); calc = sessionStorage.get('calculator');
+  if(myStorage.get('calc')) calculate(); calc = myStorage.get('calculator');
   
   let FARM = document.getElementById('f_'+id+name.replaceAll(' ','_'))
   if(FARM) FARM.innerHTML = '';
@@ -154,21 +154,21 @@ function getTotal(category){
 
 function updateC(name, attr, value){
   userChar[name][attr] = value;
-  sessionStorage.set('calc', true); store('Characters', userChar);
+  myStorage.set('calc', true); store('Characters', userChar);
   caching('cacheC', userChar[name]['ROW'], userChar[name]);
 }
 
 function updateW(name, attr, value){
   userWpn[name][attr] = value;
-  sessionStorage.set('calc', true); store('Weapons', userWpn);
+  myStorage.set('calc', true); store('Weapons', userWpn);
   caching('cacheW', userWpn[name]['ROW'], userWpn[name]);
 }
 
 function save(){
-  let user = sessionStorage.get('user');
+  let user = myStorage.get('user');
   user.Characters = userChar;
   user.Weapons = userWpn;
   user.Inventory = userInv;
-  sessionStorage.set('user', user);
+  myStorage.set('user', user);
   setChar(); setWpn(); setInv();
 }

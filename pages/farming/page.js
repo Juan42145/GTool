@@ -1,11 +1,11 @@
-let LDB = sessionStorage.get('DB');
+let LDB = myStorage.get('DB');
 let gn, gb;
 
 function makePage(name, isChar){
   document.getElementById('farm').classList.add('hide')
   let PAGE = document.getElementById('page'); PAGE.classList.remove('hide');
 
-  if(sessionStorage.get('calc')) calculate(); calc = sessionStorage.get('calculator');
+  if(myStorage.get('calc')) calculate(); calc = myStorage.get('calculator');
   attrs = isChar? calc.CHARACTERS[name]: calc.WEAPONS[name]
   PAGE.dataset.color = isChar? attrs.ELEMENT: attrs.RARITY;
   PAGE = document.getElementById('page-container'); PAGE.innerHTML = '';
@@ -201,13 +201,13 @@ function consume(calc, attr){
 function incrementC(attr){
   if(attr !== 'PHASE' && !userChar[gn][attr]) userChar[gn][attr] = 1;
   userChar[gn][attr]++;
-  sessionStorage.set('calc', true); store('Characters', userChar);
+  myStorage.set('calc', true); store('Characters', userChar);
   caching('cacheC', userChar[gn]['ROW'], userChar[gn]);
 }
 
 function incrementW(attr){
   userWpn[gn][attr]++;
-  sessionStorage.set('calc', true); store('Weapons', userWpn);
+  myStorage.set('calc', true); store('Weapons', userWpn);
   caching('cacheW', userWpn[gn]['ROW'], userWpn[gn]);
 }
 
