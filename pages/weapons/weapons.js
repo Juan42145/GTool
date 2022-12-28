@@ -14,9 +14,11 @@ function weapons(){
 }
 
 function makeWeapons(){
+  let isShowAll = document.getElementById('showAll').checked;
   document.getElementById('weapons').innerHTML = '';
   let array = Object.entries(userWpn).sort(sorting); if(flip) array.reverse();
   array.forEach(wpn => {
+    if(!isShowAll && LDB[wpn[0]].E) return
     if(owned && filter !== 0){
       if(wpn[1].OWNED && LDB[wpn[0]].TYPE === filters[filter-1]) makeRow(wpn)
     }

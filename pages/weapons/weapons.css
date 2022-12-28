@@ -1,3 +1,15 @@
+.main{
+  position: absolute;
+  bottom: 1rem;
+  right: 2rem;
+}
+
+input[type=checkbox]{
+  -webkit-appearance: auto;
+  width: 2rem;
+  height: 2rem;
+}
+
 #weapon-menu{
   place-self: stretch;
   overflow: auto;

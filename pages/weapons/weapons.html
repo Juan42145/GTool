@@ -18,6 +18,10 @@
   <nav id="nav"></nav><script>makeNav("WEAPONS")</script>
   <header id="header"></header><script>makeHeader(save)</script>
 
+  <div class="main">
+    <input id="showAll" type="checkbox" onchange="makeWeapons()">
+  </div>
+
   <div id="weapon-menu">
     <div class="options">
       <button class="owned" onclick="filterOwned(this)">Owned</button>

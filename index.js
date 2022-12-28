@@ -2,42 +2,31 @@
 function process(data, store){
   let object = {}
   Object.entries(data).forEach(sheet => {
-    if(sheet[1][0]){
-      if(typeof(sheet[1][0][0]) !== 'object'){
-        object[sheet[0]] = parse(sheet[1], store);
-      }
-      else{
-        let inner = {}
-        sheet[1].forEach(table => {
-          inner[table[0][0]] = parse(table, store);
-        })
-        object[sheet[0]] = inner;
-      }
-    } else{
-      let outer = {}
-      Object.entries(sheet[1]).forEach(table => {
-        let inner = {}
-        table[1].forEach(array => {
-          inner[array[0][0]] = parse(array, store)
-        })
-        outer[table[0]] = inner
-      });
-      object[sheet[0]] = outer;
+    if(typeof(sheet[1][0][0]) !== 'object'){//CHAR WPN
+      object[sheet[0]] = parse(sheet[1], store);
+    }
+    else{//MASTER
+      let inner = {}
+      sheet[1].forEach(table => {
+        inner[table[0][0]] = parse(table, store);
+      })
+      object[sheet[0]] = inner;
     }
   });
   return object;
 }
 
-function parse(range, storeRow) {
+function parse(range, storeRow) {  
   const headers = range.shift(), data = {};
+  let id = headers.indexOf('NAME') === 1? 1: 0;
   for(let r in range) {
     const row = {};
     headers.forEach((h, c) => {
-      if(c === 0) return;
+      if(c === id) return;
       row[h] = range[r][c];
     })
     if(storeRow) row['ROW'] = r;
-    data[range[r][0]] = row;
+    data[range[r][id]] = row;
   }
   return data;
 }
