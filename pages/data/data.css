@@ -1,0 +1,44 @@
+#content{
+  display: grid;
+  grid-auto-flow: row;
+  gap: 5px;
+  margin: 5px;
+}
+
+.title{
+  background-color: var(--clr-charcoal);
+  color: vaR(--clr-pearl);
+}
+
+th,td{
+  text-align: center;
+  vertical-align: middle;
+  min-width: 15px;
+}
+
+th{
+  background-color: var(--clr-orange);
+  font-weight: bolder;
+}
+
+th.even{
+  background-color: var(--clr-yellow);
+}
+
+th.odd{
+  background-color: var(--clr-lightyellow);
+}
+
+td.even{
+  background-color: var(--clr-porcelain);
+}
+
+td.odd{
+  background-color: var(--clr-pearl);
+}
+
+@media screen and (min-width: 820px) {
+  #content{
+    grid-template-columns: auto auto;
+  }
+}

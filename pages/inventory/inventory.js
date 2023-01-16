@@ -35,7 +35,7 @@ function inventory(){
         INP.addEventListener('blur',()=>{ if(INP.defaultValue === INP.value) return;
           if(INP.value == '') INP.value = 0;
           
-          userInv[category][item][rank] = INP.value; store('Inventory', userInv);
+          userInv[category][item][rank] = +INP.value; store('Inventory', userInv);
           caching('cacheI', category + '_' + rank + '_' + materials['ROW'], INP.value);
           
           recalculate(category, item);

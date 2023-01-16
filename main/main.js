@@ -88,7 +88,7 @@ function makeNav(active){
     WEAPONS: '../weapons/weapons.html',
     COMPARE: '../compare/compare.html',
     DOMAINS: '../domains/domains.html',
-    //DATA: '',
+    DATA: '../data/data.html',
   }
 
   const NAV = document.getElementById('nav')
