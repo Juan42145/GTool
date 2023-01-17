@@ -72,6 +72,9 @@ function makeData(CONT, category, item, materials, isInv){
 
     if(calc[rank] >= value) CARD.classList.add('completed');
     else CARD.classList.remove('completed');
+
+    if(userInv[tc][ti][rank] >= value && isInv) CARD.classList.add('obtained');
+    else CARD.classList.remove('obtained');
     
   });
 
