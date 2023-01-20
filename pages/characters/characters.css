@@ -106,8 +106,8 @@ select{
 .card{
   --card_bg: var(--clr-navy);
   --card_tx: var(--clr-white);
-  --card_icon_bg: rgba(26,26,26,0.75);
-  --card_icon_tx: var(--clr-white);
+  --icon_bg: rgba(26,26,26,0.75);
+  --icon_tx: var(--clr-white);
   --max: var(--clr-orange);
 
   display: grid;
@@ -126,8 +126,9 @@ select{
 }
 
 .image{
-  max-width: 9rem;
-  max-height: 9rem;
+  --size: 9rem;
+  max-width: var(--size);
+  max-height: var(--size);
 }
 
 .name{
@@ -144,7 +145,7 @@ select{
   text-align: center;
 }
 
-.card .icon{
+.icon{
   position: absolute;
   top: 0;
   right: 0;
@@ -152,7 +153,7 @@ select{
   padding: 0.3rem;
   margin: -1rem;
   border-radius: 100%;
-  background-color: var(--card_icon_bg);
+  background-color: var(--icon_bg);
 }
 
 .tag{
@@ -168,13 +169,96 @@ select{
   font-size: 1.2rem;
   align-items: center;
   justify-content: end;
-  color: var(--card_icon_tx);
-  background-color: var(--card_icon_bg);
+  color: var(--icon_tx);
+  background-color: var(--icon_bg);
   font-weight: bold;
 }
 
 .tag.max{
   color: var(--max);
+}
+
+/*TABLE*/
+input[type=checkbox]{
+  -webkit-appearance: auto;
+  width: 2rem;
+  height: 2rem;
+}
+
+/*TABLE*/
+.table-cont{
+  overflow-x: auto;
+}
+
+table{
+  --table_bg: var(--clr-void);
+  --table_tx: var(--clr-black);
+  --goal_tx: var(--clr-porcelain);
+  --table_head: var(--clr-pearl);
+  --table_border: var(--clr-void);
+  --max: var(--clr-orange);
+  --icon_bg: rgba(26,26,26,0.75);
+  --icon_tx: var(--clr-white);
+
+  --cellsize: 6rem;
+  position: relative;
+  width: 100%;
+  font-size: 1rem;
+  border-collapse: collapse;
+  background-color: var(--table_bg);
+}
+
+th{
+  color: var(--table_head);
+  padding: 0.5rem 0.1rem;
+  text-align: left;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background-color: var(--table_bg);
+}
+
+table .tag, table .icon{
+  margin: 0;
+}
+
+table .icon{
+  z-index: 1;
+}
+
+td{
+  position: relative;
+  height: var(--cellsize);
+  border-top: 0.1rem solid var(--table_border);
+  padding: 0 0.5rem;
+  color: var(--table_tx);
+  vertical-align: middle;
+}
+
+input[type=checkbox]{
+  -webkit-appearance: auto;
+  width: 2rem;
+  height: 2rem;
+}
+
+table .image{
+  --size: var(--cellsize);
+}
+
+.img{
+  font-size: 1rem;
+}
+
+.sf{
+  border-left: 0.1rem solid var(--table_border);
+}
+
+.sl{
+  border-right: 0.1rem solid var(--table_border);
+}
+
+.goal{
+  color: var(--goal_tx);
 }
 
 @media screen and (min-width: 650px){
@@ -191,6 +275,14 @@ select{
   .owned{
     padding: 0 3rem;
   }
+
+  table{
+    font-size: 1.5rem;
+  }
+
+  th{
+    padding-right: 0.5rem;
+  }
 }
 
 @media screen and (min-width: 820px) {
@@ -202,5 +294,11 @@ select{
 
   .mode{
     width: 20rem;
+  }
+
+  table{
+    --cellsize: 9rem;
+
+    font-size: 2rem;
   }
 }

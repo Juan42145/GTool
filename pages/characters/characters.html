@@ -22,10 +22,10 @@
 
     <div class="options">
       <div class="mode">
-        <button class="selected">
+        <button onclick="switcher(this, true)" class="selected">
           <svg viewBox="0 0 24 24"><path d="M3,11H11V3H3M3,21H11V13H3M13,21H21V13H13M13,3V11H21V3"></path></svg>
         </button>
-        <button>
+        <button onclick="switcher(this,false)" >
           <svg viewBox="0 0 24 24"><path d="M9,5V9H21V5M9,19H21V15H9M9,14H21V10H9M4,9H8V5H4M4,19H8V15H4M4,14H8V10H4V14Z"></path></svg>
         </button>
       </div>
@@ -42,6 +42,25 @@
     </div>
   
     <div id="characters">
+    </div>
+    
+    <div class="table-cont">
+      <table id="table" class="hide">
+        <thead>
+          <th onclick="sortTable(1)"></th>
+          <th></th>
+          <th>Name</th>
+          <th colspan="2">P</th>
+          <th colspan="2">N</th>
+          <th colspan="2">S</th>
+          <th colspan="2">B</th>
+          <th onclick="sortTable(2)">HP</th>
+          <th onclick="sortTable(3)">ATK</th>
+          <th onclick="sortTable(4)">DEF</th>
+          <th onclick="sortTable(5)">STAT</th>
+        </thead>
+        <tbody id="table__body"></tbody>
+      </table>
     </div>
 
   </div>
