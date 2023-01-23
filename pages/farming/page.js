@@ -52,14 +52,18 @@ function makeTBL(PAGE, source, isInv){
 function makeData(CONT, category, item, materials, isInv){
   let tc = translate(category), ti = decode(tc, item);
   let calc = isInv? getInventory(tc, ti, materials): userInv[tc][ti];
+  let convert = []
   Object.entries(materials).reverse().forEach(([rank, value], mi) => {
+    let pconv = convert[+rank+1]? convert[+rank+1] : 0;
+    convert[rank] = pconv*3 + value - userInv[tc][ti][rank]
     if(!value) return;
 
     const CARD = create(CONT, 'div', {'class':'card js-card r_'+rank})
     CARD.style = 'grid-row: 1; grid-column: '+ (+mi+1);
     if(category === 'MORA') CARD.classList.add('card--long');
 
-    CARD.addEventListener('mouseover', ()=>tooltip.show(item))
+    let tt = item
+    CARD.addEventListener('mouseover', ()=>tooltip.show(tt))
     CARD.addEventListener('mouseout', ()=>tooltip.hide())
 
     const IMG = create(CARD, 'img', {'class':'card__image','src':getImage(tc,ti,rank)})
@@ -70,10 +74,13 @@ function makeData(CONT, category, item, materials, isInv){
     const NEED = create(CARD, 'div', {'class':'card__need p'})
     NEED.textContent = '/' + value.toLocaleString('en-us');
 
-    if(calc[rank] >= value) CARD.classList.add('completed');
+    if(calc[rank] >= value){
+      CARD.classList.add('completed');
+      if(isInv) tt += ' ' + convert[rank]
+    }
     else CARD.classList.remove('completed');
 
-    if(userInv[tc][ti][rank] >= value && isInv) CARD.classList.add('obtained');
+    if(userInv[tc][ti][rank] >= value) CARD.classList.add('obtained');
     else CARD.classList.remove('obtained');
     
   });

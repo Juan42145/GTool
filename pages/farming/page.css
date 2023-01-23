@@ -121,15 +121,15 @@
 
 .completed{
   opacity: 0.4;
-  color: var(--clr-white);
 }
 
 .completed .p{
-  background-color: var(--clr-void) !important;
+  background-color: var(--clr-white) !important;
 }
 
 .obtained .p{
-  background-color: var(--clr-charcoal) !important;
+  color: var(--clr-white);
+  background-color: var(--clr-void) !important;
 }
 
 .card__image {
