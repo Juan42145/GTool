@@ -186,9 +186,6 @@ input[type=checkbox]{
 }
 
 /*TABLE*/
-.table-cont{
-  overflow-x: auto;
-}
 
 table{
   --table_bg: var(--clr-void);
@@ -230,7 +227,7 @@ td{
   position: relative;
   height: var(--cellsize);
   border-top: 0.1rem solid var(--table_border);
-  padding: 0 0.5rem;
+  padding: 0 0.4rem;
   color: var(--table_tx);
   vertical-align: middle;
 }
