@@ -32,9 +32,10 @@ function getSort(value){
   sorting = sorts[value]; characters();
 }
 
-function sortTable(value){
+function sortTable(head, value){
   let sorts = [()=>{}, sortF, sortHP, sortATK, sortDEF, sortStat]
-  sorting = sorts[value]; characters();
+  document.getElementsByClassName('sort-header')[0].classList.remove('sort-header')
+  sorting = sorts[value]; head.classList.add('sort-header'); characters();
 }
 
 function sortName(a,b){

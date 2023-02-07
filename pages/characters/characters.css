@@ -186,7 +186,6 @@ input[type=checkbox]{
 }
 
 /*TABLE*/
-
 table{
   --table_bg: var(--clr-void);
   --table_tx: var(--clr-black);
@@ -213,6 +212,11 @@ th{
   top: 0;
   z-index: 2;
   background-color: var(--table_bg);
+}
+
+.sort-header{
+  color: var(--table_bg);
+  background-color: var(--table_head);
 }
 
 table .tag, table .icon{

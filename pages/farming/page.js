@@ -55,8 +55,17 @@ function makeData(CONT, category, item, materials, isInv){
   let convert = []
   Object.entries(materials).reverse().forEach(([rank, value], mi) => {
     let pconv = convert[+rank+1]? convert[+rank+1] : 0;
-    convert[rank] = pconv*3 + value - userInv[tc][ti][rank]
-    if(!value) return;
+    convert[rank] = pconv*3 + value - userInv[tc][ti][rank];
+    convert[rank] = convert[rank] < 0? 0: convert[rank]
+    if(!value) {
+      if(convert[rank] && isInv){
+        const CARD = create(CONT, 'div', {'class':'card converter'})
+        CARD.style = 'grid-row: 1; grid-column: '+ (+mi+1);
+        CARD.addEventListener('mouseover', ()=>tooltip.show(item + ' ' + convert[rank]))
+        CARD.addEventListener('mouseout', ()=>tooltip.hide())
+      }
+      return
+    };
 
     const CARD = create(CONT, 'div', {'class':'card js-card r_'+rank})
     CARD.style = 'grid-row: 1; grid-column: '+ (+mi+1);

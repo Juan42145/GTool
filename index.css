@@ -1,5 +1,5 @@
 /*FORM*/
-form {
+.i-form {
   --form-bg: var(--clr-navy);
   --form-tx: var(--clr-black);
   --form-input: var(--clr-white);
@@ -13,33 +13,39 @@ form {
   display: flex;
   align-items: center;
   justify-content: center;
+
   background-color: var(--form-bg);
 }
 
-.content {
+.i-content {
+  --content-border: var(--form-border);
+  --content-outline: var(--form-outline);
+  --content-bg: var(--form-input);
+  --content-tx: var(--form-text);
+
   width: 90vw;
   line-height: 20vw;
   -webkit-border-radius: 30vw;
   border-radius: 100vw;
   outline: none;
-
+  border: var(--border) solid var(--content-border);
+  box-shadow: 0 0 0 var(--spacing) var(--form-bg),
+    0 0 0 calc(var(--spacing) + var(--outline)) var(--content-outline) ;
+  
+  background-color: var(--content-bg);
+  color: var(--content-tx);
   text-align: center;
 }
 
-form label {
+.i-label {
+  --content-border: var(--form-outline);
+  --content-outline: var(--form-border);
+  --content-bg: var(--form-text);
+  --content-tx: var(--form-input);
+
   font-size: 7vw;
-  border: var(--border) solid var(--form-outline);
-  box-shadow: 0 0 0 var(--spacing) var(--form-bg),
-    0 0 0 calc(var(--spacing) + var(--outline)) var(--form-border) ;
-  background-color: var(--form-tx);
-  color: var(--form-input);
 }
 
-form input {
+.i-input {
   font-size: 15vw;
-  border: var(--border) solid var(--form-border);
-  box-shadow: 0 0 0 var(--spacing) var(--form-bg),
-    0 0 0 calc(var(--spacing) + var(--outline)) var(--form-outline) ;
-  background-color: var(--form-input);
-  color: var(--form-tx);
 }

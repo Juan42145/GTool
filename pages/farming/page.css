@@ -132,6 +132,10 @@
   background-color: var(--clr-void) !important;
 }
 
+.converter{
+  background: linear-gradient(var(--farm_cont_bg) 40%,var(--clr-pearl) 120%);
+}
+
 .card__image {
   font-size: 1em;
 

@@ -52,8 +52,8 @@ function init(){
 }
 
 function receiveDB(DB){
-  const P = document.getElementById('password');
-  const L = document.getElementById('loading');
+  const P = document.getElementById('js-password');
+  const L = document.getElementById('js-loading');
   P.classList.remove('hide'); L.classList.add('hide')
   myStorage.set('DB', process(DB, false)); preloadImages();
 }
@@ -69,11 +69,11 @@ function receiveUser(user){
 
 /*FORM*/
 function login(){
-  const P = document.getElementById('password'); getAuth(P.value);
+  const P = document.getElementById('js-password'); getAuth(P.value);
 }
 
 function receiveAuth(auth){
-  const P = document.getElementById('password'); P.value = '';
+  const P = document.getElementById('js-password'); P.value = '';
   if(auth.AUTH){
     P.blur(); P.placeholder = 'Wait Whore'; myStorage.set('code', auth.USER);
     userData();
