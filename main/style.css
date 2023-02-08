@@ -88,7 +88,7 @@ input::-ms-reveal, input::-ms-clear {
 /*
 ----NAVBAR----
 */
-#nav {
+nav {
   --nav-bg: var(--clr-lightnavy);
   --nav-tx: var(--clr-gold);
   --nav-border: var(--clr-gold);
@@ -127,7 +127,7 @@ input::-ms-reveal, input::-ms-clear {
   -webkit-user-select: none;
 }
 
-#nav a {
+nav a {
   font-size: 3em;
 
   display: block;
@@ -139,7 +139,7 @@ input::-ms-reveal, input::-ms-clear {
   font-weight: bold;
 }
 
-.nav__btn {
+nav .nav__btn {
   font-size: 4em;
   
   position: absolute;
@@ -157,7 +157,7 @@ input::-ms-reveal, input::-ms-clear {
   text-align: center;
 }
 
-.nav__btn--home {
+nav .nav__btn--home {
   left: var(--btn-border);
 }
 
@@ -165,12 +165,12 @@ input::-ms-reveal, input::-ms-clear {
   right: var(--btn-border);
 }
 
-#nav a:hover:not(.nav__btn--close, .nav-active){
+nav a:hover:not(.nav__btn--close, .nav-active){
   background-color: var(--nav-hover-bg);
   color: var(--nav-hover-tx);
 }
 
-#nav a:active, .nav-active{
+nav a:active, .nav-active{
   background-color: var(--nav_active-bg) !important;
   color: var(--nav_active-tx) !important;
 }
