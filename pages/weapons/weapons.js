@@ -47,18 +47,23 @@ function filterWpn(btn, value){
   btn.classList.toggle('picked'); makeWeapons();
 }
 
-function sortTable(value){
+function sortTable(head, value){
   let sorts = [()=>{}, sortF, sortR , sortName, sortPhase, sortATK, sortStat, sortA, sortE, sortC, sortRR]
+  let prev = document.getElementsByClassName('sort-header')[0]
   if(second === value && count === 2){
     second = 0; count = 0; value = 0; flip = false;
+    if(prev) prev.classList.remove('sort-header')
   }
   else if(second === value){
     count = 2; flip = true;
   } 
   else {
     second = value; count = 1; flip = false;
+    if(prev) prev.classList.remove('sort-header')
+    head.classList.add('sort-header')
   }
   sorting = sorts[value]; makeWeapons();
+
 }
 
 function sortF(a,b){

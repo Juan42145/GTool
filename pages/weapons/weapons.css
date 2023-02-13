@@ -102,6 +102,11 @@ th{
   background-color: var(--table_bg);
 }
 
+.sort-header{
+  color: var(--table_bg);
+  background-color: var(--table_head);
+}
+
 .w_5{ background-color: var(--rank5); }
 .w_4{ background-color: var(--rank4); }
 .w_3{ background-color: var(--rank3); }

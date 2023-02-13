@@ -30,11 +30,14 @@ function filterOwned(btn){
 function getSort(value){
   let sorts = [()=>{}, sortName, sortAscension, sortRarity, sortConstellation]
   sorting = sorts[value]; characters();
+  let prev = document.getElementsByClassName('sort-header')[0]
+  if(prev) prev.classList.remove('sort-header')
 }
 
 function sortTable(head, value){
   let sorts = [()=>{}, sortF, sortHP, sortATK, sortDEF, sortStat]
-  document.getElementsByClassName('sort-header')[0].classList.remove('sort-header')
+  let prev = document.getElementsByClassName('sort-header')[0]
+  if(prev) prev.classList.remove('sort-header')
   sorting = sorts[value]; head.classList.add('sort-header'); characters();
 }
 
