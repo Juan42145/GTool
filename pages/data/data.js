@@ -1,13 +1,14 @@
 
 function data(){
+  let cont = document.getElementById('content')
+  cont.innerHTML = ''
   Object.entries(SDB_Calculate).forEach(([name, table])=>{
-    console.log(name, table)
     makeTable(name,table)
   })
-  // makeTable('t',SDB_Calculate['TALENT'])
 }
 
 function makeTable(name, data){
+  let isCum = document.getElementById('cum').checked;
   let cont = document.getElementById('content')
   let table = create(cont, 'table')
   let head = create(table, 'thead')
@@ -40,12 +41,12 @@ function makeTable(name, data){
         rowHead.textContent = row
       }
       if(ri === 0) f = row;
-      let prev = (rows[row-1])? Object.values(rows[row-1]): []
+      let prev = (rows[row-1] && !isCum)? Object.values(rows[row-1]): []
       Object.values(cols).forEach((cumm, i)=>{
         let cell = create(rowArray[row],'td',{'class':cClass})
-        let value = cumm - +prev[i]
+        let value = (row === f || isCum)? cumm: cumm - +prev[i]
         if(value === 0) value = '';
-        cell.textContent = (row === f)? cumm: value
+        cell.textContent = value
       })
     })
   })

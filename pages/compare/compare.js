@@ -1,5 +1,7 @@
 const LDB = myStorage.get('DB');
 let userChar = myStorage.get('user').Characters;
+let userInv = myStorage.get('user').Inventory;
+console.log(userInv)
 let isShown = false; isLine = false;
 
 function compare(){
@@ -40,6 +42,12 @@ function translate(category){
   else return category;
 }
 
+function getInv(category, item, rank){
+  let i = userInv[category][item]
+  if(!i) return ''
+  return Math.floor(userInv[category][item][rank]*100)/100
+}
+
 function getHeaders(category, isRow){
   let array = 0, rank = 0, isText = false, span = 3, cum = 3, prev = 3;
   let isSet = category == 'LOCALS' || category == 'BOOKS' || category == 'WEEKLYS';
@@ -75,11 +83,19 @@ function getHeaders(category, isRow){
   array.forEach(item => {
     const CARD = create(HEAD, 'div', {'class':'header header--'+(isRow?'row':'col')})
 
+    let inv = ''
+    if(category == 'ELEMENT') inv = getInv('GEMS',item,0)
+    else if(category == 'BOSSES') inv = getInv(category,item,4)
+    else if(category == 'LOCALS') inv = getInv(category,item,1)
+    else if(category == 'ENEMIES') inv = getInv(category,item,0)
+    else if(category == 'BOOKS') inv = getInv(category,item,0)
+    else if(category == 'WEEKLYS') inv = getInv(category,item,5)
+
     if(isText) CARD.textContent = item;
     else{
       const IMG = create(CARD, 'img', {'class':'header__image','src':getImage(category, item, rank)})
       setError(IMG)
-      CARD.addEventListener('mouseover', ()=>tooltip.show(item))
+      CARD.addEventListener('mouseover', ()=>tooltip.show(item +' '+ inv))
       CARD.addEventListener('mouseout', ()=>tooltip.hide())
     }
 
