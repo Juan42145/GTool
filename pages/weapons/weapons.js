@@ -60,7 +60,7 @@ function sortTable(head, value){
   else {
     second = value; count = 1; flip = false;
     if(prev) prev.classList.remove('sort-header')
-    head.classList.add('sort-header')
+    if(head) head.classList.add('sort-header')
   }
   sorting = sorts[value]; makeWeapons();
 
