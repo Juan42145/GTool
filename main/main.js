@@ -135,7 +135,7 @@ function makeHeader(click){
 
 /*--TOOLTIP--*/
 var tooltip = function(){
-  var id = 'tt'; var top = 3; var left = 3; var maxw = 300; var tt,c,h;
+  var id = 'tt'; var dy = 3; var dx = 3; var maxw = 300; var tt,c,h,w;
   return{
     show:function(v){
       if(tt == null){
@@ -146,11 +146,13 @@ var tooltip = function(){
       tt.style.display = 'block'; tt.style.width = 'auto'; tt.style.opacity = 1;
       c.innerHTML = v; document.onmousemove = this.pos;
       if(tt.offsetWidth > maxw) tt.style.width = maxw + 'px'
-      h = parseInt(tt.offsetHeight) + top;
+      h = parseInt(tt.offsetHeight) + dy;
+      w = parseInt(tt.offsetWidth) + dx;
     },
     pos:function(e){
       var u = e.pageY; var l = e.pageX;
-      tt.style.top = (u - h) + 'px'; tt.style.left = (l + left) + 'px';
+      tt.style.top = e.pageY < h? (u + dy) + 'px' :(u - h) + 'px';
+      tt.style.left = e.pageX > window.innerWidth - w? (l - w) + 'px' :(l + dx) + 'px';
     },
     hide:function(){
       tt.style.opacity = 0; document.onmousemove = null;
