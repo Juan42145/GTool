@@ -320,6 +320,14 @@ nav a:active, .nav-active{
   padding: 0.5em;
 }
 
+dialog{
+  margin: auto;
+}
+
+dialog::backdrop{
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
 /*
 ----TOOLTIP----
 */

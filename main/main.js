@@ -131,6 +131,16 @@ function makeHeader(click){
   const input = create(button,'input',
   {'class':'header__button--input','type':'button','value':'Save'})
   input.onclick = ()=>click();
+  makeDialog()
+}
+
+/*--DIALOG--*/
+function makeDialog(){
+  const dialog = create(document.body,'dialog',{'id': 'dialog', 'class':'alert'})
+  dialog.onclick = () => {
+    dialog.close()
+    dialog.innerHTML = '';
+  };
 }
 
 /*--TOOLTIP--*/
