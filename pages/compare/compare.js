@@ -120,6 +120,13 @@ function getHeaders(category, isRow){
       if(category == 'LOCALS') CARD.style = cStyle+': span '+span[item];
       else CARD.style = cStyle+': span '+span;
 
+      if(category == 'WEEKLYS'){
+        let inv = Object.values(userInv.WEEKLYS)
+        let agg = inv[3*i][5] + inv[3*i+1][5] + inv[3*i+2][5]
+        CARD.addEventListener('mouseover', ()=>tooltip.show(item +' '+ agg))
+        CARD.addEventListener('mouseout', ()=>tooltip.hide())
+      }
+
       const IMG = create(CARD, 'img', {'class':'header__image','src':getImage(group[category], item, 0)})
       setError(IMG)
     });
