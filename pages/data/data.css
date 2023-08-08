@@ -50,6 +50,19 @@ td.odd{
   background-color: var(--clr-pearl);
 }
 
+.total{
+  font-weight: bolder;
+  color: white
+}
+
+.even.total{
+  background-color: var(--clr-darknavy);
+}
+
+.odd.total{
+  background-color: var(--clr-lightnavy);
+}
+
 @media screen and (min-width: 820px) {
   #content{
     grid-template-columns: auto auto;
