@@ -96,9 +96,13 @@ function makeNav(active){
   const index = create(NAV,'a',{'href':'../../index.html','class':'nav__btn nav__btn--home'})
   index.innerHTML = '&curren;';
   index.onclick = ()=>myStorage.clear();
+  const resin = create(NAV,'button',{'class':'nav__btn nav__btn--resin'})  
+  resin.innerHTML = '&there4;';
   const close = create(NAV,'a',{'href':'javascript:void(0)','class':'nav__btn nav__btn--close'})
   close.innerHTML = '&times;';
   close.onclick = ()=>closeNav();
+
+  makeNavDialog(NAV, resin)
 
   Object.entries(pages).forEach(([page, link]) => {
     let a, f = page == active;
@@ -116,6 +120,43 @@ function openNav(){
 function closeNav(){
   const NAV = document.getElementById('nav');
   NAV.style.width = '0'; NAV.style.left = '-1rem';
+}
+
+/*--NAV DIALOG--*/
+function makeNavDialog(CONT, openbtn){
+  const dialog = create(CONT,'dialog')
+  const closebtn = create(dialog,'button',{'class':'nav__btn dialog--close'})
+  closebtn.innerHTML = '&times;';
+  closebtn.onclick = ()=>dialog.close();
+  openbtn.onclick = ()=>dialog.showModal();
+
+  const results = create(dialog,'div',{'class':'dialog--div'})
+  const input = create(dialog,'input',{'type':'text','pattern':'\\d*','class':'dialog--input'})
+  input.addEventListener('input',()=>{
+    results.innerHTML = '';
+    let v = +input.value; 
+    resinCalc(results, v, 'init')
+    while(v >= 40){
+      v-=40;
+      resinCalc(results, v, 'loop')
+    }
+    if(v >= 20){
+      v-=20;
+      resinCalc(results, v, 'end') 
+    }
+  }, false);
+}
+
+function resinCalc(CONT, value, type){
+  let d = new Date();
+  if (value < 160) d.setMinutes(d.getMinutes() + 8*(159 - value))
+  let day = (new Date()).getDay() == d.getDay()? 'Today': 'Tomorrow';
+  let time = d.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" })
+
+  const resin = create(CONT,'div',{'class':'resc resc--'+type})
+  resin.innerHTML = value
+  const full = create(CONT,'div',{'class':'resc resc--'+type})
+  full.innerHTML = day + ' ' + time
 }
 
 /*--HEADER--*/

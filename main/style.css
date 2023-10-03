@@ -144,7 +144,6 @@ nav .nav__btn {
   
   position: absolute;
   top: var(--btn-border);
-  right: var(--btn-border);
   padding: 0;
   margin: 0;
   line-height: calc(var(--btn-sz) - 2*var(--btn-border));
@@ -157,12 +156,16 @@ nav .nav__btn {
   text-align: center;
 }
 
-nav .nav__btn--home {
+.nav__btn--home {
   left: var(--btn-border);
 }
 
 .nav__btn--close {
   right: var(--btn-border);
+}
+
+.nav__btn--resin{
+  right: calc(2 * var(--btn-border) + var(--btn-sz));
 }
 
 nav a:hover:not(.nav__btn--close, .nav-active){
@@ -175,7 +178,7 @@ nav a:active, .nav-active{
   color: var(--nav_active-tx) !important;
 }
 
-.nav__btn--close:hover{
+.nav__btn:hover:not(.nav__btn--home){
   background-color: var(--nav_close-hover-bg);
   color: var(--nav_close-hover-tx);
   line-height: var(--btn-sz);
@@ -183,6 +186,72 @@ nav a:active, .nav-active{
   box-shadow: 0 0 0.5em var(--nav_close-hover-tx);
 }
 
+/*
+----NAVDIALOG----
+*/
+
+nav dialog[open]{
+  --dg-bg: var(--clr-gold);
+  --dg-tx: var(--clr-gold);
+  --dg-border: var(--clr-void);
+  --rs-bg: var(--clr-lightnavy);
+  --rs-fbg: var(--clr-darknavy);
+  --rs-ftx: var(--clr-pearl);
+  --rs-lbg: var(--clr-navy);
+
+  font-size: var(--rem);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1em;
+  padding: 2em;
+  border-radius: 1em;
+  background-color: var(--dg-bg);
+  color: var(--dg-tx);
+}
+
+button.dialog--close{
+  position: relative;
+  top: auto;
+}
+
+.dialog--input{
+  font-size: 2rem;
+  width: 5em;
+  padding: 0.25em;
+  border-radius: 2em;
+  background-color: var(--nav_active-bg);
+  color: var(--nav_active-tx);
+  font-weight: bolder;
+  text-align: center;
+}
+
+.dialog--div{
+  display: grid;
+  grid-template-columns: repeat(2, max-content);
+  padding: 2em;
+  border-radius: 1em;
+  background-color: var(--rs-bg);
+}
+
+.resc{
+  font-weight: bolder;
+  padding: 1em;
+  border-bottom: 1px solid var(--dg-border);
+}
+
+.resc:nth-child(2n+1){
+  text-align: center;
+}
+
+.resc--init{
+  background-color: var(--rs-fbg);
+  color: var(--rs-ftx);
+}
+
+.resc--end{
+  background-color: var(--rs-lbg);
+}
 
 /*
 ----HEADER----
