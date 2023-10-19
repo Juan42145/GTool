@@ -97,7 +97,7 @@ function makeNav(active){
   index.innerHTML = '&curren;';
   index.onclick = ()=>myStorage.clear();
   const resin = create(NAV,'button',{'class':'nav__btn nav__btn--resin'})  
-  resin.innerHTML = '&there4;';
+  resin.innerHTML = '&diams;';
   const close = create(NAV,'a',{'href':'javascript:void(0)','class':'nav__btn nav__btn--close'})
   close.innerHTML = '&times;';
   close.onclick = ()=>closeNav();
@@ -137,6 +137,7 @@ function makeNavDialog(CONT, openbtn){
     let v = +input.value; 
     resinCalc(results, v, 'init')
     while(v >= 40){
+      resinCalc(results, v-20, 'end') 
       v-=40;
       resinCalc(results, v, 'loop')
     }

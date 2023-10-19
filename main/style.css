@@ -195,16 +195,15 @@ nav dialog[open]{
   --dg-tx: var(--clr-gold);
   --dg-border: var(--clr-void);
   --rs-bg: var(--clr-lightnavy);
+  --rs-tx: var(--clr-pearl);
   --rs-fbg: var(--clr-darknavy);
-  --rs-ftx: var(--clr-pearl);
-  --rs-lbg: var(--clr-navy);
+  --rs-hbg: var(--clr-navy);
 
-  font-size: var(--rem);
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 1em;
-  padding: 2em;
+  padding: 1em 5em;
   border-radius: 1em;
   background-color: var(--dg-bg);
   color: var(--dg-tx);
@@ -235,9 +234,11 @@ button.dialog--close{
 }
 
 .resc{
+  font-size: 1.5em;
   font-weight: bolder;
-  padding: 1em;
+  padding: 0.75em 1em;
   border-bottom: 1px solid var(--dg-border);
+  background-color: var(--rs-fbg);
 }
 
 .resc:nth-child(2n+1){
@@ -245,12 +246,12 @@ button.dialog--close{
 }
 
 .resc--init{
-  background-color: var(--rs-fbg);
-  color: var(--rs-ftx);
+  background-color: var(--rs-bg);
+  color: var(--rs-tx);
 }
 
 .resc--end{
-  background-color: var(--rs-lbg);
+  background-color: var(--rs-hbg);
 }
 
 /*
