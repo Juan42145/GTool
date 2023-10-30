@@ -1,6 +1,7 @@
 const LDB = myStorage.get('DB');
 let userChar = myStorage.get('user').Characters;
 let userWpn = myStorage.get('user').Weapons;
+let userInv = myStorage.get('user').Inventory;
 let isShown = false; isLine = false;
 
 function domains(){
@@ -49,7 +50,7 @@ function getHeaders(isChar){
     const CARD = create(HEAD, 'div', {'class':'header'})
     const IMG = create(CARD, 'img', {'class':'header__image','src':getImage(name, item, rank)})
     setError(IMG)
-    CARD.addEventListener('mouseover', ()=>tooltip.show(item))
+    CARD.addEventListener('mouseover', ()=>tooltip.show(item + ' ' + getInv(name,item)))
     CARD.addEventListener('mouseout', ()=>tooltip.hide())
   });
 
@@ -118,4 +119,10 @@ function makeTotals(array, nRows, nCols, totals){
 const D = (new Date()).getDay();
 function setData(value, index){
   if(D === 0 || (D-1)%3 === index%3) return value
+}
+
+function getInv(category, item){
+  let i = userInv[category][item]
+  if(!i) return ''
+  return Math.floor(userInv[category][item][0]*100)/100
 }
